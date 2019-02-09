@@ -679,6 +679,7 @@ id beginning
 id blocking
 id bottom
 id btAnalyse
+id btParcourir
 id buttonPanel
 id center
 id center_horizontal
@@ -735,6 +736,7 @@ id notification_main_column_container
 id packed
 id parent
 id parentPanel
+id pathFichier
 id percent
 id progress_circular
 id progress_horizontal
@@ -786,6 +788,7 @@ id titleDividerNoCustom
 id title_template
 id top
 id topPanel
+id txtFichier
 id uniform
 id up
 id useLogo
