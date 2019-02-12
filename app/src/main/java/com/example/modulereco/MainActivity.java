@@ -7,6 +7,7 @@ import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +17,6 @@ import edu.cmu.pocketsphinx.Assets;
 import edu.cmu.pocketsphinx.Hypothesis;
 import edu.cmu.pocketsphinx.RecognitionListener;
 import edu.cmu.pocketsphinx.SpeechRecognizer;
-import edu.cmu.pocketsphinx.SpeechRecognizerSetup;
 
 import static edu.cmu.pocketsphinx.SpeechRecognizerSetup.defaultSetup;
 
@@ -25,16 +25,22 @@ public class MainActivity extends Activity implements RecognitionListener
     private int RSTORAGE_PERMISSION_CODE = 1;
     private int AUDIO_PERMISSION_CODE = 2;
 
-    private static final String KWS_SEARCH = "debout";
+    private static final String KWS_SEARCH = "mot";
     private static final String MENU_SEARCH = "menu";
-    private static final String KEYPHRASE = "réveille toi connard";
+    private static final String PHONE_SEARCH = "phoque";
+
+    private static final String KEYPHRASE = "bonjour";
     private SpeechRecognizer recognizer;
+    TextView affichage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
+        affichage = findViewById((R.id.message));
 
         Button btnStockage = findViewById(R.id.btnPermStockage);
         btnStockage.setOnClickListener(new View.OnClickListener()
@@ -87,7 +93,7 @@ public class MainActivity extends Activity implements RecognitionListener
             if (result != null)
                 System.out.println(result.getMessage());
             else
-                activityReference.get().switchSearch(KWS_SEARCH);
+                activityReference.get().switchSearch(PHONE_SEARCH);
         }
     }
 
@@ -116,6 +122,9 @@ public class MainActivity extends Activity implements RecognitionListener
 
         File menuGrammar = new File(assetDir, "mymenu.gram");
         recognizer.addGrammarSearch(MENU_SEARCH, menuGrammar);
+
+        File phoneticModel = new File(assetDir, "fr-phone.lm.dmp");
+        recognizer.addAllphoneSearch(PHONE_SEARCH, phoneticModel);
     }
 
     private void switchSearch(String searchName)
@@ -136,8 +145,8 @@ public class MainActivity extends Activity implements RecognitionListener
 
     @Override
     public void onEndOfSpeech() {
-    if (!recognizer.getSearchName().equals(KWS_SEARCH))
-        switchSearch(KWS_SEARCH);
+    if (!recognizer.getSearchName().equals(PHONE_SEARCH))
+        switchSearch(PHONE_SEARCH);
     }
 
     @Override
@@ -147,32 +156,21 @@ public class MainActivity extends Activity implements RecognitionListener
 
         String text = hypothesis.getHypstr();
 
-        switch (text)
-        {
-            case KEYPHRASE:
-                switchSearch(MENU_SEARCH);
-                break;
-            case "salut":
-                System.out.println("Salut à toi aussi connard");
-                break;
-            case "coucou":
-                System.out.println("WESH BRO");
-                break;
-            default:
-                System.out.println(hypothesis.getHypstr());
-                break;
-        }
+        affichage.setText(text);
     }
 
     @Override
     public void onResult(Hypothesis hypothesis) {
         if (hypothesis != null)
-            System.out.println(hypothesis.getHypstr());
+        {
+            String text = hypothesis.getHypstr();
+            affichage.setText(text);
+        }
     }
 
     @Override
     public void onError(Exception e) {
-        System.out.println(e.getMessage());
+        affichage.setText(e.getMessage());
     }
 
     @Override
