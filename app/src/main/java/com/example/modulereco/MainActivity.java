@@ -124,6 +124,7 @@ public class MainActivity extends Activity implements RecognitionListener
     @Override
     public void onBeginningOfSpeech() {
 
+
     }
 
     @Override
