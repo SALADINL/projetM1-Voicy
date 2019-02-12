@@ -10,11 +10,13 @@ import android.widget.Button;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 
 import edu.cmu.pocketsphinx.Assets;
 import edu.cmu.pocketsphinx.Hypothesis;
 import edu.cmu.pocketsphinx.RecognitionListener;
 import edu.cmu.pocketsphinx.SpeechRecognizer;
+import edu.cmu.pocketsphinx.SpeechRecognizerSetup;
 
 import static edu.cmu.pocketsphinx.SpeechRecognizerSetup.defaultSetup;
 
@@ -32,7 +34,6 @@ public class MainActivity extends Activity implements RecognitionListener
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        runRecognizerSetup();
         setContentView(R.layout.activity_main);
 
         Button btnStockage = findViewById(R.id.btnPermStockage);
@@ -54,6 +55,40 @@ public class MainActivity extends Activity implements RecognitionListener
                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.RECORD_AUDIO}, AUDIO_PERMISSION_CODE);
             }
         });
+
+        new SetupTask(this).execute();
+    }
+
+    private static class SetupTask extends AsyncTask<Void, Void, Exception>
+    {
+        WeakReference<MainActivity> activityReference;
+
+        SetupTask(MainActivity activity)
+        {
+            this.activityReference = new WeakReference<>(activity);
+        }
+
+        @Override
+        protected Exception doInBackground(Void... params)
+        {
+            try {
+                Assets assets = new Assets(activityReference.get());
+                File assetDir = assets.syncAssets();
+                activityReference.get().setupRecognizer(assetDir);
+            } catch (IOException e) {
+                return e;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Exception result)
+        {
+            if (result != null)
+                System.out.println(result.getMessage());
+            else
+                activityReference.get().switchSearch(KWS_SEARCH);
+        }
     }
 
     @Override
@@ -68,34 +103,6 @@ public class MainActivity extends Activity implements RecognitionListener
         }
     }
 
-    private void runRecognizerSetup()
-    {
-        new AsyncTask<Void, Void, Exception>()
-        {
-            @Override
-            protected Exception doInBackground(Void... params)
-            {
-                try {
-                    Assets assets = new Assets(MainActivity.this);
-                    File assetDir = assets.syncAssets();
-                    setupRecognizer(assetDir);
-                } catch (IOException e) {
-                    return e;
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Exception result)
-            {
-                if (result != null)
-                    System.out.println(result.getMessage());
-                else
-                    switchSearch(KWS_SEARCH);
-            }
-        }.execute();
-    }
-
     private void setupRecognizer(File assetDir) throws IOException
     {
         recognizer = defaultSetup()
@@ -105,7 +112,7 @@ public class MainActivity extends Activity implements RecognitionListener
 
         recognizer.addListener(this);
 
-        //recognizer.addKeyPhraseSearch(KWS_SEARCH, KEYPHRASE);
+        recognizer.addKeyphraseSearch(KWS_SEARCH, KEYPHRASE);
 
         File menuGrammar = new File(assetDir, "mymenu.gram");
         recognizer.addGrammarSearch(MENU_SEARCH, menuGrammar);
@@ -148,7 +155,7 @@ public class MainActivity extends Activity implements RecognitionListener
             case "salut":
                 System.out.println("Salut à toi aussi connard");
                 break;
-            case "ouech":
+            case "coucou":
                 System.out.println("WESH BRO");
                 break;
             default:
