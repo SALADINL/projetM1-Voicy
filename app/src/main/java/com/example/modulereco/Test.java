@@ -48,7 +48,7 @@ public class Test extends Activity
             File assetsDir = assets.syncAssets();
 
             file = new File(assetsDir, "calamar.wav");
-            filepath.setText("Bonjour comment allez-vous ?");
+            filepath.setText("Calamar");
             stream = new FileInputStream(file);
         }
         catch (IOException e)
