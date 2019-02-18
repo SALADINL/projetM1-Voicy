@@ -46,8 +46,8 @@ public class Test extends Activity
             Assets assets = new Assets(Test.this);
             File assetsDir = assets.syncAssets();
 
-            file = new File(assetsDir, "salut.wav");
-            filepath.setText("Salut");
+            file = new File(assetsDir, "calamar.wav");
+            filepath.setText("Bonjour comment allez-vous ?");
             stream = new FileInputStream(file);
         }
         catch (IOException e)
@@ -60,7 +60,7 @@ public class Test extends Activity
             @Override
             public void onClick(View v)
             {
-                if (filepath.getText() == "Salut")
+                if (filepath.getText() == "Bonjour comment allez-vous ?")
                 {
                     try
                     {
@@ -83,9 +83,9 @@ public class Test extends Activity
                         Assets assets = new Assets(Test.this);
                         File assetsDir = assets.syncAssets();
 
-                        file = new File(assetsDir, "salut.wav");
+                        file = new File(assetsDir, "bjr.wav");
                         stream = new FileInputStream(file);
-                        filepath.setText("Salut");
+                        filepath.setText("Bonjour comment allez-vous ?");
                     }
                     catch (IOException e)
                     {
@@ -131,15 +131,10 @@ public class Test extends Activity
                 File assetsDir = assets.syncAssets();
 
                 Config c = Decoder.defaultConfig();
+                c.setString("-lm", new File(assetsDir, "fr-small.lm.bin").getPath());
                 c.setString("-hmm", new File(assetsDir, "ptm").getPath());
                 c.setString("-dict", new File(assetsDir, "fr.dict").getPath());
                 c.setBoolean("-allphone_ci", true);
-                c.setString("-lm", new File(assetsDir, "fr-phone.lm.dmp").getPath());
-                c.setFloat("-lw", 2.0);
-                c.setFloat("-beam", 1e-20);
-                c.setFloat("-pbeam", 1e-20);
-                c.setFloat("-vad_threshold", 3.0);
-                c.setBoolean("-remove_noise", false);
 
                 Decoder d = new Decoder(c);
 
@@ -167,12 +162,15 @@ public class Test extends Activity
                 }
 
                 d.endUtt();
+
                 System.out.println(d.hyp().getHypstr());
 
                 for (Segment seg : d.seg())
                 {
-                    System.out.println(seg.getStartFrame() + " - " + seg.getEndFrame() + " : " + seg.getWord());
+                    System.out.println(seg.getStartFrame() + " - " + seg.getEndFrame() + " : " + seg.getWord() + " (" + seg.getAscore() + ")");
                 }
+
+                d.delete();
             }
             catch (IOException e)
             {
