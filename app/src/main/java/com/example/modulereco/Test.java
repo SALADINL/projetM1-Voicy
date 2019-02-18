@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
 
 import edu.cmu.pocketsphinx.Assets;
 import edu.cmu.pocketsphinx.Config;
@@ -29,6 +30,7 @@ public class Test extends Activity
 
     File file = null;
     InputStream stream = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -108,23 +110,45 @@ public class Test extends Activity
 
     private void convertir(final InputStream stream)
     {
-        new TestDecodage(this, stream).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        TestDecodage decodeAsync = new TestDecodage(this, stream, new TestDecodage.AsyncResponse(){
+            @Override                                              // implémentation de l'interface avec récupération des infos
+            public void processFinish(ArrayList<String> output){
+                TextView decode = findViewById(R.id.decode);
+                String display = "";
+                for(String it : output)
+                {
+                    if(it != null)
+                        display += it+" \n";
+                }
+                decode.setText(display);
+            }
+        });
+        decodeAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private static class TestDecodage extends AsyncTask<Void, Void, Exception>
+    private static class TestDecodage extends AsyncTask<Void, Void, ArrayList<String>>
     {
         WeakReference<Test> activityReference;
         InputStream stream;
+        public AsyncResponse delegate = null; //
 
-        TestDecodage(Test activity, InputStream stream)
+        TestDecodage(Test activity, InputStream stream, AsyncResponse delegate)
         {
             this.activityReference = new WeakReference<>(activity);
             this.stream = stream;
+            this.delegate = delegate;
+        }
+
+        public interface AsyncResponse // recupère l'output de l'async
+        {
+            void processFinish(ArrayList<String> output);
         }
 
         @Override
-        protected Exception doInBackground(Void... voids)
+        protected ArrayList<String> doInBackground(Void... voids)
         {
+            //String response = null;
+            ArrayList<String> response = new ArrayList();
             try
             {
                 Assets assets = new Assets(activityReference.get());
@@ -139,7 +163,7 @@ public class Test extends Activity
                 c.setFloat("-beam", 1e-20);
                 c.setFloat("-pbeam", 1e-20);
                 c.setFloat("-vad_threshold", 3.0);
-                c.setBoolean("-remove_noise", false);
+                c.setBoolean("-remove_noise", true);
 
                 Decoder d = new Decoder(c);
 
@@ -168,9 +192,11 @@ public class Test extends Activity
 
                 d.endUtt();
                 System.out.println(d.hyp().getHypstr());
+                //response = "AYO";
 
                 for (Segment seg : d.seg())
                 {
+                    response.add(seg.getStartFrame() + " - " + seg.getEndFrame() + " : " + seg.getWord());
                     System.out.println(seg.getStartFrame() + " - " + seg.getEndFrame() + " : " + seg.getWord());
                 }
             }
@@ -179,7 +205,13 @@ public class Test extends Activity
                 e.printStackTrace();
             }
 
-            return null;
+            return response;
+        }
+        @Override
+        public void onPostExecute(ArrayList<String> res) // renvoie le resultat reçu à la fin de la tache async
+        {
+            delegate.processFinish(res);
         }
     }
+
 }

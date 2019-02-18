@@ -673,6 +673,7 @@ id add
 id alertTitle
 id all
 id always
+id analyserBtn
 id async
 id barrier
 id beginning
@@ -680,6 +681,7 @@ id blocking
 id bottom
 id btnPermAudio
 id btnPermStockage
+id button
 id buttonPanel
 id center
 id center_horizontal
@@ -694,6 +696,7 @@ id content
 id contentPanel
 id custom
 id customPanel
+id decode
 id decor_content_parent
 id default_activity_button
 id dimensions
@@ -703,6 +706,7 @@ id edit_query
 id end
 id expand_activities_button
 id expanded_menu
+id filePath
 id fill
 id fill_horizontal
 id fill_vertical
@@ -735,6 +739,7 @@ id notification_background
 id notification_main_column
 id notification_main_column_container
 id packed
+id parcourirBtn
 id parent
 id parentPanel
 id percent
@@ -782,6 +787,8 @@ id text
 id text2
 id textSpacerNoButtons
 id textSpacerNoTitle
+id textView
+id textView2
 id time
 id title
 id titleDividerNoCustom
@@ -828,6 +835,7 @@ layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
 layout activity_main
+layout activity_test
 layout notification_action
 layout notification_action_tombstone
 layout notification_template_custom_big
