@@ -1,6 +1,7 @@
 align.jsgf
 fr-phone.lm.dmp
 fr.dict
+kanfrou.wav
 mots.dict
 mymenu.gram
 phonemes.dict
@@ -13,4 +14,6 @@ ptm/noisedict
 ptm/sendump
 ptm/transition_matrices
 ptm/variances
+salut.wav
+test.wav
 voisins.jsgf
