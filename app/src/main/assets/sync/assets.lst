@@ -1,0 +1,14 @@
+fr-phone.lm.dmp
+fr.dict
+kanfrou.wav
+mymenu.gram
+ptm/README
+ptm/feat.params
+ptm/mdef
+ptm/means
+ptm/mixture_weights
+ptm/noisedict
+ptm/sendump
+ptm/transition_matrices
+ptm/variances
+salut.wav
