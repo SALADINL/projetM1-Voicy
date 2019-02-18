@@ -663,20 +663,20 @@ public final class R {
         public static final int icon_group = 0x7f070045;
         public static final int image = 0x7f070047;
         public static final int info = 0x7f070048;
-        public static final int italic = 0x7f07004a;
-        public static final int left = 0x7f07004b;
-        public static final int line1 = 0x7f07004c;
-        public static final int line3 = 0x7f07004d;
-        public static final int listMode = 0x7f07004e;
-        public static final int list_item = 0x7f07004f;
-        public static final int message = 0x7f070050;
-        public static final int multiply = 0x7f070052;
-        public static final int none = 0x7f070054;
-        public static final int normal = 0x7f070055;
-        public static final int notification_background = 0x7f070056;
-        public static final int notification_main_column = 0x7f070057;
-        public static final int notification_main_column_container = 0x7f070058;
-        public static final int parentPanel = 0x7f07005b;
+        public static final int italic = 0x7f07004b;
+        public static final int left = 0x7f07004c;
+        public static final int line1 = 0x7f07004d;
+        public static final int line3 = 0x7f07004e;
+        public static final int listMode = 0x7f07004f;
+        public static final int list_item = 0x7f070050;
+        public static final int message = 0x7f070051;
+        public static final int multiply = 0x7f070053;
+        public static final int none = 0x7f070055;
+        public static final int normal = 0x7f070056;
+        public static final int notification_background = 0x7f070057;
+        public static final int notification_main_column = 0x7f070058;
+        public static final int notification_main_column_container = 0x7f070059;
+        public static final int parentPanel = 0x7f07005c;
         public static final int progress_circular = 0x7f07005e;
         public static final int progress_horizontal = 0x7f07005f;
         public static final int radio = 0x7f070060;
@@ -721,9 +721,9 @@ public final class R {
         public static final int title_template = 0x7f07008d;
         public static final int top = 0x7f07008e;
         public static final int topPanel = 0x7f07008f;
-        public static final int uniform = 0x7f070091;
-        public static final int up = 0x7f070092;
-        public static final int wrap_content = 0x7f070096;
+        public static final int uniform = 0x7f070090;
+        public static final int up = 0x7f070091;
+        public static final int wrap_content = 0x7f070095;
     }
     public static final class integer {
         private integer() {}
@@ -818,8 +818,8 @@ public final class R {
         public static final int abc_shareactionprovider_share_with = 0x7f0b0024;
         public static final int abc_shareactionprovider_share_with_application = 0x7f0b0025;
         public static final int abc_toolbar_collapse_description = 0x7f0b0026;
-        public static final int search_menu_title = 0x7f0b0028;
-        public static final int status_bar_notification_info_overflow = 0x7f0b0029;
+        public static final int search_menu_title = 0x7f0b002a;
+        public static final int status_bar_notification_info_overflow = 0x7f0b002b;
     }
     public static final class style {
         private style() {}

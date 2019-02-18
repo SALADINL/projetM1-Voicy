@@ -678,8 +678,8 @@ id barrier
 id beginning
 id blocking
 id bottom
-id btAnalyse
-id btParcourir
+id btnPermAudio
+id btnPermStockage
 id buttonPanel
 id center
 id center_horizontal
@@ -717,6 +717,7 @@ id icon_group
 id ifRoom
 id image
 id info
+id instruction
 id invisible
 id italic
 id left
@@ -736,7 +737,6 @@ id notification_main_column_container
 id packed
 id parent
 id parentPanel
-id pathFichier
 id percent
 id progress_circular
 id progress_horizontal
@@ -788,7 +788,6 @@ id titleDividerNoCustom
 id title_template
 id top
 id topPanel
-id txtFichier
 id uniform
 id up
 id useLogo
@@ -881,6 +880,8 @@ string abc_shareactionprovider_share_with
 string abc_shareactionprovider_share_with_application
 string abc_toolbar_collapse_description
 string app_name
+string menu_caption
+string phone_caption
 string search_menu_title
 string status_bar_notification_info_overflow
 style AlertDialog_AppCompat

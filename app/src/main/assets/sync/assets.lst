@@ -1,9 +1,6 @@
-align.jsgf
 fr-phone.lm.dmp
 fr.dict
-mots.dict
 mymenu.gram
-phonemes.dict
 ptm/README
 ptm/feat.params
 ptm/mdef
@@ -13,4 +10,3 @@ ptm/noisedict
 ptm/sendump
 ptm/transition_matrices
 ptm/variances
-voisins.jsgf
