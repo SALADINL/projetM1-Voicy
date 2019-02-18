@@ -2,6 +2,7 @@ package com.example.modulereco;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
@@ -28,9 +29,10 @@ public class MainActivity extends Activity implements RecognitionListener
     private static final String KWS_SEARCH = "mot";
     private static final String MENU_SEARCH = "menu";
     private static final String PHONE_SEARCH = "phoque";
-
     private static final String KEYPHRASE = "bonjour";
+
     private SpeechRecognizer recognizer;
+
     TextView affichage;
 
     @Override
@@ -40,7 +42,7 @@ public class MainActivity extends Activity implements RecognitionListener
 
         setContentView(R.layout.activity_main);
 
-        affichage = findViewById((R.id.message));
+        affichage = findViewById(R.id.message);
 
         Button btnStockage = findViewById(R.id.btnPermStockage);
         btnStockage.setOnClickListener(new View.OnClickListener()
@@ -156,7 +158,7 @@ public class MainActivity extends Activity implements RecognitionListener
 
         String text = hypothesis.getHypstr();
 
-        affichage.setText(text);
+        affichage.setText("Partial: " + text);
     }
 
     @Override
@@ -164,7 +166,7 @@ public class MainActivity extends Activity implements RecognitionListener
         if (hypothesis != null)
         {
             String text = hypothesis.getHypstr();
-            affichage.setText(text);
+            affichage.setText("Result: " + text);
         }
     }
 
@@ -176,5 +178,11 @@ public class MainActivity extends Activity implements RecognitionListener
     @Override
     public void onTimeout() {
         switchSearch(KWS_SEARCH);
+    }
+
+    public void sendMessage(View view)
+    {
+        Intent intent = new Intent(this, Test.class);
+        startActivity(intent);
     }
 }
