@@ -155,10 +155,12 @@ public class Test extends Activity
                 File assetsDir = assets.syncAssets();
 
                 Config c = Decoder.defaultConfig();
-                c.setString("-lm", new File(assetsDir, "fr-small.lm.bin").getPath());
                 c.setString("-hmm", new File(assetsDir, "ptm").getPath());
-                c.setString("-dict", new File(assetsDir, "fr.dict").getPath());
-                c.setBoolean("-allphone_ci", true);
+                c.setString("-allphone", new File(assetsDir, "fr-phone.lm.dmp").getPath());
+                c.setBoolean("-backtrace", true);
+                c.setFloat("-beam", 1e-20);
+                c.setFloat("-pbeam", 1e-20);
+                c.setFloat("-lw", 2.0);
 
                 Decoder d = new Decoder(c);
 
