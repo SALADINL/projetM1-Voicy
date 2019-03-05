@@ -109,7 +109,6 @@ public class Test extends Activity
 
     private void convertir(final InputStream stream)
     {
-
         TestDecodage decodeAsync = new TestDecodage(this, stream, new TestDecodage.AsyncResponse(){
             @Override                                              // implémentation de l'interface avec récupération des infos
             public void processFinish(ArrayList<String> output){
