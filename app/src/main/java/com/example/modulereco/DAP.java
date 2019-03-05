@@ -50,6 +50,8 @@ public class DAP
 
 		faireDAP(streamFichier);
 
+		if(!resultat.isEmpty())
+			System.out.println(" C PA VIDE TAMER "+resultat.get(0));
 		return resultat;
 	}
 
@@ -61,9 +63,11 @@ public class DAP
 			public void processFinish(ArrayList<String> output)
 			{
 				resultat = output;
+				resultat.add(output.get(0));
 			}
 		});
 		decodeAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
 	}
 
 
@@ -73,12 +77,13 @@ public class DAP
 		InputStream stream;
 		ArrayList<String> resultat;
 
-		AsyncResponse delegate = null;
+		public AsyncResponse delegate = null;
 
 		Decodage(Context contexte, InputStream stream, AsyncResponse delegate)
 		{
 			this.contexte = contexte;
 			this.stream = stream;
+			this.delegate = delegate;
 		}
 
 		public interface AsyncResponse
@@ -133,6 +138,7 @@ public class DAP
 
 				for (Segment seg : d.seg())
 					resultat.add(seg.getStartFrame() + " - " + seg.getEndFrame() + " : " + seg.getWord());
+
 			}
 			catch (IOException e)
 			{
