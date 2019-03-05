@@ -18,11 +18,17 @@ import edu.cmu.pocketsphinx.Config;
 import edu.cmu.pocketsphinx.Decoder;
 import edu.cmu.pocketsphinx.Segment;
 
+
 public class DAP
 {
+	static {
+	System.loadLibrary("pocketsphinx_jni");
+}
+
 	InputStream streamFichier = null;
 	ArrayList<String> resultat;
 	Context contexte;
+
 
 	public DAP(Context contexte)
 	{
@@ -59,6 +65,7 @@ public class DAP
 		});
 		decodeAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
+
 
 	private static class Decodage extends AsyncTask<Void, Void, ArrayList<String>>
 	{
