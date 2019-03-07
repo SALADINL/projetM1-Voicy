@@ -46,7 +46,7 @@ public class TestDAP extends Activity
 			@Override
 			public void onClick(View v)
 			{
-				Alignement a = new Alignement(TestDAP.this);
+				Alignement a = new Alignement(TestDAP.this, Alignement.PHONEME, "kanfrou");
 				ArrayList<String> text = a.convertir(file);
 				String res = "";
 
