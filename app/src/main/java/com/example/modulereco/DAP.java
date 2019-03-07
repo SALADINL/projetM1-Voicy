@@ -95,7 +95,20 @@ public class DAP
 
 		decoder.endUtt();
 
+		int score = 0, scoreAvecSil = 0;
+
 		for (Segment seg : decoder.seg())
+		{
 			resultat.add(seg.getStartFrame() + " - " + seg.getEndFrame() + " : " + seg.getWord() + " (" + seg.getAscore() + ")");
+
+			if (!seg.getWord().equals("SIL"))
+				score += seg.getAscore();
+
+			scoreAvecSil += seg.getAscore();
+		}
+
+		resultat.add("\n");
+		resultat.add("Score : " + score);
+		resultat.add("Score (avec silence) : " + scoreAvecSil);
 	}
 }
