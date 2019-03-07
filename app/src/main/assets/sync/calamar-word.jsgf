@@ -1,0 +1,3 @@
+#JSGF V1.0;
+grammar word;
+public <wholeutt> = sil calamar [ sil ];

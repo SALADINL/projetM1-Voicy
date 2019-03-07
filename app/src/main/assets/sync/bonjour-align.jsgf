@@ -1,0 +1,3 @@
+#JSGF V1.0;
+grammar forcing;
+public <bonjour> = sil bb oo nn jj ou rr [ sil ];

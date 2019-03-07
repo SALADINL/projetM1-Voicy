@@ -34,22 +34,20 @@ public class TestDAP extends Activity
 			Assets assets = new Assets(this);
 			File assetsDir = assets.syncAssets();
 
-			file = new File(assetsDir, "calamar.wav");
+			file = new File(assetsDir, "fanfrou.wav");
 		}
 		catch (IOException e)
 		{
 			System.out.println(e.getMessage());
 		}
 
-		ArrayList<String> text;
-
 		bouton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
-				DAP dap = new DAP(TestDAP.this);
-				ArrayList<String> text = dap.convertir(file);
+				Alignement a = new Alignement(TestDAP.this);
+				ArrayList<String> text = a.convertir(file);
 				String res = "";
 
 				for (String s : text)

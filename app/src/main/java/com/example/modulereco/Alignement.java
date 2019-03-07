@@ -17,7 +17,7 @@ import edu.cmu.pocketsphinx.Decoder;
 import edu.cmu.pocketsphinx.Segment;
 
 
-public class DAP
+public class Alignement
 {
 	static { System.loadLibrary("pocketsphinx_jni"); }
 
@@ -26,7 +26,7 @@ public class DAP
 	Context contexte;
 
 
-	public DAP(Context contexte)
+	public Alignement(Context contexte)
 	{
 		this.contexte = contexte;
 		resultat = new ArrayList<>();
@@ -44,12 +44,12 @@ public class DAP
 			return null;
 		}
 
-		faireDAP(streamFichier);
+		aligner(streamFichier);
 
 		return resultat;
 	}
 
-	private void faireDAP(final InputStream stream)
+	private void aligner(final InputStream stream)
 	{
 		try
 		{
@@ -58,11 +58,13 @@ public class DAP
 
 			Config c = Decoder.defaultConfig();
 			c.setString("-hmm", new File(assetsDir, "ptm").getPath());
-			c.setString("-allphone", new File(assetsDir, "fr-phone.lm.dmp").getPath());
+			c.setString("-jsgf", new File(assetsDir, "kanfrou-align.jsgf").getPath());
+			c.setString("-dict", new File(assetsDir, "phonemes.dict").getPath());
+//			c.setString("-jsgf", new File(assetsDir, "calamar-word.jsgf").getPath());
+//			c.setString("-dict", new File(assetsDir, "mots.dict").getPath());
 			c.setBoolean("-backtrace", true);
-			c.setFloat("-beam", 1e-20);
-			c.setFloat("-pbeam", 1e-20);
-			c.setFloat("-lw", 2.0);
+			c.setBoolean("-fsgusefiller", false);
+			c.setBoolean("-bestpath", false);
 
 			Decoder d = new Decoder(c);
 
@@ -92,7 +94,7 @@ public class DAP
 			d.endUtt();
 
 			for (Segment seg : d.seg())
-				resultat.add(seg.getStartFrame() + " - " + seg.getEndFrame() + " : " + seg.getWord());
+				resultat.add(seg.getStartFrame() + " - " + seg.getEndFrame() + " : " + seg.getWord() + " (" + seg.getAscore() + ")");
 
 		}
 		catch (IOException e)

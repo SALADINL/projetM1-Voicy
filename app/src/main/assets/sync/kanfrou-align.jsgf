@@ -1,0 +1,3 @@
+#JSGF V1.0;
+grammar forcing;
+public <kanfrou> = sil kk an ff rr ou [ sil ];
