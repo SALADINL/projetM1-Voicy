@@ -44,7 +44,7 @@ public class MainActivity extends Activity implements RecognitionListener
 
         affichage = findViewById(R.id.message);
 
-        Button btnStockage = findViewById(R.id.btnPermStockage);
+        Button btnStockage = (Button) findViewById(R.id.btnPermStockage);
         btnStockage.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -54,7 +54,7 @@ public class MainActivity extends Activity implements RecognitionListener
             }
         });
 
-        Button btnAudio = findViewById(R.id.btnPermAudio);
+        Button btnAudio = (Button) findViewById(R.id.btnPermAudio);
         btnAudio.setOnClickListener(new View.OnClickListener()
         {
             @Override

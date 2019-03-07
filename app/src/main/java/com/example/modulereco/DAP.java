@@ -1,8 +1,6 @@
 package com.example.modulereco;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,11 +16,15 @@ import edu.cmu.pocketsphinx.Config;
 import edu.cmu.pocketsphinx.Decoder;
 import edu.cmu.pocketsphinx.Segment;
 
+
 public class DAP
 {
+	static { System.loadLibrary("pocketsphinx_jni"); }
+
 	InputStream streamFichier = null;
 	ArrayList<String> resultat;
 	Context contexte;
+
 
 	public DAP(Context contexte)
 	{
@@ -30,7 +32,7 @@ public class DAP
 		resultat = new ArrayList<>();
 	}
 
-	public ArrayList<String> convertir (final File fichier)
+	public ArrayList<String> convertir(final File fichier)
 	{
 		try
 		{
@@ -44,101 +46,61 @@ public class DAP
 
 		faireDAP(streamFichier);
 
+		if(!resultat.isEmpty())
+			System.out.println(" C PA VIDE TAMER "+resultat.get(0));
+
 		return resultat;
 	}
 
 	private void faireDAP(final InputStream stream)
 	{
-		Decodage decodeAsync = new Decodage(contexte, stream, new Decodage.AsyncResponse()
+		try
 		{
-			@Override
-			public void processFinish(ArrayList<String> output)
-			{
-				resultat = output;
-			}
-		});
-		decodeAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-	}
+			Assets assets = new Assets(this.contexte);
+			File assetsDir = assets.syncAssets();
 
-	private static class Decodage extends AsyncTask<Void, Void, ArrayList<String>>
-	{
-		Context contexte;
-		InputStream stream;
-		ArrayList<String> resultat;
+			Config c = Decoder.defaultConfig();
+			c.setString("-hmm", new File(assetsDir, "ptm").getPath());
+			c.setString("-allphone", new File(assetsDir, "fr-phone.lm.dmp").getPath());
+			c.setBoolean("-backtrace", true);
+			c.setFloat("-beam", 1e-20);
+			c.setFloat("-pbeam", 1e-20);
+			c.setFloat("-lw", 2.0);
 
-		AsyncResponse delegate = null;
+			Decoder d = new Decoder(c);
 
-		Decodage(Context contexte, InputStream stream, AsyncResponse delegate)
-		{
-			this.contexte = contexte;
-			this.stream = stream;
-		}
-
-		public interface AsyncResponse
-		{
-			void processFinish(ArrayList<String> output);
-		}
-
-		@Override
-		protected ArrayList<String> doInBackground(Void... voids)
-		{
-			resultat = new ArrayList<>();
+			d.startUtt();
+			byte[] b = new byte[4096];
 
 			try
 			{
-				Assets assets = new Assets(this.contexte);
-				File assetsDir = assets.syncAssets();
+				int nbytes;
 
-				Config c = Decoder.defaultConfig();
-				c.setString("-hmm", new File(assetsDir, "ptm").getPath());
-				c.setString("-allphone", new File(assetsDir, "fr-phone.lm.dmp").getPath());
-				c.setBoolean("-backtrace", true);
-				c.setFloat("-beam", 1e-20);
-				c.setFloat("-pbeam", 1e-20);
-				c.setFloat("-lw", 2.0);
-
-				Decoder d = new Decoder(c);
-
-				d.startUtt();
-				byte[] b = new byte[4096];
-
-				try
+				while ((nbytes = stream.read(b)) >= 0)
 				{
-					int nbytes;
+					ByteBuffer bb = ByteBuffer.wrap(b, 0, nbytes);
 
-					while ((nbytes = stream.read(b)) >= 0)
-					{
-						ByteBuffer bb = ByteBuffer.wrap(b, 0, nbytes);
+					bb.order(ByteOrder.LITTLE_ENDIAN);
 
-						bb.order(ByteOrder.LITTLE_ENDIAN);
-
-						short[] s = new short[nbytes / 2];
-						bb.asShortBuffer().get(s);
-						d.processRaw(s, nbytes / 2, false, false);
-					}
+					short[] s = new short[nbytes / 2];
+					bb.asShortBuffer().get(s);
+					d.processRaw(s, nbytes / 2, false, false);
 				}
-				catch (IOException e)
-				{
-					System.out.println("Error when reading inputstream" + e.getMessage());
-				}
-
-				d.endUtt();
-
-				for (Segment seg : d.seg())
-					resultat.add(seg.getStartFrame() + " - " + seg.getEndFrame() + " : " + seg.getWord());
 			}
 			catch (IOException e)
 			{
-				e.printStackTrace();
+				System.out.println("Error when reading inputstream" + e.getMessage());
 			}
 
-			return resultat;
-		}
+			d.endUtt();
 
-		@Override
-		public void onPostExecute(ArrayList<String> res)
+			for (Segment seg : d.seg())
+				resultat.add(seg.getStartFrame() + " - " + seg.getEndFrame() + " : " + seg.getWord());
+
+		}
+		catch (IOException e)
 		{
-			delegate.processFinish(res);
+			e.printStackTrace();
 		}
 	}
 }
