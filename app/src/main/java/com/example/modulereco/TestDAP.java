@@ -1,10 +1,14 @@
 package com.example.modulereco;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.io.File;
@@ -19,7 +23,6 @@ public class TestDAP extends Activity
 
 	Button boutonDAP, boutonMOT, boutonPHON;
 	RadioGroup radioWAV, radioTXT;
-	TextView resultats;
 	DAP dap;
 	Alignement aMot, aPhon;
 	String motADecoder, motSurFichier;
@@ -36,7 +39,6 @@ public class TestDAP extends Activity
 		boutonDAP = findViewById(R.id.boutonDAP);
 		boutonMOT = findViewById(R.id.boutonMOT);
 		boutonPHON = findViewById(R.id.boutonPHON);
-		resultats = findViewById(R.id.resText);
 
 		radioWAV = findViewById(R.id.radioWAV);
 		radioTXT = findViewById(R.id.radioTXT);
@@ -102,12 +104,7 @@ public class TestDAP extends Activity
 			{
 				dap = new DAP(TestDAP.this);
 				ArrayList<String> text = dap.convertir(file);
-				String res = "";
-
-				for (String s : text)
-					res += s + "\n";
-
-				resultats.setText(res);
+				initRes(text);
 			}
 		});
 
@@ -118,12 +115,7 @@ public class TestDAP extends Activity
 			{
 				aPhon = new Alignement(TestDAP.this, Alignement.PHONEME, motADecoder);
 				ArrayList<String> text = aPhon.convertir(file);
-				String res = "";
-
-				for (String s : text)
-					res += s + "\n";
-
-				resultats.setText(res);
+				initRes(text);
 			}
 		});
 
@@ -134,13 +126,85 @@ public class TestDAP extends Activity
 			{
 				aMot = new Alignement(TestDAP.this, Alignement.MOT, motADecoder);
 				ArrayList<String> text = aMot.convertir(file);
-				String res = "";
-
-				for (String s : text)
-					res += s + "\n";
-
-				resultats.setText(res);
+				initRes(text);
 			}
 		});
+	}
+
+	private void initRes(ArrayList<String> output)
+	{
+
+		TableLayout tab = (TableLayout) findViewById(R.id.tabResultat);
+		tab.removeAllViews();
+		//---- SPECIFICATION CATEGORIES
+		TableRow ligneTitre = new TableRow(this);
+
+		//---- COLONNE PHONEME
+		// a faire test si c'est align mot donc changer nom categorie
+		TextView colPhone= new TextView(this);
+		colPhone.setText(" Phoneme ");
+		colPhone.setGravity(Gravity.CENTER_HORIZONTAL);
+		colPhone.setTextColor(Color.BLACK);
+		ligneTitre.addView(colPhone);
+
+		//---- COLONNE TEMPS
+		TextView colTemps = new TextView(this);
+		colTemps.setText(" Temps (frame) ");
+		colTemps.setGravity(Gravity.CENTER_HORIZONTAL);
+		colTemps.setTextColor(Color.BLACK);
+		ligneTitre.addView(colTemps);
+
+		//---- COLONNE SCORE
+		TextView colScore = new TextView(this);
+		colScore.setText(" Score ");
+		colScore.setGravity(Gravity.CENTER_HORIZONTAL);
+		colScore.setTextColor(Color.BLACK);
+		ligneTitre.addView(colScore);
+
+
+		tab.addView(ligneTitre);
+		String [] array, array2;
+		TextView scoreTotal = findViewById(R.id.scoreTotal);
+		TextView scoreTotalSil = findViewById(R.id.scoreTotalSil);
+		String res;
+		for(int i = 0 ; i < output.size(); i++)
+		{
+			res = output.get(i);
+			if(i < output.size()-2)
+			{
+				array = res.split(":");
+				array2 = array[array.length-1].split("\\(");
+
+				TableRow tabLigne = new TableRow(this);
+
+				TextView dataPhone= new TextView(this);
+				dataPhone.setText(array2[0]);
+				dataPhone.setGravity(Gravity.CENTER_HORIZONTAL);
+				dataPhone.setTextColor(Color.BLACK);
+				tabLigne.addView(dataPhone);
+
+				TextView dataTemps= new TextView(this);
+				dataTemps.setText(array[0]);
+				dataTemps.setGravity(Gravity.CENTER_HORIZONTAL);
+				dataTemps.setTextColor(Color.BLACK);
+				tabLigne.addView(dataTemps);
+
+				TextView dataScore= new TextView(this);
+				dataScore.setText(array2[array2.length-1].substring(0, array2[array2.length-1].length() - 1));
+				dataScore.setGravity(Gravity.CENTER_HORIZONTAL);
+				dataScore.setTextColor(Color.BLACK);
+				tabLigne.addView(dataScore);
+
+				tab.addView(tabLigne);
+			}
+			else
+			{
+				if(i == output.size()-2) scoreTotal.setText(res);
+				else scoreTotalSil.setText(res);
+
+			}
+		}
+
+
 	}
 }
