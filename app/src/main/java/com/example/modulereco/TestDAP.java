@@ -2,6 +2,8 @@ package com.example.modulereco;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -30,6 +32,8 @@ public class TestDAP extends Activity
 
 	Assets assets = null;
 	File assetsDir = null;
+
+	private MediaPlayer mp = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -91,10 +95,13 @@ public class TestDAP extends Activity
 				else if (checked == R.id.rBjrWAV)
 					motSurFichier = "bonjour";
 
-
-				System.out.println(motSurFichier);
-
 				file = new File(assetsDir, motSurFichier + ".wav");
+
+				if (mp != null)
+					mp.reset();
+
+				mp = MediaPlayer.create(TestDAP.this, Uri.fromFile(file));
+				mp.start();
 			}
 		});
 
