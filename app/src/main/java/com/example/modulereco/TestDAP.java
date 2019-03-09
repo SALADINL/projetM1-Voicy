@@ -1,10 +1,15 @@
 package com.example.modulereco;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.io.File;
@@ -19,7 +24,6 @@ public class TestDAP extends Activity
 
 	Button boutonDAP, boutonMOT, boutonPHON;
 	RadioGroup radioWAV, radioTXT;
-	TextView resultats;
 	DAP dap;
 	Alignement aMot, aPhon;
 	String motADecoder, motSurFichier;
@@ -36,7 +40,6 @@ public class TestDAP extends Activity
 		boutonDAP = findViewById(R.id.boutonDAP);
 		boutonMOT = findViewById(R.id.boutonMOT);
 		boutonPHON = findViewById(R.id.boutonPHON);
-		resultats = findViewById(R.id.resText);
 
 		radioWAV = findViewById(R.id.radioWAV);
 		radioTXT = findViewById(R.id.radioTXT);
@@ -102,12 +105,7 @@ public class TestDAP extends Activity
 			{
 				dap = new DAP(TestDAP.this);
 				ArrayList<String> text = dap.convertir(file);
-				String res = "";
-
-				for (String s : text)
-					res += s + "\n";
-
-				resultats.setText(res);
+				initRes(text, true);
 			}
 		});
 
@@ -118,12 +116,7 @@ public class TestDAP extends Activity
 			{
 				aPhon = new Alignement(TestDAP.this, Alignement.PHONEME, motADecoder);
 				ArrayList<String> text = aPhon.convertir(file);
-				String res = "";
-
-				for (String s : text)
-					res += s + "\n";
-
-				resultats.setText(res);
+				initRes(text, true);
 			}
 		});
 
@@ -134,13 +127,87 @@ public class TestDAP extends Activity
 			{
 				aMot = new Alignement(TestDAP.this, Alignement.MOT, motADecoder);
 				ArrayList<String> text = aMot.convertir(file);
-				String res = "";
-
-				for (String s : text)
-					res += s + "\n";
-
-				resultats.setText(res);
+				initRes(text, false);
 			}
 		});
+	}
+
+	private void initRes(ArrayList<String> output, Boolean phoneSearch)
+	{
+
+		TableLayout tab = (TableLayout) findViewById(R.id.tabResultat);
+		tab.removeAllViews();
+		//---- SPECIFICATION CATEGORIES
+		TableRow ligneTitre = new TableRow(this);
+		ligneTitre.setBackgroundResource(R.drawable.row_border);
+		ligneTitre.setBackgroundColor(Color.BLACK);
+		ligneTitre.setPadding(0, 0, 0, 2); //Border between rows
+
+		for(int i = 0; i < 3 ; i++) // boucle pour les titres des colonnes
+		{
+			TextView col = new TextView(this);
+			col.setGravity(Gravity.CENTER_HORIZONTAL);
+			col.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+			col.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+			col.setTextColor(Color.WHITE);
+			switch(i){
+				case 0 : if (phoneSearch) col.setText(" Phoneme ");
+						 else col.setText(" Mots ");
+						break;
+				case 1 : col.setText(" Temps (frame) ");
+						break;
+				case 2 : col.setText(" Score ");
+						break;
+			}
+			ligneTitre.addView(col);
+		}
+
+
+		tab.addView(ligneTitre);
+		String [] array, array2;
+		TextView scoreTotal = findViewById(R.id.scoreTotal);
+		TextView scoreTotalSil = findViewById(R.id.scoreTotalSil);
+		String res;
+		for(int i = 0 ; i < output.size(); i++)
+		{
+			res = output.get(i);
+			if(i < output.size()-3)
+			{
+				array = res.split(":");
+				array2 = array[array.length-1].split("\\(");
+				TableRow tabLigne = new TableRow(this);
+				tabLigne.setBackgroundColor(Color.GRAY);
+
+                for(int j = 0 ; j < 3 ; j++)
+                {
+					TextView dataCol= new TextView(this);
+					dataCol.setBackgroundResource(R.drawable.row_border);
+					dataCol.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+					dataCol.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+					dataCol.setGravity(Gravity.CENTER_HORIZONTAL);
+					dataCol.setPadding(0, 5, 0, 5);
+					dataCol.setTextColor(Color.WHITE);
+                    switch(j){
+                        case 0 : dataCol.setText(array2[0]);
+                            break;
+                        case 1 : dataCol.setText(array[0]);
+                            break;
+                        case 2 : dataCol.setText(array2[array2.length-1].substring(0, array2[array2.length-1].length() - 1));
+                            break;
+                    }
+
+                    tabLigne.addView(dataCol);
+                }
+				tab.addView(tabLigne);
+			}
+			else
+			{
+				if(i == output.size()-2) scoreTotal.setText(res);
+				else scoreTotalSil.setText(res);
+
+			}
+		}
+
+
 	}
 }
