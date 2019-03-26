@@ -11,7 +11,10 @@ fr.dict
 kanfrou-align.jsgf
 kanfrou-word.jsgf
 kanfrou.wav
+mot-align.jsgf
+mot-word.jsgf
 mots.dict
+mots.txt
 mymenu.gram
 phonemes.dict
 ptm/README
