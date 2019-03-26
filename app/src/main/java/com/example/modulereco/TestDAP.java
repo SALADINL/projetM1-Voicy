@@ -3,6 +3,7 @@ package com.example.modulereco;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -22,11 +23,12 @@ public class TestDAP extends Activity
 {
 	File file;
 
-	Button boutonDAP, boutonMOT, boutonPHON;
+	Button boutonDAP, boutonMOT, boutonPHON, boutonREC;
 	RadioGroup radioWAV, radioTXT;
 	DAP dap;
 	Alignement aMot, aPhon;
 	String motADecoder, motSurFichier;
+	Recorder rec = new Recorder("kanfrou");
 
 	Assets assets = null;
 	File assetsDir = null;
@@ -40,9 +42,18 @@ public class TestDAP extends Activity
 		boutonDAP = findViewById(R.id.boutonDAP);
 		boutonMOT = findViewById(R.id.boutonMOT);
 		boutonPHON = findViewById(R.id.boutonPHON);
-
+		boutonREC = findViewById(R.id.btRec);
 		radioWAV = findViewById(R.id.radioWAV);
 		radioTXT = findViewById(R.id.radioTXT);
+
+
+
+		String filepath = Environment.getExternalStorageDirectory().getPath();
+		File file2 = new File(filepath,"ModuleReco/Exercices/Exo"+rec.getCurrentTimeUsingCalendar("1"));
+		if (!file2.exists()) {
+			file2.mkdirs();
+		}
+		rec.setExo("Exo"+rec.getCurrentTimeUsingCalendar("1"));
 
 		motSurFichier = "kanfrou";
 		motADecoder = "kanfrou";
@@ -128,6 +139,15 @@ public class TestDAP extends Activity
 				aMot = new Alignement(TestDAP.this, Alignement.MOT, motADecoder);
 				ArrayList<String> text = aMot.convertir(file);
 				initRes(text, false);
+			}
+		});
+		boutonREC.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if( !rec.getRecording())
+					rec.startRecording();
+				else
+					rec.stopRecording();
 			}
 		});
 	}
