@@ -182,18 +182,15 @@
         app:layout_constraintHorizontal_bias="0.514"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/testEx"
-        android:layout_width="394dp"
-        android:layout_height="443dp"
+    <Button
+        android:id="@+id/btRec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.47"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        android:text="REC"
+        app:layout_constraintBottom_toBottomOf="@+id/textView4"
+        app:layout_constraintEnd_toStartOf="@+id/scoreTotal"
+        app:layout_constraintTop_toTopOf="@+id/scoreTotal" />
 
 </android.support.constraint.ConstraintLayout>
