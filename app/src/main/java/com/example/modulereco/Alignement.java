@@ -29,7 +29,7 @@ public class Alignement
 	public final static int PHONEME = 1;
 	public final static int MOT = 2;
 
-	public Alignement(Context contexte, int config, String mot)
+	public Alignement(Context contexte, int config)
 	{
 		this.contexte = contexte;
 		resultat = new ArrayList<>();
@@ -48,12 +48,12 @@ public class Alignement
 
 			if (config == MOT)
 			{
-				c.setString("-jsgf", new File(assetsDir, mot.toLowerCase() + "-word.jsgf").getPath());
+				c.setString("-jsgf", new File(assetsDir, "mot-word.jsgf").getPath());
 				c.setString("-dict", new File(assetsDir, "mots.dict").getPath());
 			}
 			else
 			{
-				c.setString("-jsgf", new File(assetsDir, mot.toLowerCase() + "-align.jsgf").getPath());
+				c.setString("-jsgf", new File(assetsDir, "mot-align.jsgf").getPath());
 				c.setString("-dict", new File(assetsDir, "phonemes.dict").getPath());
 			}
 

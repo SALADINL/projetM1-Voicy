@@ -1,3 +1,0 @@
-#JSGF V1.0;
-grammar forcing;
-public <calamar> = sil kk aa ll aa mm aa rr [ sil ];

@@ -14,7 +14,7 @@ public class Mot
 	@Override
 	public String toString()
 	{
-		return mot + " (" + prononciation + ")";
+		return getMot();
 	}
 
 	public String getAlignFormat()

@@ -31,7 +31,6 @@ public class Recorder {
     private Thread recordingThread = null;
     private boolean isRecording = false;
 
-
     private String output;
 
 
@@ -76,7 +75,7 @@ public class Recorder {
         return res;
     }
 
-    private String getFilename() {
+    public String getFilename() {
         String filepath = Environment.getExternalStorageDirectory().getPath();
         File file = new File(filepath,AUDIO_RECORDER_FOLDER+"/"+output);
 

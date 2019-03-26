@@ -23,9 +23,9 @@ public class Exercice
 	private File assetsDir = null;
 	private File dico = null;
 
-	public Exercice(Context context)
+	public Exercice(int nb, Context context)
 	{
-		nbMots = 0;
+		nbMots = nb;
 		motActuel = 0;
 		mots = new ArrayList<>();
 
@@ -35,7 +35,7 @@ public class Exercice
 			assetsDir = assets.syncAssets();
 
 			dico = new File(assetsDir, "mots.dict");
-			init(10, dico);
+			init(dico);
 		}
 		catch (IOException e)
 		{
@@ -43,9 +43,8 @@ public class Exercice
 		}
 	}
 
-	public void init(int nb, File f)
+	public void init(File f)
 	{
-		nbMots = nb;
 		mots.clear();
 
 		try
@@ -71,6 +70,7 @@ public class Exercice
 				mots.add(new Mot(res[0], res[1]));
 			}
 
+			updateJsgf();
 		}
 		catch (FileNotFoundException e)
 		{
@@ -108,10 +108,16 @@ public class Exercice
 		return null;
 	}
 
-	public File getAlignJsgf(int index)
+	private void updateJsgf()
+	{
+		updateAlignJsgf();
+		updateWordJsgf();
+	}
+
+	private void updateAlignJsgf()
 	{
 		File f = null;
-		String tmp = mots.get(index).getAlignFormat();
+		String tmp = mots.get(motActuel).getAlignFormat();
 		BufferedWriter output = null;
 
 		try
@@ -125,24 +131,12 @@ public class Exercice
 		{
 			e.printStackTrace();
 		}
-
-		return f;
 	}
 
-	public File getAlignJsgf()
-	{
-		return getAlignJsgf(motActuel);
-	}
-
-	public File getWordJsgf()
-	{
-		return getWordJsgf(motActuel);
-	}
-
-	public File getWordJsgf(int index)
+	public void updateWordJsgf()
 	{
 		File f = null;
-		String tmp = mots.get(index).getWordFormat();
+		String tmp = mots.get(motActuel).getWordFormat();
 		BufferedWriter output = null;
 
 		try
@@ -156,8 +150,6 @@ public class Exercice
 		{
 			e.printStackTrace();
 		}
-
-		return f;
 	}
 
 	public void resetCetExo()
@@ -172,13 +164,29 @@ public class Exercice
 
 	public void next()
 	{
-		if (motActuel < nbMots)
+		if (motActuel < nbMots - 1)
+		{
 			motActuel++;
+			updateJsgf();
+		}
 	}
 
 	public void prev()
 	{
 		if (motActuel > 0)
+		{
 			motActuel--;
+			updateJsgf();
+		}
+	}
+
+	public int getMaxMots()
+	{
+		return nbMots;
+	}
+
+	public int getIndex()
+	{
+		return motActuel;
 	}
 }
