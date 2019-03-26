@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Reco extends Activity
@@ -61,6 +63,15 @@ public class Reco extends Activity
 
 					analyser();
 
+					try
+					{
+						sauverResultats();
+					}
+					catch (IOException e)
+					{
+						e.printStackTrace();
+					}
+
 					actualiser();
 					enregistrer.setText("Enregistrer");
 				}
@@ -95,6 +106,33 @@ public class Reco extends Activity
 		tabPhoneme = alignement.convertir(wav);
 
 		tabDap = dap.convertir(wav);
+	}
+
+	private void sauverResultats() throws IOException
+	{
+		String nom = rec.getFilename();
+		nom = nom.substring(0, nom.length() - 4);
+
+		FileWriter writer = new FileWriter(nom + "-score-mot.txt");
+
+		for(String str: tabMot)
+			writer.write(str + "\n");
+
+		writer.close();
+
+		writer = new FileWriter(nom + "-score-phoneme.txt");
+
+		for(String str: tabPhoneme)
+			writer.write(str + "\n");
+
+		writer.close();
+
+		writer = new FileWriter(nom + "-score-dap.txt");
+
+		for(String str: tabDap)
+			writer.write(str + "\n");
+
+		writer.close();
 	}
 
 	private void clearTab()
