@@ -1,6 +1,7 @@
 package com.example.modulereco;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -18,10 +19,11 @@ public class Reco extends Activity
 	Recorder rec = null;
 	Alignement alignement = null;
 	DAP dap = null;
-
+    boolean fin = false;
 	TextView mot = null;
 	TextView compteur = null;
 	Button enregistrer = null;
+	Button btEnd = null;
 
 	ArrayList<String> tabMot = null;
 	ArrayList<String> tabPhoneme = null;
@@ -36,6 +38,7 @@ public class Reco extends Activity
 		mot = findViewById(R.id.mot);
 		compteur = findViewById(R.id.compteur);
 		enregistrer = findViewById(R.id.record);
+		btEnd = findViewById(R.id.btEnd);
 
 		tabMot = new ArrayList<>();
 		tabPhoneme = new ArrayList<>();
@@ -77,12 +80,34 @@ public class Reco extends Activity
 				}
 			}
 		});
+
+
+
 	}
 
 	private void actualiser()
 	{
-		exo.next();
-		initialiser();
+	    if(!fin)
+        {
+            exo.next();
+            initialiser();
+        }
+		else
+        {
+            final Intent intent = new Intent(this, choixResultat.class);
+            btEnd.setVisibility(View.VISIBLE);
+            btEnd.setOnClickListener(new Button.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+
+                    startActivity(intent);
+                }
+            });
+        }
+        if(exo.getIndex() + 1 == exo.getMaxMots())
+            fin = true;
 	}
 
 	private void initialiser()

@@ -19,6 +19,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+       <activity android:name=".choixResultat" android:parentActivityName=".Reco">
+           <intent-filter>
+               <action android:name="android.intent.action.MAIN" />
+           </intent-filter>
+        </activity>
+        <activity android:name=".Resultat" android:parentActivityName=".Reco">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
