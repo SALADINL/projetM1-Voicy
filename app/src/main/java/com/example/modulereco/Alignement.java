@@ -43,7 +43,7 @@ public class Alignement
 			c.setString("-hmm", new File(assetsDir, "ptm").getPath());
 			c.setBoolean("-backtrace", true);
 			c.setBoolean("-fsgusefiller", false);
-			c.setBoolean("-bestpath", true);
+			c.setBoolean("-bestpath", false);
 
 
 			if (config == MOT)
@@ -132,7 +132,6 @@ public class Alignement
 				derniereFrameSansSil = end;
 
 			resultat.add(start + " - " + end + " : " + mot + " (" + seg.getAscore() + ")");
-			System.out.println("prob -> "+seg.getProb());
 			if (!mot.equals("sil"))
 				score += seg.getAscore();
 
