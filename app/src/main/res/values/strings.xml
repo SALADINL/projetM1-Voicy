@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Reco</string>
+    <string name="app_name">ModuleReco</string>
 
     <string name="menu_caption">Dites  \"phones\" to choose the grammar, language model or² phonetic decoder example.</string>
     <string name="phone_caption">To try phonetic recognition say anything.</string>
