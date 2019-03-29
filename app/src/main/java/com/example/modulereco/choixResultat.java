@@ -35,8 +35,11 @@ public class choixResultat extends Activity {
         String [] fileList=extStorageDir.list();
 
         for(String fileName:fileList)
-           listItems.add(fileName);
-        Collections.sort(listItems);
+        {
+            listItems.add(fileName);
+        }
+
+        Collections.sort(listItems, Collections.reverseOrder());
         adapter.notifyDataSetChanged();
 
         listExo.setOnItemClickListener(new AdapterView.OnItemClickListener() {

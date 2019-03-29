@@ -24,6 +24,7 @@ public class Reco extends Activity
 	TextView compteur = null;
 	Button enregistrer = null;
 	Button btEnd = null;
+	Button retour = null;
 
 	ArrayList<String> tabMot = null;
 	ArrayList<String> tabPhoneme = null;
@@ -39,13 +40,14 @@ public class Reco extends Activity
 		compteur = findViewById(R.id.compteur);
 		enregistrer = findViewById(R.id.record);
 		btEnd = findViewById(R.id.btEnd);
+		retour = findViewById(R.id.back);
 
 		tabMot = new ArrayList<>();
 		tabPhoneme = new ArrayList<>();
 		tabDap = new ArrayList<>();
 
 		dap = new DAP(this);
-		exo = new Exercice(10, this);
+		exo = new Exercice(3, this);
 
 		initialiser();
 		creerDossier();
@@ -77,10 +79,24 @@ public class Reco extends Activity
 
 					actualiser();
 					enregistrer.setText("Enregistrer");
+					if (exo.getIndex() > 0)
+						retour.setEnabled(true);
 				}
 			}
 		});
-
+		retour.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				exo.prev();
+				initialiser();
+				btEnd.setVisibility(View.GONE);
+				fin = false;
+				if (exo.getIndex() == 0)
+					retour.setEnabled(false);
+			}
+		});
 
 
 	}
@@ -129,7 +145,7 @@ public class Reco extends Activity
 
 		alignement = new Alignement(Reco.this, Alignement.PHONEME);
 		tabPhoneme = alignement.convertir(wav);
-
+		dap = new DAP(Reco.this);
 		tabDap = dap.convertir(wav);
 	}
 

@@ -116,7 +116,7 @@ public class Resultat  extends Activity {
                     String line;
                     filepath = bund.getString("path");
                     filepath += "/"+parent.getItemAtPosition(position);
-                    f = new File(filepath, "/"+parent.getItemAtPosition(position)+"-score-dap.txt");
+                    f = new File(filepath, "/"+parent.getItemAtPosition(position)+"-score-phoneme.txt");
                     BufferedReader br = new BufferedReader(new FileReader(f));
                     while ((line = br.readLine()) != null) {
                         res.add(line);
@@ -128,8 +128,6 @@ public class Resultat  extends Activity {
                     e.printStackTrace();
                 }
                 initRes(res, true);
-
-
             }
         });
 
@@ -170,11 +168,13 @@ public class Resultat  extends Activity {
 		String [] array, array2;
 		TextView scoreTotal = popUp.getContentView().findViewById(R.id.scoreTotal);
 		TextView scoreTotalSil = popUp.getContentView().findViewById(R.id.scoreTotalSil);
+        TextView scoreNorm = popUp.getContentView().findViewById(R.id.scoreNorm);
+        TextView scoreNormSil = popUp.getContentView().findViewById(R.id.scoreNormSil);
 		String res;
 		for(int i = 0 ; i < output.size(); i++)
 		{
 			res = output.get(i);
-			if(i < output.size()-3)
+			if(i < output.size()-8)
 			{
 				array = res.split(":");
 				array2 = array[array.length-1].split("\\(");
@@ -195,7 +195,7 @@ public class Resultat  extends Activity {
                             break;
                         case 1 : dataCol.setText(array[0]);
                             break;
-                       case 2 : dataCol.setText(array2[array2.length-1]);
+                       case 2 : dataCol.setText(array2[array2.length-1].substring(0,array2[array2.length-1].length()-1));
                             break;
 
                     }
@@ -204,11 +204,12 @@ public class Resultat  extends Activity {
                 }
 				tab.addView(tabLigne);
 			}
-			else
+			else if(i >= output.size()-6)
 			{
-				if(i == output.size()-2) scoreTotal.setText(res);
-				else scoreTotalSil.setText(res);
-
+				if(i == output.size()-2) scoreNorm.setText(res);
+				if(i == output.size()-1) scoreNormSil.setText(res);
+                if(i == output.size()-5) scoreTotalSil.setText(res);
+                if(i == output.size()-6) scoreTotal.setText(res);
 			}
 		}
 

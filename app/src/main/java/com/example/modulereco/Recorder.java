@@ -51,7 +51,7 @@ public class Recorder {
 
     public String getCurrentTimeUsingCalendar(String type) {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         String res = sdf.format(new Date());
         if(type == "0") // Date normal
         {
@@ -61,7 +61,7 @@ public class Recorder {
         }
         if(type == "1") // si on veut la date sous forme de code pour les exercices ex : Exercice260319161656
         {
-            sdf = new SimpleDateFormat("dd/mm/yyyy HH:mm:ss");
+            sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             res = sdf.format(new Date());
             res = res.replace(" ", "");
             res = res.replace("/", "");
