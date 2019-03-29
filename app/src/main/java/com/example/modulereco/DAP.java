@@ -118,7 +118,7 @@ public class DAP
 				derniereFrameSansSil = end;
 
 			resultat.add(start + " - " + end + " : " + mot + " (" + seg.getAscore() + ")");
-
+			System.out.println(seg.getProb());
 			if (!mot.equals("SIL"))
 				score += seg.getAscore();
 

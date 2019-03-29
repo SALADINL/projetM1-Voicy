@@ -132,7 +132,6 @@ public class Alignement
 				derniereFrameSansSil = end;
 
 			resultat.add(start + " - " + end + " : " + mot + " (" + seg.getAscore() + ")");
-
 			if (!mot.equals("sil"))
 				score += seg.getAscore();
 
