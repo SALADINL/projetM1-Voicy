@@ -141,7 +141,7 @@ public class Reco extends Activity
 	private void initialiser()
 	{
 		mot.setText("" + exo.getText());
-		compteur.setText((exo.getIndex() + 1) + "/" + exo.getMax());
+		compteur.setText(exo.getIndex() + "/" + exo.getMax());
 
 		rec = new Recorder("" + exo.getIndex());
 	}
