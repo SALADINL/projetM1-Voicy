@@ -2,10 +2,10 @@
 grammar neighbors;
 public <rien ne les retenait> = [ sil ] <r> <y> <in> [ <n> ] [ sil ] <n> <e> [ sil ] <l> <ai> [ sil ] <r> <e> <t> <e> <n> <ai> [ sil ];
 <ai> = ai;
-<e> = e;
+<e> = ee;
 <in> = in;
-<l> = l;
-<n> = n;
-<r> = r;
-<t> = t;
-<y> = y;
+<l> = ll;
+<n> = nn;
+<r> = rr;
+<t> = tt;
+<y> = yy;
