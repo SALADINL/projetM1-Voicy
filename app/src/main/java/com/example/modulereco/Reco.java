@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class Reco extends Activity
 {
 	Exercice exo = null;
+
 	Recorder rec = null;
 	Alignement alignement = null;
 	DAP dap = null;
@@ -25,8 +26,9 @@ public class Reco extends Activity
 	Button enregistrer = null;
 	Button btEnd = null;
 	Button retour = null;
+	int type = 0;
 
-	ArrayList<String> tabMot = null;
+	ArrayList<String> tabPhrase = null;
 	ArrayList<String> tabPhoneme = null;
 	ArrayList<String> tabDap = null;
 
@@ -39,15 +41,23 @@ public class Reco extends Activity
 		mot = findViewById(R.id.mot);
 		compteur = findViewById(R.id.compteur);
 		enregistrer = findViewById(R.id.record);
-		btEnd = findViewById(R.id.btEnd);
+		btEnd = findViewById(R.id.btnEnd);
 		retour = findViewById(R.id.back);
 
-		tabMot = new ArrayList<>();
-		tabPhoneme = new ArrayList<>();
-		tabDap = new ArrayList<>();
+		type = 2;
 
-		dap = new DAP(this);
-		exo = new Exercice(3, this);
+		if (type == 1)
+		{
+			tabPhoneme = new ArrayList<>();
+			tabDap = new ArrayList<>();
+			dap = new DAP(this);
+			exo = new ExerciceMot(5, this);
+		}
+		else if (type == 2)
+		{
+			tabPhrase = new ArrayList<>();
+			exo = new ExerciceSeguin(this);
+		}
 
 		initialiser();
 		creerDossier();
@@ -79,11 +89,13 @@ public class Reco extends Activity
 
 					actualiser();
 					enregistrer.setText("Enregistrer");
+
 					if (exo.getIndex() > 0)
 						retour.setEnabled(true);
 				}
 			}
 		});
+
 		retour.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -122,16 +134,16 @@ public class Reco extends Activity
                 }
             });
         }
-        if(exo.getIndex() + 1 == exo.getMaxMots())
+        if(exo.getIndex() + 1 == exo.getMax())
             fin = true;
 	}
 
 	private void initialiser()
 	{
-		mot.setText("" + exo.getMot());
-		compteur.setText((exo.getIndex() + 1) + "/" + exo.getMaxMots());
+		mot.setText("" + exo.getText());
+		compteur.setText((exo.getIndex() + 1) + "/" + exo.getMax());
 
-		rec = new Recorder("" + exo.getMot());
+		rec = new Recorder("" + exo.getIndex());
 	}
 
 	private void analyser()
@@ -140,13 +152,18 @@ public class Reco extends Activity
 
 		File wav = new File(rec.getFilename());
 
-		alignement = new Alignement(Reco.this, Alignement.MOT);
-		tabMot = alignement.convertir(wav);
-
-		alignement = new Alignement(Reco.this, Alignement.PHONEME);
-		tabPhoneme = alignement.convertir(wav);
-		dap = new DAP(Reco.this);
-		tabDap = dap.convertir(wav);
+		if (type == 1)
+		{
+			alignement = new Alignement(Reco.this, Alignement.PHONEME);
+			tabPhoneme = alignement.convertir(wav);
+			dap = new DAP(Reco.this);
+			tabDap = dap.convertir(wav);
+		}
+		else if (type == 2)
+		{
+			alignement = new Alignement(Reco.this, Alignement.VOISIN);
+			tabPhrase = alignement.convertir(wav);
+		}
 	}
 
 	private void sauverResultats() throws IOException
@@ -154,38 +171,48 @@ public class Reco extends Activity
 		String nom = rec.getFilename();
 		nom = nom.substring(0, nom.length() - 4);
 
-		FileWriter writer = new FileWriter(nom + "-score-mot.txt");
+		if (type == 1)
+		{
+			FileWriter writer = new FileWriter(nom + "-score-phoneme.txt");
 
-		for(String str: tabMot)
-			writer.write(str + "\n");
+			for (String str : tabPhoneme)
+				writer.write(str + "\n");
 
-		writer.close();
+			writer.close();
 
-		writer = new FileWriter(nom + "-score-phoneme.txt");
+			writer = new FileWriter(nom + "-score-dap.txt");
 
-		for(String str: tabPhoneme)
-			writer.write(str + "\n");
+			for (String str : tabDap)
+				writer.write(str + "\n");
 
-		writer.close();
+			writer.close();
+		}
+		else if (type == 2)
+		{
+			FileWriter writer = new FileWriter((nom + 1) + "-score.txt");
 
-		writer = new FileWriter(nom + "-score-dap.txt");
+			for (String str : tabPhrase)
+				writer.write(str + "\n");
 
-		for(String str: tabDap)
-			writer.write(str + "\n");
-
-		writer.close();
+			writer.close();
+		}
 	}
 
 	private void clearTab()
 	{
-		if (!tabMot.isEmpty())
-			tabMot.clear();
+		if (type == 1)
+		{
+			if (!tabPhoneme.isEmpty())
+				tabPhoneme.clear();
 
-		if (!tabPhoneme.isEmpty())
-			tabPhoneme.clear();
-
-		if (!tabDap.isEmpty())
-			tabDap.clear();
+			if (!tabDap.isEmpty())
+				tabDap.clear();
+		}
+		else if (type == 2)
+		{
+			if (! tabPhrase.isEmpty())
+				tabPhrase.clear();
+		}
 	}
 
 	private void creerDossier()

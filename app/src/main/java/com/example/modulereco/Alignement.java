@@ -25,14 +25,17 @@ public class Alignement
 	private ArrayList<String> resultat;
 	private Context contexte;
 	private Decoder decoder = null;
+	private int type = 0;
 
 	public final static int PHONEME = 1;
 	public final static int MOT = 2;
+	public final static int VOISIN = 3;
 
 	public Alignement(Context contexte, int config)
 	{
 		this.contexte = contexte;
 		resultat = new ArrayList<>();
+		type = config;
 
 		try
 		{
@@ -43,17 +46,24 @@ public class Alignement
 			c.setString("-hmm", new File(assetsDir, "ptm").getPath());
 			c.setBoolean("-backtrace", true);
 			c.setBoolean("-fsgusefiller", false);
-			c.setBoolean("-bestpath", false);
 
 
 			if (config == MOT)
 			{
+				c.setBoolean("-bestpath", false);
 				c.setString("-jsgf", new File(assetsDir, "mot-word.jsgf").getPath());
 				c.setString("-dict", new File(assetsDir, "mots.dict").getPath());
 			}
-			else
+			else if (config == PHONEME)
 			{
+				c.setBoolean("-bestpath", false);
 				c.setString("-jsgf", new File(assetsDir, "mot-align.jsgf").getPath());
+				c.setString("-dict", new File(assetsDir, "phonemes.dict").getPath());
+			}
+			else if (config == VOISIN)
+			{
+				c.setBoolean("-bestpath", true);
+				c.setString("-jsgf", new File(assetsDir, "chevre1.jsgf").getPath());
 				c.setString("-dict", new File(assetsDir, "phonemes.dict").getPath());
 			}
 
@@ -144,5 +154,7 @@ public class Alignement
 		resultat.add("\n");
 		resultat.add("Score normalisé : " + (float)score / (derniereFrameSansSil - premiereFrameSansSil));
 		resultat.add("Score normalisé (avec silence) : " + (float)scoreAvecSil / (derniereFrameAvecSil - premiereFrameAvecSil));
+
+		System.out.println("Score normalisé : " + (float)score / (derniereFrameSansSil - premiereFrameSansSil));
 	}
 }
