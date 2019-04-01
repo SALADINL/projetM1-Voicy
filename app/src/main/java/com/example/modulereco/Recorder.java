@@ -105,7 +105,7 @@ public class Recorder {
 
     public void startRecording() {
 
-        recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,
+        recorder = new AudioRecord(MediaRecorder.AudioSource.VOICE_RECOGNITION,
                 RECORDER_SAMPLERATE, RECORDER_CHANNELS,
                 RECORDER_AUDIO_ENCODING, bufferSize);
         int i = recorder.getState();

@@ -11,6 +11,7 @@ public abstract class Exercice
 {
 	protected Assets assets = null;
 	protected File assetsDir = null;
+	protected File dico = null;
 
 	protected int max, index;
 
@@ -29,11 +30,39 @@ public abstract class Exercice
 		}
 	}
 
+	public boolean fini()
+	{
+		return index == max;
+	}
+
+	public void next()
+	{
+		if (index < max - 1)
+		{
+			index++;
+			updateJsgf();
+		}
+	}
+
+	public void prev()
+	{
+		if (index > 0)
+		{
+			index--;
+			updateJsgf();
+		}
+	}
+
+	public int getMax()
+	{
+		return max;
+	}
+
+	public int getIndex()
+	{
+		return index;
+	}
+
 	protected abstract String getText();
-	protected abstract boolean fini();
-	protected abstract void next();
-	protected abstract void prev();
-	protected abstract int getMax();
-	protected abstract int getIndex();
 	protected abstract void updateJsgf();
 }

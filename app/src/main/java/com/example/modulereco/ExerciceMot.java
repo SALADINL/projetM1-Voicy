@@ -15,16 +15,14 @@ public class ExerciceMot extends Exercice
 {
 	private ArrayList<Mot> mots;
 
-	private File dico = null;
-
 	public ExerciceMot(int nb, Context context)
 	{
 		super(context);
 
 		max = nb;
 		mots = new ArrayList<>();
-
 		dico = new File(assetsDir, "mots.dict");
+
 		init(dico);
 	}
 
@@ -135,38 +133,5 @@ public class ExerciceMot extends Exercice
 		{
 			e.printStackTrace();
 		}
-	}
-
-	public boolean fini()
-	{
-		return max == index;
-	}
-
-	public void next()
-	{
-		if (index < max - 1)
-		{
-			index++;
-			updateJsgf();
-		}
-	}
-
-	public void prev()
-	{
-		if (index > 0)
-		{
-			index--;
-			updateJsgf();
-		}
-	}
-
-	public int getMax()
-	{
-		return max;
-	}
-
-	public int getIndex()
-	{
-		return index;
 	}
 }

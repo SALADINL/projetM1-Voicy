@@ -13,16 +13,13 @@ import java.util.ArrayList;
 public class ExerciceSeguin extends Exercice
 {
 	private ArrayList<String> phrases;
-	private File dico = null;
 
 	public ExerciceSeguin(Context context)
 	{
 		super(context);
 
 		max = 12;
-
 		phrases = new ArrayList<>();
-
 		dico = new File(assetsDir, "chevre.txt");
 
 		try (BufferedReader br = new BufferedReader(new FileReader(dico)))
@@ -45,39 +42,6 @@ public class ExerciceSeguin extends Exercice
 	public String getText()
 	{
 		return phrases.get(index);
-	}
-
-	public boolean fini()
-	{
-		return max == index;
-	}
-
-	public void next()
-	{
-		if (index < max - 1)
-		{
-			index++;
-			updateJsgf();
-		}
-	}
-
-	public void prev()
-	{
-		if (index > 0)
-		{
-			index--;
-			updateJsgf();
-		}
-	}
-
-	public int getMax()
-	{
-		return max;
-	}
-
-	public int getIndex()
-	{
-		return index;
 	}
 
 	protected void updateJsgf()
