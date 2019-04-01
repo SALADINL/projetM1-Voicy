@@ -32,7 +32,7 @@ public abstract class Exercice
 
 	public boolean fini()
 	{
-		return index == max;
+		return index == max - 1;
 	}
 
 	public void next()
@@ -60,7 +60,7 @@ public abstract class Exercice
 
 	public int getIndex()
 	{
-		return index;
+		return index + 1;
 	}
 
 	protected abstract String getText();

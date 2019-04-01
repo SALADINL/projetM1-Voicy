@@ -20,7 +20,6 @@ public class Reco extends Activity
 	Recorder rec = null;
 	Alignement alignement = null;
 	DAP dap = null;
-    boolean fin = false;
 	TextView mot = null;
 	TextView compteur = null;
 	Button enregistrer = null;
@@ -104,7 +103,6 @@ public class Reco extends Activity
 				exo.prev();
 				initialiser();
 				btEnd.setVisibility(View.GONE);
-				fin = false;
 				if (exo.getIndex() == 0)
 					retour.setEnabled(false);
 			}
@@ -115,7 +113,7 @@ public class Reco extends Activity
 
 	private void actualiser()
 	{
-	    if(!fin)
+	    if(!exo.fini())
         {
             exo.next();
             initialiser();
@@ -123,19 +121,20 @@ public class Reco extends Activity
 		else
         {
             final Intent intent = new Intent(this, choixResultat.class);
+
+            mot.setText("Exercice terminé !");
+            compteur.setText("");
+
             btEnd.setVisibility(View.VISIBLE);
             btEnd.setOnClickListener(new Button.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
-
                     startActivity(intent);
                 }
             });
         }
-        if(exo.getIndex() + 1 == exo.getMax())
-            fin = true;
 	}
 
 	private void initialiser()
