@@ -63,7 +63,7 @@ public class Alignement
 			else if (config == VOISIN)
 			{
 				c.setBoolean("-bestpath", true);
-				c.setString("-jsgf", new File(assetsDir, "chevre1.jsgf").getPath());
+				c.setString("-jsgf", new File(assetsDir, "chevre.jsgf").getPath());
 				c.setString("-dict", new File(assetsDir, "phonemes.dict").getPath());
 			}
 

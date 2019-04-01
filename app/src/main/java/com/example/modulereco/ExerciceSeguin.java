@@ -38,6 +38,8 @@ public class ExerciceSeguin extends Exercice
 		{
 			e.printStackTrace();
 		}
+
+		updateJsgf();
 	}
 
 	public String getText()
