@@ -1,12 +1,12 @@
 #JSGF V1.0;
 grammar neighbors;
-public <Monsieur Seguin n'avait jamais eu de bonheur avec ses chèvres> = [ sil ] <m> <e> <s> <y> <e> [ sil ] <s> <e> <g> <in> [ sil ] <n> <a> <v> <ai> [ sil ] <j> <a> <m> <ai> [ <z> ] [ sil ] <u> [ sil ] <d> <e> [ sil ] <b> <o> <n> <oe> <r> [ sil ] <a> <v> <ai> <k> [ sil ] <s> <ai> [ sil ] <ch> <ai> <v> <r> [ <e> ] [ sil ];
+public <Monsieur Seguin n'avait jamais eu de bonheur avec ses chèvres> = [ sil ] <m> [ <eu> ] <s> <y> <eu> [ sil ] <s> [ <eu> ] <g> <in> [ sil ] <n> <a> <v> <aei> [ sil ] <j> <a> <m> <aei> [ <z> ] [ sil ] <u> [ sil ] <d> [ <eu> ] [ sil ] <b> <oau> <n> <oe> <r> [ sil ] <a> <v> <ai> <k> [ sil ] <s> <aei> [ sil ] <ch> <ai> <v> <r> [ <eu> ] [ sil ];
 <a> = aa;
-<ai> = ai | ei;
+<ai> = ai;
+<aei> = ai | ei;
 <b> = bb;
 <ch> = ch;
 <d> = dd;
-<e> = ee;
 <eu> = eu;
 <g> = gg;
 <in> = in;
@@ -14,7 +14,7 @@ public <Monsieur Seguin n'avait jamais eu de bonheur avec ses chèvres> = [ sil 
 <k> = kk;
 <m> = mm;
 <n> = nn;
-<o> = oo;
+<oau> = oo | au;
 <oe> = oe;
 <r> = rr;
 <s> = ss;

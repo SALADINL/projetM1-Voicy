@@ -1,11 +1,11 @@
 #JSGF V1.0;
 grammar neighbors;
-public <elles cassaient leur corde> = [ sil ] <ai> <l> [ sil ] <k> <a> <s> <ei> [ sil ] <l> <oe> <r> [ sil ] <k> <o> <r> <d> [ <e> ] [ sil ];
+public <elles cassaient leur corde> = [ sil ] <ai> <l> [ <eu> ] [ sil ] <k> <a> <s> <ai> [ sil ] <l> <oe> <r> [ sil ] <k> <o> <r> <d> [ <eu> ] [ sil ];
 <a> = aa;
-<ai> = ai | ei;
+<ai> = ai;
 <d> = dd;
-<e> = ee;
-<ei> = ei | ai;
+<ei> = ei;
+<eu> = eu;
 <k> = kk;
 <l> = ll;
 <o> = oo;

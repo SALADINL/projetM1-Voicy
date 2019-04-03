@@ -1,7 +1,7 @@
 #JSGF V1.0;
 grammar neighbors;
-public <et là-haut> = [ sil ] <ai> [ sil ] <l> <a> <au> [ sil ];
+public <et là-haut> = [ sil ] <aei> [ sil ] <l> <a> <au> [ sil ];
 <a> = aa;
-<ai> = ai | ei;
+<aei> = ai | ei;
 <au> = au;
 <l> = ll;

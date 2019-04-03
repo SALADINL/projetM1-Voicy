@@ -1,10 +1,11 @@
 #JSGF V1.0;
 grammar neighbors;
-public <Ni les caresses de leur maître> = [ sil ] <n> <i> [ sil ] <l> <ai> [ sil ] <k> <a> <r> <ai> <s> [ <e> ] [ sil ] <d> <e> [ sil ] <l> <oe> <r> [ sil ] <m> <ai> <t> <r> [ <e> ] [ sil ];
+public <Ni les caresses de leur maître> = [ sil ] <n> <i> [ sil ] <l> <aei> [ sil ] <k> <a> <r> <ai> <s> [ <eu> ] [ sil ] <d> [ <eu> ] [ sil ] <l> <oe> <r> [ sil ] <m> <ai> <t> <r> [ <eu> ] [ sil ];
 <a> = aa;
-<ai> = ai | ei;
+<aei> = ai | ei;
+<ai> = ai;
 <d> = dd;
-<e> = ee;
+<eu> = eu;
 <i> = ii;
 <k> = kk;
 <l> = ll;
