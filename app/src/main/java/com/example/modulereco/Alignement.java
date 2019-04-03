@@ -136,7 +136,7 @@ public class Alignement
 		for (Segment seg : decoder.seg())
 		{
 			int start = seg.getStartFrame(),
-					end   = seg.getEndFrame();
+				end   = seg.getEndFrame();
 			String mot = seg.getWord();
 
 			resultat.add(start + " - " + end + " : " + mot + " (" + seg.getAscore() + ")");

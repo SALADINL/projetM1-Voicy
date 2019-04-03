@@ -103,6 +103,7 @@ public class Reco extends Activity
 				exo.prev();
 				initialiser();
 				btEnd.setVisibility(View.GONE);
+
 				if (exo.getIndex() == 0)
 					retour.setEnabled(false);
 			}
@@ -139,7 +140,7 @@ public class Reco extends Activity
 
 	private void initialiser()
 	{
-		mot.setText("" + exo.getText());
+		mot.setText(exo.getText());
 		compteur.setText(exo.getIndex() + "/" + exo.getMax());
 
 		rec = new Recorder("" + exo.getIndex());
