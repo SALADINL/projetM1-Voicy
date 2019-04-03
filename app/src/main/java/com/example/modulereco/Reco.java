@@ -188,7 +188,7 @@ public class Reco extends Activity
 		}
 		else if (type == 2)
 		{
-			FileWriter writer = new FileWriter((nom + 1) + "-score.txt");
+			FileWriter writer = new FileWriter(nom + "-score.txt");
 
 			for (String str : tabPhrase)
 				writer.write(str + "\n");
