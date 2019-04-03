@@ -3,6 +3,7 @@ grammar neighbors;
 public <Il les perdait toutes de la même façon> = [ sil ] <i> <l> [ sil ] <l> <aei> [ sil ] <p> <aei> <r> <d> <aei> [ sil ] <t> <ou> <t> [ <eu> ] [ sil ] <d> [ <eu> ] [ sil ] <l> <a> [ sil ] <m> <ai> <m> [ <eu> ] [ sil ] <f> <a> <s> <on> [ sil ];
 <a> = aa;
 <aei> = ai | ei;
+<ai> = ai;
 <d> = dd;
 <eu> = eu;
 <f> = ff;
