@@ -18,7 +18,7 @@ public class ExerciceSeguin extends Exercice
 	{
 		super(context);
 
-		max = 12;
+		max = 2;
 		phrases = new ArrayList<>();
 		dico = new File(assetsDir, "chevre.txt");
 

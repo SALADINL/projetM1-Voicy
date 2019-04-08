@@ -32,7 +32,7 @@ public class choixResultat extends Activity
 
 		String filepath = Environment.getExternalStorageDirectory().getPath();
 		final File extStorageDir = new File(filepath,"/ModuleReco/Exercices");
-		String [] fileList=extStorageDir.list();
+		String [] fileList = extStorageDir.list();
 
 		listItems.addAll(Arrays.asList(fileList));
 
