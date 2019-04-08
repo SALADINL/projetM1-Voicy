@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.constraint.ConstraintLayout;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -68,6 +71,10 @@ public class Resultat  extends Activity
 
 		listMot.setOnItemClickListener(new AdapterView.OnItemClickListener()
 		{
+			private MediaPlayer mediaPlayer;
+			private String chemin;
+			private String fichierAudio;
+
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
@@ -116,6 +123,25 @@ public class Resultat  extends Activity
 					filepath = bund.getString("path");
 					filepath += "/" + parent.getItemAtPosition(position);
 					f = new File(filepath, "/" + parent.getItemAtPosition(position) + "-score-phoneme.txt");
+
+					if (filepath.length() == 60)
+					{
+						chemin = filepath.substring(19, filepath.length());
+						fichierAudio = filepath.substring(filepath.length() - 1, filepath.length());
+					}
+					else if (filepath.length() == 61)
+					{
+						chemin = filepath.substring(19, filepath.length());
+						fichierAudio = filepath.substring(filepath.length() - 2, filepath.length());
+					}
+
+					this.mediaPlayer = MediaPlayer.create(getApplicationContext(),
+							Uri.parse(Environment.getExternalStorageDirectory().getPath()+ "/" + chemin + "/" + fichierAudio + ".wav"));
+					mediaPlayer.start();
+
+
+
+
 					BufferedReader br = new BufferedReader(new FileReader(f));
 
 					while ((line = br.readLine()) != null)
