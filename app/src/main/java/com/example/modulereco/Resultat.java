@@ -7,13 +7,17 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TableLayout;
@@ -29,7 +33,7 @@ import java.util.Collections;
 
 public class Resultat  extends Activity
 {
-	private TextView t = null;
+
 	private Context ctx;
 	private ConstraintLayout rLayout;
 	private ListView listMot = null;
@@ -38,6 +42,9 @@ public class Resultat  extends Activity
 	private PopupWindow popUp;
 	private String filepath;
 	private Bundle bund;
+	private String fileType ="";
+	private TextView titrePopUp = null;
+	private float dpWidth;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -47,7 +54,7 @@ public class Resultat  extends Activity
 
 		ctx = getApplicationContext();
 		rLayout = findViewById(R.id.const_layout);
-		t = findViewById(R.id.pathExo);
+
 		bund = getIntent().getExtras();
 		filepath = bund.getString("path");
 
@@ -66,6 +73,16 @@ public class Resultat  extends Activity
 		Collections.sort(listItems);
 		adapter.notifyDataSetChanged();
 
+		//Savoir de quel type est le fichier phoneme mots phrase etc
+        if(!listItems.isEmpty())
+        {
+            File f = new File(filepath+"/"+listItems.get(0));
+            String [] r = f.list();
+            fileType = r[0];
+            fileType = fileType.substring(fileType.indexOf("-"));
+        }
+		System.out.println(" TYPE -> "+fileType);
+
 		listMot.setOnItemClickListener(new AdapterView.OnItemClickListener()
 		{
 			@Override
@@ -79,9 +96,10 @@ public class Resultat  extends Activity
 
 				popUp = new PopupWindow(
 				customView,
-				TableRow.LayoutParams.WRAP_CONTENT,
-				TableRow.LayoutParams.WRAP_CONTENT);
-
+				ViewGroup.LayoutParams.WRAP_CONTENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT,true);
+				//popUp.setWidth((int) (LinearLayout.LayoutParams.MATCH_PARENT*0.8));
+				popUp.setWindowLayoutMode(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 				// Set an elevation value for popup window
 				// Call requires API level 21
 				if(Build.VERSION.SDK_INT >= 21)
@@ -101,21 +119,25 @@ public class Resultat  extends Activity
 					}
 				});
 
-
+				popUp.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
 				popUp.showAtLocation(rLayout, Gravity.CENTER,0,0);
 				popUp.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-				popUp.setTouchable(false);
-				popUp.setFocusable(false);
 
 				File f = null;
 				ArrayList<String> res = new ArrayList<>();
 
 				try
 				{
+					titrePopUp = popUp.getContentView().findViewById(R.id.titrePopUp);
+					if(fileType.equals("-score.txt"))
+						titrePopUp.setText("Phrase n°"+parent.getItemAtPosition(position));
+					else
+						titrePopUp.setText(parent.getItemAtPosition(position)+"");
+
 					String line;
 					filepath = bund.getString("path");
 					filepath += "/" + parent.getItemAtPosition(position);
-					f = new File(filepath, "/" + parent.getItemAtPosition(position) + "-score-phoneme.txt");
+					f = new File(filepath, "/" + parent.getItemAtPosition(position) + fileType);
 					BufferedReader br = new BufferedReader(new FileReader(f));
 
 					while ((line = br.readLine()) != null)
@@ -127,6 +149,8 @@ public class Resultat  extends Activity
 				{
 					e.printStackTrace();
 				}
+				DisplayMetrics displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
+				dpWidth = displayMetrics.widthPixels / displayMetrics.density;
 				initRes(res, true);
 			}
 		});
@@ -135,6 +159,7 @@ public class Resultat  extends Activity
 	private void initRes(ArrayList<String> output, Boolean phoneSearch)
 	{
 		TableLayout tab = popUp.getContentView().findViewById(R.id.tabResultat);
+		tab.setMinimumWidth(700);
 		tab.removeAllViews();
 		//---- SPECIFICATION CATEGORIES
 		TableRow ligneTitre = new TableRow(this);
@@ -172,17 +197,18 @@ public class Resultat  extends Activity
 
 		tab.addView(ligneTitre);
 		String [] array, array2;
-		TextView scoreTotal = popUp.getContentView().findViewById(R.id.scoreTotal);
-		TextView scoreTotalSil = popUp.getContentView().findViewById(R.id.scoreTotalSil);
 		TextView scoreNorm = popUp.getContentView().findViewById(R.id.scoreNorm);
-		TextView scoreNormSil = popUp.getContentView().findViewById(R.id.scoreNormSil);
 		String res;
 
 		for (int i = 0; i < output.size(); i++)
 		{
 			res = output.get(i);
 
-			if (i < output.size() - 8)
+			if (i == 0)
+			{
+				scoreNorm.setText(res);
+			}
+			else if (i > 1)
 			{
 				array = res.split(":");
 				array2 = array[array.length-1].split("\\(");
@@ -198,35 +224,33 @@ public class Resultat  extends Activity
 					dataCol.setGravity(Gravity.CENTER_HORIZONTAL);
 					dataCol.setPadding(0, 5, 0, 5);
 					dataCol.setTextColor(Color.WHITE);
+					if(!array2[array2.length-1].substring(0,array2[array2.length-1].length()-1).equals("0")) {
+						switch (j) {
+							case 0:
+								dataCol.setText(array2[0]);
+								break;
 
-					switch(j)
+							case 1:
+								dataCol.setText(array[0]);
+								break;
+
+							case 2:
+								dataCol.setText(array2[array2.length - 1].substring(0, array2[array2.length - 1].length() - 1));
+								break;
+						}
+					}
+					else
 					{
-						case 0 :
-							dataCol.setText(array2[0]);
-							break;
 
-						case 1 :
-							dataCol.setText(array[0]);
-							break;
-
-						case 2 :
-							dataCol.setText(array2[array2.length-1].substring(0,array2[array2.length-1].length()-1));
-							break;
+						TableRow.LayoutParams params = (TableRow.LayoutParams)dataCol.getLayoutParams();
+						params.span = 4;
+						dataCol.setLayoutParams(params); // causes layout update
+						dataCol.setText("");
 					}
 					tabLigne.addView(dataCol);
+
 				}
 				tab.addView(tabLigne);
-			}
-			else if (i >= output.size() - 6)
-			{
-				if (i == output.size()-2)
-					scoreNorm.setText(res);
-				if (i == output.size()-1)
-					scoreNormSil.setText(res);
-				if (i == output.size()-5)
-					scoreTotalSil.setText(res);
-				if (i == output.size()-6)
-					scoreTotal.setText(res);
 			}
 		}
 	}

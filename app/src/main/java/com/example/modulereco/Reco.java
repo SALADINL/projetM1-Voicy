@@ -23,9 +23,10 @@ public class Reco extends Activity
 	TextView mot = null;
 	TextView compteur = null;
 	Button enregistrer = null;
+
 	Button btEnd = null;
 	Button retour = null;
-	int type = 0;
+	int type = 0;  // 1 = exo avec mot 0 = exo avec phrase
 
 	ArrayList<String> tabPhrase = null;
 	ArrayList<String> tabPhoneme = null;
@@ -43,7 +44,8 @@ public class Reco extends Activity
 		btEnd = findViewById(R.id.btnEnd);
 		retour = findViewById(R.id.back);
 
-		type = 2;
+		Intent intent = getIntent();
+		type = intent.getIntExtra("type", 1);
 
 		if (type == 1)
 		{
@@ -69,6 +71,7 @@ public class Reco extends Activity
 				if (!rec.getRecording())
 				{
 					rec.startRecording();
+					retour.setEnabled(false);
 					enregistrer.setText("STOP");
 				}
 				else
@@ -102,13 +105,12 @@ public class Reco extends Activity
 			{
 				exo.prev();
 				initialiser();
-				btEnd.setVisibility(View.GONE);
+				btEnd.setEnabled(false);
 
 				if (exo.getIndex() == 0)
 					retour.setEnabled(false);
 			}
 		});
-
 
 	}
 
@@ -202,16 +204,18 @@ public class Reco extends Activity
 	{
 		if (type == 1)
 		{
-			if (!tabPhoneme.isEmpty())
-				tabPhoneme.clear();
-
-			if (!tabDap.isEmpty())
-				tabDap.clear();
+			if(tabPhoneme != null)
+				if (!tabPhoneme.isEmpty())
+					tabPhoneme.clear();
+			if(tabDap != null)
+				if (!tabDap.isEmpty())
+					tabDap.clear();
 		}
 		else if (type == 2)
 		{
-			if (! tabPhrase.isEmpty())
-				tabPhrase.clear();
+			if(tabPhrase != null)
+				if (!tabPhrase.isEmpty())
+					tabPhrase.clear();
 		}
 	}
 
