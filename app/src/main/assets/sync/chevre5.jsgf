@@ -1,0 +1,14 @@
+#JSGF V1.0;
+grammar neighbors;
+public <s'en allaient dans la montagne> = [ sil ] <s> <an> [ sil ] <a> <l> <ai> [ sil ] <d> <an> [ sil ] <l> <a> [ sil ] <m> <on> <t> <a> <gn> [ <e> ] [ sil ];
+<a> = aa;
+<ai> = ai | ei;
+<an> = an;
+<d> = dd;
+<e> = ee;
+<gn> = gn;
+<l> = ll;
+<m> = mm;
+<on> = on;
+<s> = ss;
+<t> = tt;

@@ -1,0 +1,10 @@
+#JSGF V1.0;
+grammar neighbors;
+public <le loup les mangeait> = [ sil ] <l> <e> [ sil ] <l> <ou> [ sil ] <l> <ai> [ sil ] <m> <an> <j> <ai> [ sil ];
+<ai> = ai | ei;
+<an> = an;
+<e> = ee;
+<j> = jj;
+<l> = ll;
+<m> = mm;
+<ou> = ou;

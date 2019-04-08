@@ -1,0 +1,15 @@
+#JSGF V1.0;
+grammar neighbors;
+public <Voulant à tout prix le grand air et la liberté> = [ sil ] <v> <ou> <l> <an> [ <t> ] [ sil ] <a> [ sil ] <t> <ou> [ sil ] <p> <r> <i> [ sil ] <l> <a> [ sil ] <l> <i> <b> <ai> <r> <t> <ei> [ sil ];
+<a> = aa;
+<ai> = ai;
+<an> = an;
+<b> = bb;
+<ei> = ei;
+<i> = ii;
+<l> = ll;
+<ou> = ou;
+<p> = pp;
+<r> = rr;
+<t> = tt;
+<v> = vv;

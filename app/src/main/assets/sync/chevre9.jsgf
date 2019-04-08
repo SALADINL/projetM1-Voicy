@@ -1,0 +1,13 @@
+#JSGF V1.0;
+grammar neighbors;
+public <ni la peur du loup> = [ sil ] <n> <i> [ sil ] <l> <a> [ sil ] <p> <oe> <r> [ sil ] <d> <u> [ sil ] <l> <ou> [ sil ];
+<a> = aa;
+<d> = dd;
+<i> = ii;
+<l> = ll;
+<n> = nn;
+<oe> = oe;
+<ou> = ou;
+<p> = pp;
+<r> = rr;
+<u> = uu;
