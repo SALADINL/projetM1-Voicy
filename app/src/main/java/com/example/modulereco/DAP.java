@@ -95,8 +95,9 @@ public class DAP
 
 		decoder.endUtt();
 
-		int score = 0;
-		int trames = 0;
+		int score = 0,
+				trames = 0,
+				tramesBonus = 0;
 
 		for (Segment seg : decoder.seg())
 		{
@@ -104,7 +105,20 @@ public class DAP
 			{
 				trames += seg.getEndFrame() - seg.getStartFrame();
 				score += seg.getAscore();
+
+				if (seg.getEndFrame() != seg.getStartFrame())
+					tramesBonus++;
 			}
+			else if (tramesBonus != 0)
+			{
+				trames += tramesBonus - 1;
+				tramesBonus = 0;
+			}
+		}
+
+		if (tramesBonus != 0)
+		{
+			trames += tramesBonus - 1;
 		}
 
 		resultat.add("Score normalisé : " + ((float)score / trames) + "\n");
