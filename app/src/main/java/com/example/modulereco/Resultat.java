@@ -19,10 +19,12 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -47,7 +49,8 @@ public class Resultat  extends Activity
 	private Bundle bund;
 	private String fileType ="";
 	private TextView titrePopUp = null;
-	private float dpWidth;
+	private Switch swDap;
+	private MediaPlayer mediaPlayer;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -67,7 +70,6 @@ public class Resultat  extends Activity
 		listItems);
 		listMot.setAdapter(adapter);
 
-
 		final File extStorageDir = new File(filepath);
 		String [] fileList=extStorageDir.list();
 
@@ -76,21 +78,11 @@ public class Resultat  extends Activity
 		Collections.sort(listItems);
 		adapter.notifyDataSetChanged();
 
-		//Savoir de quel type est le fichier phoneme mots phrase etc
-        if(!listItems.isEmpty())
-        {
-            File f = new File(filepath+"/"+listItems.get(0));
-            String [] r = f.list();
-            fileType = r[0];
-            fileType = fileType.substring(fileType.indexOf("-"));
-        }
-		System.out.println(" TYPE -> "+fileType);
+		getType();				//Savoir de quel type est le fichier phoneme mots phrase etc
 
 		listMot.setOnItemClickListener(new AdapterView.OnItemClickListener()
 		{
-			private MediaPlayer mediaPlayer;
-			private String chemin;
-			private String fichierAudio;
+
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -112,10 +104,8 @@ public class Resultat  extends Activity
 				if(Build.VERSION.SDK_INT >= 21)
 					popUp.setElevation(5.0f);
 
-				// Get a reference for the custom view close button
-				ImageButton closeButton = customView.findViewById(R.id.ib_close);
-
-				// Set a click listener for the popup window close button
+				swDap = customView.findViewById(R.id.swDap); // switch pour le dap
+				ImageButton closeButton = customView.findViewById(R.id.ib_close); // bt close
 				closeButton.setOnClickListener(new View.OnClickListener()
 				{
 					@Override
@@ -123,6 +113,14 @@ public class Resultat  extends Activity
 					{
 						// Dismiss the popup window
 						popUp.dismiss();
+						mediaPlayer.stop();
+					}
+				});
+
+				popUp.setOnDismissListener(new PopupWindow.OnDismissListener() {
+					@Override
+					public void onDismiss() {
+						mediaPlayer.stop();
 					}
 				});
 
@@ -130,54 +128,95 @@ public class Resultat  extends Activity
 				popUp.showAtLocation(rLayout, Gravity.CENTER,0,0);
 				popUp.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-				File f = null;
-				ArrayList<String> res = new ArrayList<>();
 
-				try
+
+				titrePopUp = popUp.getContentView().findViewById(R.id.titrePopUp);
+				if(fileType.equals("-score.txt"))
+					titrePopUp.setText("Phrase n°"+parent.getItemAtPosition(position));
+				else
+					titrePopUp.setText(parent.getItemAtPosition(position)+"");
+
+				filepath = bund.getString("path");
+				filepath += "/" + parent.getItemAtPosition(position);
+
+
+				final ArrayList<String> dataPhone = getData(parent, position, true);
+				for (String s : dataPhone)
+					System.out.println("data -> "+dataPhone);
+				initRes(dataPhone, true);
+				lecture(parent, position); // lecture du wav
+				if(!fileType.equals("-score.txt")) // si c'est le mode phrase pas de DAP
 				{
-					titrePopUp = popUp.getContentView().findViewById(R.id.titrePopUp);
-					if(fileType.equals("-score.txt"))
-						titrePopUp.setText("Phrase n°"+parent.getItemAtPosition(position));
-					else
-						titrePopUp.setText(parent.getItemAtPosition(position)+"");
-
-					String line;
-					filepath = bund.getString("path");
-					filepath += "/" + parent.getItemAtPosition(position);
-          
-					f = new File(filepath, "/" + parent.getItemAtPosition(position) + fileType);
-
-					if (filepath.length() == 60)
-					{
-						chemin = filepath.substring(19, filepath.length());
-						fichierAudio = filepath.substring(filepath.length() - 1, filepath.length());
-					}
-					else if (filepath.length() == 61)
-					{
-						chemin = filepath.substring(19, filepath.length());
-						fichierAudio = filepath.substring(filepath.length() - 2, filepath.length());
-					}
-
-					this.mediaPlayer = MediaPlayer.create(getApplicationContext(),
-							Uri.parse(Environment.getExternalStorageDirectory().getPath()+ "/" + chemin + "/" + fichierAudio + ".wav"));
-					mediaPlayer.start();
-          
-					BufferedReader br = new BufferedReader(new FileReader(f));
-
-					while ((line = br.readLine()) != null)
-						res.add(line);
-
-					br.close();
+					final ArrayList<String> dataDap = getData(parent, position, false);
+					swDap.setVisibility(View.VISIBLE);
+					swDap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+						@Override
+						public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+							if (isChecked)
+								initRes(dataDap, false);
+							else
+								initRes(dataPhone, true);
+						}
+					});
 				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-				DisplayMetrics displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
-				dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-				initRes(res, true);
 			}
 		});
+
+
+	}
+
+	private ArrayList<String> getData(AdapterView<?> parent, int position, boolean type) { // type true = phoneme false = DAP
+		String line;
+		File file;
+		ArrayList<String> data = new ArrayList<>();
+		String typePath = fileType;
+		if(!type)
+			typePath = "-score-dap.txt";
+		try {
+			file = new File(filepath, "/" + parent.getItemAtPosition(position) + typePath);
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			while ((line = br.readLine()) != null)
+				data.add(line);
+			br.close();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		return data;
+	}
+
+	private void getType()
+	{
+		//Savoir de quel type est le fichier phoneme mots phrase etc
+		if(!listItems.isEmpty())
+		{
+			File f = new File(filepath+"/"+listItems.get(0));
+			String [] r = f.list();
+			String res;
+			for (String str : r) {
+				if (str.contains("-")) {
+					res = str.substring(str.indexOf("-"));
+					if (res.equals("-score.txt") || res.equals("-score-phoneme.txt")) {
+						fileType = res;
+						return;
+					}
+				}
+			}
+		}
+	}
+
+	private void lecture(AdapterView<?> parent, int position)
+	{
+		mediaPlayer = new MediaPlayer();
+		String path = filepath+ "/" + parent.getItemAtPosition(position) + ".wav";
+		try
+		{
+			mediaPlayer.setDataSource(path);
+			mediaPlayer.prepare();
+		} catch (Exception e ) {
+			e.printStackTrace();
+		}
+		mediaPlayer.start();
 	}
 
 	private void initRes(ArrayList<String> output, Boolean phoneSearch)
@@ -205,7 +244,7 @@ public class Resultat  extends Activity
 					if (phoneSearch)
 						col.setText(" Phoneme ");
 					else
-						col.setText(" Mots ");
+						col.setText(" DAP ");
 					break;
 
 				case 1 :
@@ -223,11 +262,9 @@ public class Resultat  extends Activity
 		String [] array, array2;
 		TextView scoreNorm = popUp.getContentView().findViewById(R.id.scoreNorm);
 		String res;
-
 		for (int i = 0; i < output.size(); i++)
 		{
 			res = output.get(i);
-
 			if (i == 0)
 			{
 				scoreNorm.setText(res);
@@ -238,7 +275,6 @@ public class Resultat  extends Activity
 				array2 = array[array.length-1].split("\\(");
 				TableRow tabLigne = new TableRow(this);
 				tabLigne.setBackgroundColor(Color.GRAY);
-
 				for (int j = 0; j < 3; j++)
 				{
 					TextView dataCol = new TextView(this);
@@ -248,24 +284,21 @@ public class Resultat  extends Activity
 					dataCol.setGravity(Gravity.CENTER_HORIZONTAL);
 					dataCol.setPadding(0, 5, 0, 5);
 					dataCol.setTextColor(Color.WHITE);
-					if(!array2[array2.length-1].substring(0,array2[array2.length-1].length()-1).equals("0")) {
+					if(!array2[array2.length-1].substring(0,array2[array2.length-1].length()-1).equals("0)")) {
 						switch (j) {
 							case 0:
 								dataCol.setText(array2[0]);
 								break;
-
 							case 1:
 								dataCol.setText(array[0]);
 								break;
-
 							case 2:
-								dataCol.setText(array2[array2.length - 1].substring(0, array2[array2.length - 1].length() - 1));
+								dataCol.setText(array2[array2.length - 1].substring(0, array2[array2.length-1].length()-1));
 								break;
 						}
 					}
 					else
 					{
-
 						TableRow.LayoutParams params = (TableRow.LayoutParams)dataCol.getLayoutParams();
 						params.span = 4;
 						dataCol.setLayoutParams(params); // causes layout update

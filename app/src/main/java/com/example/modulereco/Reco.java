@@ -163,8 +163,10 @@ public class Reco extends Activity
 	{
 		mot.setText(exo.getText());
 		compteur.setText(exo.getIndex() + "/" + exo.getMax());
-
-		rec = new Recorder("" + exo.getIndex());
+		if (type == 1)
+			rec = new Recorder("" + exo.getText());
+		else
+			rec = new Recorder("" + exo.getIndex());
 	}
 
 	private void analyser()
