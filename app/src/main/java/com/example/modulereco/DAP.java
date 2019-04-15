@@ -104,8 +104,6 @@ public class DAP
 			{
 				trames += seg.getEndFrame() - seg.getStartFrame();
 				score += seg.getAscore();
-				System.out.println("LSCORE = " + seg.getLscore());
-				System.out.println("PROB = " + seg.getProb());
 			}
 		}
 

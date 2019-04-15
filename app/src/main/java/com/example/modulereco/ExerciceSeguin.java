@@ -18,7 +18,7 @@ public class ExerciceSeguin extends Exercice
 	{
 		super(context);
 
-		max = 2;
+		max = 12;
 		phrases = new ArrayList<>();
 		dico = new File(assetsDir, "chevre.txt");
 
@@ -37,6 +37,12 @@ public class ExerciceSeguin extends Exercice
 		}
 
 		updateJsgf();
+	}
+
+	public ExerciceSeguin(int nb, Context context)
+	{
+		this(context);
+		max = nb;
 	}
 
 	public String getText()
