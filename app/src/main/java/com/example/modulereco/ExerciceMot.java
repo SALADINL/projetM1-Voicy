@@ -15,6 +15,17 @@ public class ExerciceMot extends Exercice
 {
 	private ArrayList<Mot> mots;
 
+	public ExerciceMot(Context context)
+	{
+		super(context);
+
+		max = 50;
+		mots = new ArrayList<>();
+		dico = new File(assetsDir, "mots.dict");
+
+		init(dico);
+	}
+
 	public ExerciceMot(int nb, Context context)
 	{
 		super(context);
@@ -80,15 +91,7 @@ public class ExerciceMot extends Exercice
 
 	public String getText()
 	{
-		return getText(index);
-	}
-
-	public String getText(int index)
-	{
-		if (!fini())
-			return mots.get(index).getMot();
-
-		return null;
+		return mots.get(index).getMot();
 	}
 
 	protected void updateJsgf()
