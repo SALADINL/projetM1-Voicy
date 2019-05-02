@@ -64,6 +64,7 @@ public class choixResultat extends Activity
 		}
 		catch (Exception e)
 		{
+
 			Toast.makeText(choixResultat.this, "Le dossier 'Exercices' est vide !", Toast.LENGTH_LONG).show();
 
 			e.getStackTrace();
