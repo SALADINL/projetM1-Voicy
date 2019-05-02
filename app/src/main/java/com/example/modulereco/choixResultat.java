@@ -1,56 +1,82 @@
 package com.example.modulereco;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.Collections;
 
-public class choixResultat extends Activity {
+public class choixResultat extends Activity
+{
+	private ListView listExo = null;
+	private ArrayList<String> listItems = new ArrayList<>();
+	private ArrayAdapter<String> adapter;
 
-    private ListView listExo = null;
-    private ArrayList<String> listItems = new ArrayList<String>();
-    private ArrayAdapter<String> adapter;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.choix_exercice);
+	@Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.choix_exercice);
 
-        listExo = findViewById(R.id.listExo);
-        adapter=new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,
-                listItems);
-        listExo.setAdapter(adapter);
+		verifierPermissions();
 
-        String filepath = Environment.getExternalStorageDirectory().getPath();
-        final File extStorageDir = new File(filepath,"/ModuleReco/Exercices");
-        String [] fileList=extStorageDir.list();
+		listExo = findViewById(R.id.listExo);
+		adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listItems);
+		listExo.setAdapter(adapter);
 
-        for(String fileName:fileList)
-        {
-            listItems.add(fileName);
-        }
+		String filepath = Environment.getExternalStorageDirectory().getPath();
 
-        Collections.sort(listItems, Collections.reverseOrder());
-        adapter.notifyDataSetChanged();
+		try
+		{
+			final File extStorageDir = new File(filepath, "/ModuleReco/Exercices");
+			final String[] fileList = extStorageDir.list();
 
-        listExo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String filepath = Environment.getExternalStorageDirectory().getPath()+"/ModuleReco/Exercices/"+parent.getItemAtPosition(position);
-                    File path = new File(filepath, "/ModuleReco/Exercices"+parent.getItemAtPosition(position));
-                    Intent myIntent = new Intent(view.getContext(), Resultat.class);
-                    myIntent.putExtra("path", filepath);
-                    startActivity(myIntent);
-            }
-        });
-    }
+
+			listItems.addAll(Arrays.asList(fileList));
+
+			Collections.sort(listItems, Collections.reverseOrder());
+			adapter.notifyDataSetChanged();
+
+			listExo.setOnItemClickListener(new AdapterView.OnItemClickListener()
+			{
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+				{
+					String filepath = Environment.getExternalStorageDirectory().getPath() + "/ModuleReco/Exercices/" + parent.getItemAtPosition(position);
+					File path = new File(filepath, "/ModuleReco/Exercices" + parent.getItemAtPosition(position));
+					Intent myIntent = new Intent(view.getContext(), Resultat.class);
+					myIntent.putExtra("path", filepath);
+					startActivity(myIntent);
+				}
+			});
+		}
+		catch (Exception e)
+		{
+			Toast.makeText(choixResultat.this, "Le dossier 'Exercices' est vide !", Toast.LENGTH_LONG).show();
+
+			e.getStackTrace();
+		}
+	}
+
+	private void verifierPermissions()
+	{
+		if ((ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) &&
+				(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) &&
+				(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED))
+		{
+			requestPermissions(new String[] { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO }, 1);
+		}
+	}
 }

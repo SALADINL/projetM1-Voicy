@@ -1,10 +1,9 @@
 #JSGF V1.0;
 grammar neighbors;
-public <Un beau matin> = [ sil ] <un> [ sil ] <b> <au> [ sil ] <m> <a> <t> <in> [ sil ];
+public <Un beau matin> = [ sil ] <in> [ sil ] <b> <au> [ sil ] <m> <a> <t> <in> [ sil ];
 <a> = aa;
 <au> = au;
 <b> = bb;
 <in> = in;
 <m> = mm;
 <t> = tt;
-<un> = un;

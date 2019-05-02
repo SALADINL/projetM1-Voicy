@@ -39,6 +39,12 @@ public class ExerciceSeguin extends Exercice
 		updateJsgf();
 	}
 
+	public ExerciceSeguin(int nb, Context context)
+	{
+		this(context);
+		max = nb;
+	}
+
 	public String getText()
 	{
 		return phrases.get(index);

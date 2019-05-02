@@ -1,8 +1,9 @@
 #JSGF V1.0;
 grammar neighbors;
-public <rien ne les retenait> = [ sil ] <r> <y> <in> [ <n> ] [ sil ] <n> <e> [ sil ] <l> <ai> [ sil ] <r> <e> <t> <e> <n> <ai> [ sil ];
+public <rien ne les retenait> = [ sil ] <r> <y> <in> [ sil ] <n> [ <eu> ] [ sil ] <l> <aei> [ sil ] <r> [ <eu> ] <t> [ <eu> ] <n> <ai> [ sil ];
+<aei> = ai | ei;
 <ai> = ai;
-<e> = ee;
+<eu> = eu;
 <in> = in;
 <l> = ll;
 <n> = nn;

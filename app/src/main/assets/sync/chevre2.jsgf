@@ -1,10 +1,11 @@
 #JSGF V1.0;
 grammar neighbors;
-public <Il les perdait toutes de la même façon> = [ sil ] <i> <l> [ sil ] <l> <ai> [ sil ] <p> <ai> <r> <d> <ai> [ sil ] <t> <ou> <t> [ <e> ] [ sil ] <d> <e> [ sil ] <l> <a> [ sil ] <m> <ai> <m> [ <e> ] [ sil ] <f> <a> <s> <on> [ sil ];
+public <Il les perdait toutes de la même façon> = [ sil ] <i> <l> [ sil ] <l> <aei> [ sil ] <p> <aei> <r> <d> <aei> [ sil ] <t> <ou> <t> [ <eu> ] [ sil ] <d> [ <eu> ] [ sil ] <l> <a> [ sil ] <m> <ai> <m> [ <eu> ] [ sil ] <f> <a> <s> <on> [ sil ];
 <a> = aa;
-<ai> = ai | ei;
+<aei> = ai | ei;
+<ai> = ai;
 <d> = dd;
-<e> = ee;
+<eu> = eu;
 <f> = ff;
 <i> = ii;
 <l> = ll;

@@ -95,41 +95,41 @@ public class DAP
 
 		decoder.endUtt();
 
-		int score = 0, scoreAvecSil = 0;
-		int premiereFrameSansSil = 10000, premiereFrameAvecSil = 10000,
-				derniereFrameSansSil = 0, derniereFrameAvecSil = 0;
+		int score = 0,
+				trames = 0,
+				tramesBonus = 0;
+
+		for (Segment seg : decoder.seg())
+		{
+			if (!seg.getWord().equals("SIL"))
+			{
+				trames += seg.getEndFrame() - seg.getStartFrame();
+				score += seg.getAscore();
+
+				if (seg.getEndFrame() != seg.getStartFrame())
+					tramesBonus++;
+			}
+			else if (tramesBonus != 0)
+			{
+				trames += tramesBonus - 1;
+				tramesBonus = 0;
+			}
+		}
+
+		if (tramesBonus != 0)
+		{
+			trames += tramesBonus - 1;
+		}
+
+		resultat.add("Score normalisé : " + ((float)score / trames) + "\n");
 
 		for (Segment seg : decoder.seg())
 		{
 			int start = seg.getStartFrame(),
-					end = seg.getEndFrame();
+				end   = seg.getEndFrame();
 			String mot = seg.getWord();
 
-			if (start < premiereFrameAvecSil)
-				premiereFrameAvecSil = start;
-
-			if (!mot.equals("SIL") && start < premiereFrameSansSil)
-				premiereFrameSansSil = start;
-
-			if (derniereFrameAvecSil < end)
-				derniereFrameAvecSil = end;
-
-			if (!mot.equals("SIL") && derniereFrameSansSil < end)
-				derniereFrameSansSil = end;
-
 			resultat.add(start + " - " + end + " : " + mot + " (" + seg.getAscore() + ")");
-			System.out.println(seg.getProb());
-			if (!mot.equals("SIL"))
-				score += seg.getAscore();
-
-			scoreAvecSil += seg.getAscore();
 		}
-
-		resultat.add("\n");
-		resultat.add("Score : " + score);
-		resultat.add("Score (avec silence) : " + scoreAvecSil);
-		resultat.add("\n");
-		resultat.add("Score normalisé : " + (float)score / (derniereFrameSansSil - premiereFrameSansSil));
-		resultat.add("Score normalisé (avec silence) : " + (float)scoreAvecSil / (derniereFrameAvecSil - premiereFrameAvecSil));
 	}
 }

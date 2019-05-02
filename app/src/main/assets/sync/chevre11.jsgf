@@ -1,12 +1,13 @@
 #JSGF V1.0;
 grammar neighbors;
-public <c'étaient paraît-il des chèvres indépendantes> = [ sil ] <s> <ai> <t> <ai> [ sil ] <p> <a> <r> <ai> [ <t> ] <i> <l> [ sil ] <d> <ai> [ sil ] <ch> <ai> <v> <r> [ <e> ] [ <z> ] [ sil ] <in> <d> <ai> <p> <an> <d> <an> <t> [ <e> ] [ sil ];
+public <c'étaient paraît-il des chèvres indépendantes> = [ sil ] <s> <aei> <t> <aei> [ sil ] <p> <a> <r> <aei> <t> <i> <l> [ sil ] <d> <aei> [ sil ] <ch> <ai> <v> <r> [ <eu> ] [ <z> ] [ sil ] <in> <d> <aei> <p> <an> <d> <an> <t> [ <eu> ] [ sil ];
 <a> = aa;
+<aei> = ai | ei;
 <ai> = ai;
 <an> = an;
 <ch> = ch;
 <d> = dd;
-<e> = ee;
+<eu> = eu;
 <i> = ii;
 <in> = in;
 <l> = ll;

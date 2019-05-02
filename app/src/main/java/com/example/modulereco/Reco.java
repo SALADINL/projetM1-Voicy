@@ -1,9 +1,12 @@
 package com.example.modulereco;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,9 +26,10 @@ public class Reco extends Activity
 	TextView mot = null;
 	TextView compteur = null;
 	Button enregistrer = null;
+
 	Button btEnd = null;
 	Button retour = null;
-	int type = 0;
+	int type = 0;  // 1 = exo avec mot 0 = exo avec phrase
 
 	ArrayList<String> tabPhrase = null;
 	ArrayList<String> tabPhoneme = null;
@@ -37,25 +41,30 @@ public class Reco extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_reco);
 
+		verifierPermissions();
+
 		mot = findViewById(R.id.mot);
 		compteur = findViewById(R.id.compteur);
 		enregistrer = findViewById(R.id.record);
 		btEnd = findViewById(R.id.btnEnd);
 		retour = findViewById(R.id.back);
 
-		type = 2;
+		Intent intent = getIntent();
+		type = intent.getIntExtra("type", 1);
+
+		int nbtest = 3;
 
 		if (type == 1)
 		{
 			tabPhoneme = new ArrayList<>();
 			tabDap = new ArrayList<>();
 			dap = new DAP(this);
-			exo = new ExerciceMot(5, this);
+			exo = new ExerciceMot(nbtest, this);
 		}
 		else if (type == 2)
 		{
 			tabPhrase = new ArrayList<>();
-			exo = new ExerciceSeguin(this);
+			exo = new ExerciceSeguin(nbtest, this);
 		}
 
 		initialiser();
@@ -68,7 +77,9 @@ public class Reco extends Activity
 			{
 				if (!rec.getRecording())
 				{
+					verifierPermissions();
 					rec.startRecording();
+					retour.setEnabled(false);
 					enregistrer.setText("STOP");
 				}
 				else
@@ -102,12 +113,12 @@ public class Reco extends Activity
 			{
 				exo.prev();
 				initialiser();
-				btEnd.setVisibility(View.GONE);
+				btEnd.setEnabled(false);
+
 				if (exo.getIndex() == 0)
 					retour.setEnabled(false);
 			}
 		});
-
 
 	}
 
@@ -137,12 +148,24 @@ public class Reco extends Activity
         }
 	}
 
+	private void verifierPermissions()
+	{
+		if ((ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) &&
+				(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) &&
+				(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED))
+		{
+			requestPermissions(new String[] { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO }, 1);
+		}
+	}
+
 	private void initialiser()
 	{
-		mot.setText("" + exo.getText());
+		mot.setText(exo.getText());
 		compteur.setText(exo.getIndex() + "/" + exo.getMax());
-
-		rec = new Recorder("" + exo.getIndex());
+		if (type == 1)
+			rec = new Recorder("" + exo.getText());
+		else
+			rec = new Recorder("" + exo.getIndex());
 	}
 
 	private void analyser()
@@ -188,7 +211,7 @@ public class Reco extends Activity
 		}
 		else if (type == 2)
 		{
-			FileWriter writer = new FileWriter((nom + 1) + "-score.txt");
+			FileWriter writer = new FileWriter(nom + "-score.txt");
 
 			for (String str : tabPhrase)
 				writer.write(str + "\n");
@@ -201,16 +224,18 @@ public class Reco extends Activity
 	{
 		if (type == 1)
 		{
-			if (!tabPhoneme.isEmpty())
-				tabPhoneme.clear();
-
-			if (!tabDap.isEmpty())
-				tabDap.clear();
+			if(tabPhoneme != null)
+				if (!tabPhoneme.isEmpty())
+					tabPhoneme.clear();
+			if(tabDap != null)
+				if (!tabDap.isEmpty())
+					tabDap.clear();
 		}
 		else if (type == 2)
 		{
-			if (! tabPhrase.isEmpty())
-				tabPhrase.clear();
+			if(tabPhrase != null)
+				if (!tabPhrase.isEmpty())
+					tabPhrase.clear();
 		}
 	}
 
