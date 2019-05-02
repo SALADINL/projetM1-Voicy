@@ -61,6 +61,27 @@ public class choixResultat extends Activity
 					startActivity(myIntent);
 				}
 			});
+
+			listExo.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+			{
+				@Override
+				public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
+				{
+					String filepath = Environment.getExternalStorageDirectory().getPath() + "/ModuleReco/Exercices/" + parent.getItemAtPosition(position);
+					File path = new File(filepath);//, "/ModuleReco/Exercices" + parent.getItemAtPosition(position));
+
+					if (path.exists())
+					{
+						supprimerDossier(path);
+						Toast.makeText(choixResultat.this, "Le dossier a été supprimé !", Toast.LENGTH_LONG).show();
+						return true;
+					}
+					else
+					{
+						return false;
+					}
+				}
+			});
 		}
 		catch (Exception e)
 		{
@@ -79,5 +100,26 @@ public class choixResultat extends Activity
 		{
 			requestPermissions(new String[] { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO }, 1);
 		}
+	}
+
+	private void supprimerDossier(File file)
+	{
+		if (file.isDirectory())
+		{
+			File[] listFiles = file.listFiles();
+
+			for (int i = 0; i < listFiles.length; i++)
+			{
+				if (listFiles[i].isDirectory())
+				{
+					supprimerDossier(listFiles[i]);
+				}
+				else
+				{
+					listFiles[i].delete();
+				}
+			}
+		}
+		file.delete();
 	}
 }
