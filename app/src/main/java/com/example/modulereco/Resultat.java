@@ -24,7 +24,6 @@ import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
