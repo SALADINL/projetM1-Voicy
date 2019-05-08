@@ -67,21 +67,42 @@ public class choixResultat extends Activity
 			listExo.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
 			{
 				@Override
-				public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
+				public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id)
 				{
 					String filepath = Environment.getExternalStorageDirectory().getPath() + "/ModuleReco/Exercices/" + parent.getItemAtPosition(position);
-					File path = new File(filepath);//, "/ModuleReco/Exercices" + parent.getItemAtPosition(position));
+					final File path = new File(filepath);//, "/ModuleReco/Exercices" + parent.getItemAtPosition(position));
 
-					if (path.exists())
+					AlertDialog.Builder alert = new AlertDialog.Builder(choixResultat.this);
+
+					alert.setTitle("Confirmation");
+					alert.setMessage("Êtes-vous sûr de vouloir supprimer cet exercice ?");
+
+					alert.setPositiveButton("Oui", new DialogInterface.OnClickListener()
 					{
-						supprimerDossier(path);
-						Toast.makeText(choixResultat.this, "Le dossier a été supprimé !", Toast.LENGTH_LONG).show();
-						return true;
-					}
-					else
+						@Override
+						public void onClick(DialogInterface dialog, int i)
+						{
+							if (path.exists())
+							{
+								supprimerDossier(path);
+								adapter.remove(adapter.getItem(position));
+								Toast.makeText(choixResultat.this, "L'exercice a été supprimé !", Toast.LENGTH_LONG).show();
+							}
+							dialog.dismiss();
+						}
+					});
+
+					alert.setNegativeButton("Non", new DialogInterface.OnClickListener()
 					{
-						return false;
-					}
+						@Override
+						public void onClick(DialogInterface dialog, int i)
+						{
+							dialog.dismiss();
+						}
+					});
+
+					alert.show();
+					return true;
 				}
 			});
 		}
