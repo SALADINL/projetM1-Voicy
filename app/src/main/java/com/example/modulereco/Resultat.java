@@ -69,7 +69,6 @@ public class Resultat  extends Activity
 
 		Collections.addAll(listItems, fileList);
 
-		Collections.sort(listItems);
 		adapter.notifyDataSetChanged();
 
 		getType();				//Savoir de quel type est le fichier phoneme mots phrase etc
