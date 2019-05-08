@@ -40,7 +40,7 @@ public class Reco extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_reco);
-
+		findViewById(R.id.loadingPanel).setVisibility(View.INVISIBLE);
 		verifierPermissions();
 
 		mot = findViewById(R.id.mot);
@@ -85,9 +85,9 @@ public class Reco extends Activity
 				else
 				{
 					rec.stopRecording();
-
+                    findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
 					analyser();
-
+					findViewById(R.id.loadingPanel).setVisibility(View.INVISIBLE);
 					try
 					{
 						sauverResultats();

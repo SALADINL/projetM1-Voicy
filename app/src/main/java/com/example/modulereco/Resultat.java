@@ -300,7 +300,7 @@ public class Resultat  extends Activity
 					dataCol.setPadding(0, 5, 0, 5);
 					dataCol.setTextColor(Color.WHITE);
 
-					if (!array2[array2.length-1].substring(0, array2[array2.length-1].length() - 1).equals("0)"))
+					if (!array2[array2.length-1].substring(0, array2[array2.length-1].length() - 1).equals("0"))
 					{
 						switch (j)
 						{
