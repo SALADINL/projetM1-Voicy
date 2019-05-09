@@ -8,12 +8,15 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends Activity
 {
     private Button btResultat;
     private Button btLogatome;
     private Button btPhrase;
+
+    private EditText nbExo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -26,6 +29,8 @@ public class MainActivity extends Activity
         btResultat = findViewById(R.id.btResultat);
         btLogatome = findViewById(R.id.btLogatome);
         btPhrase = findViewById(R.id.btPhrase);
+
+        nbExo = findViewById(R.id.nbExo);
 
         btPhrase.setOnClickListener(new View.OnClickListener()
         {
@@ -46,6 +51,7 @@ public class MainActivity extends Activity
                 verifierPermissions();
                 Intent intent = new Intent(MainActivity.this, Reco.class);
                 intent.putExtra("type", 1);
+                intent.putExtra("nbtest", Integer.parseInt(nbExo.getText().toString()));
                 startActivity(intent);
             }
         });

@@ -30,6 +30,7 @@ public class Reco extends Activity
 	Button btEnd = null;
 	Button retour = null;
 	int type = 0;  // 1 = exo avec mot 0 = exo avec phrase
+	int nbtest = 0;
 
 	ArrayList<String> tabPhrase = null;
 	ArrayList<String> tabPhoneme = null;
@@ -51,8 +52,9 @@ public class Reco extends Activity
 
 		Intent intent = getIntent();
 		type = intent.getIntExtra("type", 1);
+		nbtest = intent.getIntExtra("nbtest", 3);
 
-		int nbtest = 3;
+		//int nbtest = 3;
 
 		if (type == 1)
 		{
