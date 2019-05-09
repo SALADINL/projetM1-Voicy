@@ -87,7 +87,6 @@ public class Reco extends Activity
 					rec.stopRecording();
                     findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
 					analyser();
-					findViewById(R.id.loadingPanel).setVisibility(View.INVISIBLE);
 					try
 					{
 						sauverResultats();
@@ -96,12 +95,12 @@ public class Reco extends Activity
 					{
 						e.printStackTrace();
 					}
-
 					actualiser();
 					enregistrer.setText("Enregistrer");
 
 					if (exo.getIndex() > 0)
 						retour.setEnabled(true);
+                    findViewById(R.id.loadingPanel).setVisibility(View.INVISIBLE);
 				}
 			}
 		});
