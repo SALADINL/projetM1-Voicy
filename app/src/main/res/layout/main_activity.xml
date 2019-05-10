@@ -23,8 +23,8 @@
 
     <Button
         android:id="@+id/btLogatome"
-        android:layout_width="318dp"
-        android:layout_height="49dp"
+        android:layout_width="310dp"
+        android:layout_height="47dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="24dp"
@@ -51,15 +51,22 @@
 
     <EditText
         android:id="@+id/nbExo"
-        android:layout_width="49dp"
-        android:layout_height="46dp"
+        android:layout_width="37dp"
+        android:layout_height="47dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp"
         android:ems="10"
         android:inputType="number"
-        android:textSize="14sp"
+        android:text="3"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/btLogatome"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.24"
         app:layout_constraintStart_toEndOf="@+id/btLogatome"
-        app:layout_constraintTop_toTopOf="@+id/btLogatome" />
+        app:layout_constraintTop_toTopOf="@+id/btLogatome"
+        app:layout_constraintVertical_bias="0.0" />
 </android.support.constraint.ConstraintLayout>

@@ -54,8 +54,6 @@ public class Reco extends Activity
 		type = intent.getIntExtra("type", 1);
 		nbtest = intent.getIntExtra("nbtest", 3);
 
-		//int nbtest = 3;
-
 		if (type == 1)
 		{
 			tabPhoneme = new ArrayList<>();

@@ -9,9 +9,9 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-public class MainActivity extends Activity
-{
+public class MainActivity extends Activity {
     private Button btResultat;
     private Button btLogatome;
     private Button btPhrase;
@@ -19,8 +19,7 @@ public class MainActivity extends Activity
     private EditText nbExo;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
@@ -32,34 +31,36 @@ public class MainActivity extends Activity
 
         nbExo = findViewById(R.id.nbExo);
 
-        btPhrase.setOnClickListener(new View.OnClickListener()
-        {
+        btPhrase.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 verifierPermissions();
                 Intent intent = new Intent(MainActivity.this, Reco.class);
                 intent.putExtra("type", 2);
                 startActivity(intent);
             }
         });
-        btLogatome.setOnClickListener(new View.OnClickListener()
-        {
+        btLogatome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
                 verifierPermissions();
                 Intent intent = new Intent(MainActivity.this, Reco.class);
                 intent.putExtra("type", 1);
-                intent.putExtra("nbtest", Integer.parseInt(nbExo.getText().toString()));
+                try
+                {
+                    intent.putExtra("nbtest", Integer.parseInt(nbExo.getText().toString()));
+                }
+                catch (Exception e)
+                {
+                    e.getStackTrace();
+                }
                 startActivity(intent);
             }
         });
-        btResultat.setOnClickListener(new View.OnClickListener()
-        {
+        btResultat.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 verifierPermissions();
                 Intent intent = new Intent(MainActivity.this, choixResultat.class);
                 startActivity(intent);
@@ -67,13 +68,11 @@ public class MainActivity extends Activity
         });
     }
 
-    private void verifierPermissions()
-    {
+    private void verifierPermissions() {
         if ((ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) &&
                 (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) &&
-                (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED))
-        {
-            requestPermissions(new String[] { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO }, 1);
+                (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO}, 1);
         }
     }
 }
