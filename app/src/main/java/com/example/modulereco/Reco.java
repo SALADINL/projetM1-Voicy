@@ -87,14 +87,6 @@ public class Reco extends Activity
 					rec.stopRecording();
                     findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
 					analyser();
-					try
-					{
-						sauverResultats();
-					}
-					catch (IOException e)
-					{
-						e.printStackTrace();
-					}
 					actualiser();
 					enregistrer.setText("Enregistrer");
 
@@ -183,8 +175,18 @@ public class Reco extends Activity
 		else if (type == 2)
 		{
 			alignement = new Alignement(Reco.this, Alignement.VOISIN);
-			tabPhrase = alignement.convertir(wav);
 		}
+
+		try
+		{
+			sauverResultats();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		alignement.convertirSemi(wav, type);
 	}
 
 	private void sauverResultats() throws IOException

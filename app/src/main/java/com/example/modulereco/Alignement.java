@@ -1,10 +1,13 @@
 package com.example.modulereco;
 
 import android.content.Context;
+import android.util.Pair;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -155,5 +158,64 @@ public class Alignement
 
 			resultat.add(start + " - " + end + " : " + mot + " (" + seg.getAscore() + ")");
 		}
+	}
+
+	public ArrayList<String> convertirSemi(final File fichier, int type)
+	{
+		String path = fichier.getAbsolutePath();
+		path = path.substring(0, path.length() - 4);
+
+		if (type == 1)
+			 path += "-score-phoneme.txt";
+		else if (type == 2)
+			path += "-score.txt";
+
+		ArrayList<Pair<Float, Float>> res = getTimings(path);
+
+		for (Pair<Float, Float> p : res)
+		{
+			System.out.println("----------" + p.first + " /" + p.second);
+		}
+
+		return null;
+	}
+
+	private ArrayList<Pair<Float, Float>> getTimings(String path)
+	{
+		File fichier = new File(path);
+		ArrayList<String> fichierString = new ArrayList<>();
+		ArrayList<Pair<Float, Float>> res = new ArrayList<>();
+
+		try
+		{
+			BufferedReader br = new BufferedReader(new FileReader(fichier));
+
+			String st;
+			int ligne = 0;
+
+			while ((st = br.readLine()) != null)
+			{
+				if (ligne >= 2 && !st.contains("sil") && !st.contains("SIL") && !st.contains("NULL"))
+					fichierString.add(st.substring(0, st.indexOf(":") - 1));
+
+				ligne++;
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		for (String s : fichierString)
+		{
+			int debut, fin;
+
+			debut = Integer.parseInt(s.substring(0, s.indexOf("-") - 1));
+			fin = Integer.parseInt(s.substring(s.indexOf("-") + 2));
+
+			res.add(new Pair<>((float) debut / 100, (float) fin / 100));
+		}
+
+		return res;
 	}
 }
