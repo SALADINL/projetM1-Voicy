@@ -12,6 +12,8 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -26,6 +28,8 @@ public class choixResultat extends Activity
 	private ArrayList<String> listItems = new ArrayList<>();
 	private ArrayAdapter<String> adapter;
 
+	private Button homeButton;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -33,6 +37,8 @@ public class choixResultat extends Activity
 		setContentView(R.layout.choix_exercice);
 
 		verifierPermissions();
+
+		homeButton = findViewById(R.id.homeButton);
 
 		listExo = findViewById(R.id.listExo);
 		adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listItems);
@@ -113,6 +119,17 @@ public class choixResultat extends Activity
 
 			e.getStackTrace();
 		}
+
+		homeButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(choixResultat.this, MainActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			}
+		});
 	}
 
 	private void verifierPermissions()

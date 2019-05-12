@@ -2,6 +2,7 @@ package com.example.modulereco;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -46,6 +48,8 @@ public class Resultat  extends Activity
 	private ImageView play;
 	private MediaPlayer mediaPlayer;
 
+	private Button homeButton;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -59,6 +63,9 @@ public class Resultat  extends Activity
 		filepath = bund.getString("path");
 
 		listMot = findViewById(R.id.listMot);
+
+		homeButton = findViewById(R.id.homeButton);
+
 		adapter = new ArrayAdapter<>(this,
 					android.R.layout.simple_list_item_1,
 					listItems);
@@ -160,6 +167,17 @@ public class Resultat  extends Activity
 						}
 					});
 				}
+			}
+		});
+
+		homeButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(Resultat.this, MainActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
 			}
 		});
 	}
