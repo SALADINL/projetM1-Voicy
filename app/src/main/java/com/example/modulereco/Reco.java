@@ -27,6 +27,8 @@ public class Reco extends Activity
 	TextView compteur = null;
 	Button enregistrer = null;
 
+	Button annuler;
+
 	Button btEnd = null;
 	Button retour = null;
 	int type = 0;  // 1 = exo avec mot 0 = exo avec phrase
@@ -50,6 +52,8 @@ public class Reco extends Activity
 		btEnd = findViewById(R.id.btnEnd);
 		retour = findViewById(R.id.back);
 
+		annuler = findViewById(R.id.annuler);
+
 		Intent intent = getIntent();
 		type = intent.getIntExtra("type", 1);
 		nbtest = intent.getIntExtra("nbtest", 3);
@@ -68,7 +72,8 @@ public class Reco extends Activity
 		}
 
 		initialiser();
-		creerDossier();
+		//creerDossier();
+        final File file = creerDossierv2();
 
 		enregistrer.setOnClickListener(new View.OnClickListener()
 		{
@@ -116,6 +121,21 @@ public class Reco extends Activity
 
 				if (exo.getIndex() == 0)
 					retour.setEnabled(false);
+			}
+		});
+
+		annuler.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+               	//System.out.println("file : " + file);
+
+				supprimerDossier(file);
+
+				Intent intent = new Intent(Reco.this, MainActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
 			}
 		});
 
@@ -238,7 +258,7 @@ public class Reco extends Activity
 		}
 	}
 
-	private void creerDossier()
+	/*private void creerDossier()
 	{
 		File file = new File(Environment.getExternalStorageDirectory().getPath(),"ModuleReco/Exercices/Exo" + rec.getCurrentTimeUsingCalendar("1"));
 
@@ -246,5 +266,38 @@ public class Reco extends Activity
 			file.mkdirs();
 
 		rec.setExo("Exo" + rec.getCurrentTimeUsingCalendar("1"));
-	}
+	}*/
+
+    private File creerDossierv2()
+    {
+        File file = new File(Environment.getExternalStorageDirectory().getPath(),"ModuleReco/Exercices/Exo" + rec.getCurrentTimeUsingCalendar("1"));
+
+        if (!file.exists())
+            file.mkdirs();
+
+        rec.setExo("Exo" + rec.getCurrentTimeUsingCalendar("1"));
+
+        return file;
+    }
+
+    private void supprimerDossier(File file)
+    {
+        if (file.isDirectory())
+        {
+            File[] listFiles = file.listFiles();
+
+            for (int i = 0; i < listFiles.length; i++)
+            {
+                if (listFiles[i].isDirectory())
+                {
+                    supprimerDossier(listFiles[i]);
+                }
+                else
+                {
+                    listFiles[i].delete();
+                }
+            }
+        }
+        file.delete();
+    }
 }
