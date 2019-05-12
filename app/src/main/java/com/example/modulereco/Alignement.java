@@ -199,12 +199,12 @@ public class Alignement
 
 		for (String s : fichierString)
 		{
-			float debut, fin;
+			int debut, fin;
 
-			debut = (float) Integer.parseInt(s.substring(0, s.indexOf("-") - 1)) / 100 * 32000;
-			fin = (float) Integer.parseInt(s.substring(s.indexOf("-") + 2)) / 100 * 32000;
+			debut = Integer.parseInt(s.substring(0, s.indexOf("-") - 1)) * 320;
+			fin = Integer.parseInt(s.substring(s.indexOf("-") + 2)) * 320;
 
-			res.add(new Pair<>((int) debut, (int) fin));
+			res.add(new Pair<>(debut, fin));
 		}
 
 		return res;

@@ -170,7 +170,6 @@ public class Reco extends Activity
 		{
 			alignement = new Alignement(Reco.this, Alignement.PHONEME);
 			tabPhoneme = alignement.convertir(wav);
-			dap = new DAP(Reco.this);
 			tabDap = dap.convertir(wav);
 		}
 		else if (type == 2)
@@ -190,8 +189,8 @@ public class Reco extends Activity
 
 		ArrayList<Pair<Integer, Integer>> timings = alignement.getTimings(wav, type);
 
-		dap = new DAP(Reco.this);
 		int i = 0;
+		dap = new DAP(this);
 
 		for (Pair<Integer, Integer> p : timings)
 		{

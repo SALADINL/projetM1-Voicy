@@ -24,6 +24,7 @@ public class DAP
 	private ArrayList<String> resultat;
 	private Context contexte;
 	private Decoder decoder = null;
+	private Config c = null;
 
 	public DAP(Context contexte)
 	{
@@ -35,7 +36,7 @@ public class DAP
 			Assets assets = new Assets(this.contexte);
 			File assetsDir = assets.syncAssets();
 
-			Config c = Decoder.defaultConfig();
+			c = Decoder.defaultConfig();
 			c.setString("-hmm", new File(assetsDir, "ptm").getPath());
 			c.setString("-allphone", new File(assetsDir, "fr-phone.lm.dmp").getPath());
 			c.setBoolean("-backtrace", true);
@@ -150,8 +151,9 @@ public class DAP
 	private void faireDAP(final InputStream stream, int debut, int fin)
 	{
 		decoder.startUtt();
-		int duree = fin - debut, nbytes, byteslus = 0;
+		int duree = fin - debut + 1, nbytes, byteslus = 0;
 		byte[] b = new byte[256];
+		decoder.setRawdataSize(256);
 
 		try
 		{
@@ -171,7 +173,10 @@ public class DAP
 				decoder.processRaw(s, nbytes / 2, false, false);
 
 				if (byteslus + 256 > duree)
+				{
 					b = new byte[duree - byteslus];
+					decoder.setRawdataSize(duree - byteslus);
+				}
 			} while (byteslus < duree);
 		}
 		catch (IOException e)
