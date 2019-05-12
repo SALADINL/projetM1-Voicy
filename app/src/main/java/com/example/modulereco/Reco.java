@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.content.ContextCompat;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -175,6 +176,7 @@ public class Reco extends Activity
 		else if (type == 2)
 		{
 			alignement = new Alignement(Reco.this, Alignement.VOISIN);
+			tabPhrase = alignement.convertir(wav);
 		}
 
 		try
@@ -186,7 +188,18 @@ public class Reco extends Activity
 			e.printStackTrace();
 		}
 
-		alignement.convertirSemi(wav, type);
+		ArrayList<Pair<Integer, Integer>> timings = alignement.getTimings(wav, type);
+
+		dap = new DAP(Reco.this);
+
+		int i = 0;
+
+		for (Pair<Integer, Integer> p : timings)
+		{
+			System.out.println("============== Segment n°" + ++i + " ==============");
+			System.out.println("========= " + p.first + " -> " + p.second + " (" + (p.second - p.first) + ") =========");
+			dap.convertirSemi(wav, p.first, p.second);
+		}
 	}
 
 	private void sauverResultats() throws IOException

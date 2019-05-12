@@ -98,7 +98,8 @@ public class Alignement
 	private void aligner(final InputStream stream)
 	{
 		decoder.startUtt();
-		byte[] b = new byte[4096];
+		byte[] b = new byte[1024];
+		int i = 0;
 
 		try
 		{
@@ -113,7 +114,9 @@ public class Alignement
 				short[] s = new short[nbytes / 2];
 				bb.asShortBuffer().get(s);
 				decoder.processRaw(s, nbytes / 2, false, false);
+				i += nbytes;
 			}
+			System.out.println("------------- " + i);
 		}
 		catch (IOException e)
 		{
@@ -123,8 +126,8 @@ public class Alignement
 		decoder.endUtt();
 
 		int score = 0,
-			trames = 0,
-			tramesBonus = 0;
+				trames = 0,
+				tramesBonus = 0;
 
 		for (Segment seg : decoder.seg())
 		{
@@ -153,42 +156,30 @@ public class Alignement
 		for (Segment seg : decoder.seg())
 		{
 			int start = seg.getStartFrame(),
-				end   = seg.getEndFrame();
+					end   = seg.getEndFrame();
 			String mot = seg.getWord();
 
 			resultat.add(start + " - " + end + " : " + mot + " (" + seg.getAscore() + ")");
 		}
 	}
 
-	public ArrayList<String> convertirSemi(final File fichier, int type)
+	public ArrayList<Pair<Integer, Integer>> getTimings(final File fichier, int type)
 	{
 		String path = fichier.getAbsolutePath();
 		path = path.substring(0, path.length() - 4);
 
 		if (type == 1)
-			 path += "-score-phoneme.txt";
+			path += "-score-phoneme.txt";
 		else if (type == 2)
 			path += "-score.txt";
 
-		ArrayList<Pair<Float, Float>> res = getTimings(path);
-
-		for (Pair<Float, Float> p : res)
-		{
-			System.out.println("----------" + p.first + " /" + p.second);
-		}
-
-		return null;
-	}
-
-	private ArrayList<Pair<Float, Float>> getTimings(String path)
-	{
-		File fichier = new File(path);
+		File fichiertxt = new File(path);
 		ArrayList<String> fichierString = new ArrayList<>();
-		ArrayList<Pair<Float, Float>> res = new ArrayList<>();
+		ArrayList<Pair<Integer, Integer>> res = new ArrayList<>();
 
 		try
 		{
-			BufferedReader br = new BufferedReader(new FileReader(fichier));
+			BufferedReader br = new BufferedReader(new FileReader(fichiertxt));
 
 			String st;
 			int ligne = 0;
@@ -208,12 +199,12 @@ public class Alignement
 
 		for (String s : fichierString)
 		{
-			int debut, fin;
+			float debut, fin;
 
-			debut = Integer.parseInt(s.substring(0, s.indexOf("-") - 1));
-			fin = Integer.parseInt(s.substring(s.indexOf("-") + 2));
+			debut = (float) Integer.parseInt(s.substring(0, s.indexOf("-") - 1)) / 100 * 32033;
+			fin = (float) Integer.parseInt(s.substring(s.indexOf("-") + 2)) / 100 * 32033;
 
-			res.add(new Pair<>((float) debut / 100, (float) fin / 100));
+			res.add(new Pair<>((int) debut, (int) fin));
 		}
 
 		return res;
