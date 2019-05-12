@@ -150,31 +150,36 @@ public class DAP
 	private void faireDAP(final InputStream stream, int debut, int fin)
 	{
 		decoder.startUtt();
-		int duree = fin - debut;
-		byte[] b = new byte[debut];
+		int duree = fin - debut, nbytes, byteslus = 0;
+		byte[] b = new byte[256];
 
 		try
 		{
-			stream.read(b); //On passe les bits inutiles
-			b = new byte[duree];
+			stream.skip(debut); //On passe les bits inutiles
 
-			int nbytes;
+			do
+			{
+				nbytes = stream.read(b);
+				byteslus += nbytes;
 
-			nbytes = stream.read(b);
+				ByteBuffer bb = ByteBuffer.wrap(b, 0, nbytes);
 
-			ByteBuffer bb = ByteBuffer.wrap(b, 0, nbytes);
+				bb.order(ByteOrder.LITTLE_ENDIAN);
 
-			bb.order(ByteOrder.LITTLE_ENDIAN);
+				short[] s = new short[nbytes / 2];
+				bb.asShortBuffer().get(s);
+				decoder.processRaw(s, nbytes / 2, false, false);
 
-			short[] s = new short[nbytes / 2];
-			bb.asShortBuffer().get(s);
-			decoder.processRaw(s, nbytes / 2, false, false);
+				if (byteslus + 256 > duree)
+					b = new byte[duree - byteslus];
+			} while (byteslus < duree);
 		}
 		catch (IOException e)
 		{
 			System.out.println("Error when reading inputstream" + e.getMessage());
 		}
 
+		System.out.println("========= " + byteslus + " bytes lus");
 		decoder.endUtt();
 
 		int score = 0,

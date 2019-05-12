@@ -201,8 +201,8 @@ public class Alignement
 		{
 			float debut, fin;
 
-			debut = (float) Integer.parseInt(s.substring(0, s.indexOf("-") - 1)) / 100 * 32033;
-			fin = (float) Integer.parseInt(s.substring(s.indexOf("-") + 2)) / 100 * 32033;
+			debut = (float) Integer.parseInt(s.substring(0, s.indexOf("-") - 1)) / 100 * 32000;
+			fin = (float) Integer.parseInt(s.substring(s.indexOf("-") + 2)) / 100 * 32000;
 
 			res.add(new Pair<>((int) debut, (int) fin));
 		}

@@ -191,7 +191,6 @@ public class Reco extends Activity
 		ArrayList<Pair<Integer, Integer>> timings = alignement.getTimings(wav, type);
 
 		dap = new DAP(Reco.this);
-
 		int i = 0;
 
 		for (Pair<Integer, Integer> p : timings)
