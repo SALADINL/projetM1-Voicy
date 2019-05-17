@@ -33,6 +33,7 @@ public class Reco extends Activity
 	Button retour = null;
 	int type = 0;  // 1 = exo avec mot 0 = exo avec phrase
 	int nbtest = 0;
+	int nbPhrase = 0;
 
 	ArrayList<String> tabPhrase = null;
 	ArrayList<String> tabPhoneme = null;
@@ -57,6 +58,7 @@ public class Reco extends Activity
 		Intent intent = getIntent();
 		type = intent.getIntExtra("type", 1);
 		nbtest = intent.getIntExtra("nbtest", 3);
+		nbPhrase = intent.getIntExtra("nbPhrase", 3);
 
 		if (type == 1)
 		{
@@ -68,7 +70,7 @@ public class Reco extends Activity
 		else if (type == 2)
 		{
 			tabPhrase = new ArrayList<>();
-			exo = new ExerciceSeguin(nbtest, this);
+			exo = new ExerciceSeguin(nbPhrase, this);
 		}
 
 		initialiser();

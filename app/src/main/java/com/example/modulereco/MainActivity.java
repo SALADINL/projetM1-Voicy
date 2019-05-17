@@ -17,6 +17,7 @@ public class MainActivity extends Activity {
     private Button btPhrase;
 
     private EditText nbExo;
+    private EditText nbPhrase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class MainActivity extends Activity {
         btPhrase = findViewById(R.id.btPhrase);
 
         nbExo = findViewById(R.id.nbExo);
+        nbPhrase = findViewById(R.id.nbPhrase);
 
         btPhrase.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,7 +39,22 @@ public class MainActivity extends Activity {
                 verifierPermissions();
                 Intent intent = new Intent(MainActivity.this, Reco.class);
                 intent.putExtra("type", 2);
-                startActivity(intent);
+                try
+                {
+                    if (Integer.parseInt(nbPhrase.getText().toString()) >= 13)
+                    {
+                        Toast.makeText(MainActivity.this, "Le nombre de phrase autorisé est de 12 !", Toast.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+                        intent.putExtra("nbPhrase", Integer.parseInt(nbPhrase.getText().toString()));
+                        startActivity(intent);
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.getStackTrace();
+                }
             }
         });
         btLogatome.setOnClickListener(new View.OnClickListener() {
