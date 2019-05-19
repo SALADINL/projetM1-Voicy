@@ -28,6 +28,17 @@ public class ExerciceMot extends Exercice
 		init(dico);
 	}
 
+	public ExerciceMot(int nb, Context context)
+	{
+		super(context);
+
+		max = nb;
+		mots = new ArrayList<>();
+		dico = new File(assetsDir, "mots.dict");
+
+		init(dico);
+	}
+
 	public ExerciceMot(int nb, int numeroListes, Context context)
 	{
 		super(context);

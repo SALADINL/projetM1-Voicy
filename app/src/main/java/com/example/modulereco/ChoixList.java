@@ -31,6 +31,7 @@ public class ChoixList extends Activity
             {
                 Intent intent = new Intent(ChoixList.this, Reco.class);
                 intent.putExtra("numeroDeListe", 1);
+                intent.putExtra("random", 0);
                 startActivity(intent);
             }
         });
@@ -42,6 +43,7 @@ public class ChoixList extends Activity
             {
                 Intent intent = new Intent(ChoixList.this, Reco.class);
                 intent.putExtra("numeroDeListe", 2);
+                intent.putExtra("random", 0);
                 startActivity(intent);
             }
         });
@@ -53,6 +55,7 @@ public class ChoixList extends Activity
             {
                 Intent intent = new Intent(ChoixList.this, Reco.class);
                 intent.putExtra("numeroDeListe", 3);
+                intent.putExtra("random", 0);
                 startActivity(intent);
             }
         });
@@ -64,6 +67,7 @@ public class ChoixList extends Activity
             {
                 Intent intent = new Intent(ChoixList.this, Reco.class);
                 intent.putExtra("numeroDeListe", 4);
+                intent.putExtra("random", 0);
                 startActivity(intent);
             }
         });

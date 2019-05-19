@@ -16,8 +16,9 @@ public class MainActivity extends Activity
     private Button btResultat;
     private Button btLogatome;
     private Button btPhrase;
+    private Button button;
 
-    //private EditText nbExo;
+    private EditText nbExo;
     private EditText nbPhrase;
 
     @Override
@@ -30,8 +31,9 @@ public class MainActivity extends Activity
         btResultat = findViewById(R.id.btResultat);
         btLogatome = findViewById(R.id.btLogatome);
         btPhrase = findViewById(R.id.btPhrase);
+        button = findViewById(R.id.button);
 
-        //nbExo = findViewById(R.id.nbExo);
+        nbExo = findViewById(R.id.nbExo);
         nbPhrase = findViewById(R.id.nbPhrase);
 
         btPhrase.setOnClickListener(new View.OnClickListener()
@@ -75,6 +77,25 @@ public class MainActivity extends Activity
                 {
                     e.getStackTrace();
                 }*/
+                startActivity(intent);
+            }
+        });
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                verifierPermissions();
+                Intent intent = new Intent(MainActivity.this, Reco.class);
+                intent.putExtra("type", 1);
+                intent.putExtra("random", 1);
+                try
+                {
+                    intent.putExtra("nbtest", Integer.parseInt(nbExo.getText().toString()));
+                }
+                catch (Exception e)
+                {
+                    e.getStackTrace();
+                }
                 startActivity(intent);
             }
         });
