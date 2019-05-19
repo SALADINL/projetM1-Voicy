@@ -11,12 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity
+{
     private Button btResultat;
     private Button btLogatome;
     private Button btPhrase;
 
-    private EditText nbExo;
+    //private EditText nbExo;
     private EditText nbPhrase;
 
     @Override
@@ -30,12 +31,14 @@ public class MainActivity extends Activity {
         btLogatome = findViewById(R.id.btLogatome);
         btPhrase = findViewById(R.id.btPhrase);
 
-        nbExo = findViewById(R.id.nbExo);
+        //nbExo = findViewById(R.id.nbExo);
         nbPhrase = findViewById(R.id.nbPhrase);
 
-        btPhrase.setOnClickListener(new View.OnClickListener() {
+        btPhrase.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 verifierPermissions();
                 Intent intent = new Intent(MainActivity.this, Reco.class);
                 intent.putExtra("type", 2);
@@ -62,16 +65,16 @@ public class MainActivity extends Activity {
             public void onClick(View v)
             {
                 verifierPermissions();
-                Intent intent = new Intent(MainActivity.this, Reco.class);
-                intent.putExtra("type", 1);
-                try
+                Intent intent = new Intent(MainActivity.this, ChoixList.class);
+                //intent.putExtra("type", 1);
+                /*try
                 {
                     intent.putExtra("nbtest", Integer.parseInt(nbExo.getText().toString()));
                 }
                 catch (Exception e)
                 {
                     e.getStackTrace();
-                }
+                }*/
                 startActivity(intent);
             }
         });

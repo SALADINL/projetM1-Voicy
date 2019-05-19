@@ -2,9 +2,11 @@ package com.example.modulereco;
 
 import android.content.Context;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,16 +28,40 @@ public class ExerciceMot extends Exercice
 		init(dico);
 	}
 
-	public ExerciceMot(int nb, Context context)
+	public ExerciceMot(int nb, int numeroListes, Context context)
 	{
 		super(context);
 
 		max = nb;
 		mots = new ArrayList<>();
-		dico = new File(assetsDir, "mots.dict");
+		dico = new File(assetsDir, "list" + numeroListes + ".dict");
 
-		init(dico);
+		initAvecListe(dico);
 	}
+
+	public void initAvecListe(File f)
+	{
+		mots.clear();
+
+		String[] res = null;
+
+		try (BufferedReader br = new BufferedReader(new FileReader(f)))
+		{
+			String line;
+			while ((line = br.readLine()) != null)
+			{
+				res = line.split("\t");
+				mots.add(new Mot(res[0], res[1]));
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		updateJsgf();
+	}
+
 
 	public void init(File f)
 	{

@@ -34,6 +34,7 @@ public class Reco extends Activity
 	int type = 0;  // 1 = exo avec mot 0 = exo avec phrase
 	int nbtest = 0;
 	int nbPhrase = 0;
+	int numeroDeListe = 0;
 
 	ArrayList<String> tabPhrase = null;
 	ArrayList<String> tabPhoneme = null;
@@ -59,13 +60,15 @@ public class Reco extends Activity
 		type = intent.getIntExtra("type", 1);
 		nbtest = intent.getIntExtra("nbtest", 3);
 		nbPhrase = intent.getIntExtra("nbPhrase", 3);
+		numeroDeListe = intent.getIntExtra("numeroDeListe", 1);
 
 		if (type == 1)
 		{
 			tabPhoneme = new ArrayList<>();
 			tabDap = new ArrayList<>();
 			dap = new DAP(this);
-			exo = new ExerciceMot(nbtest, this);
+			//exo = new ExerciceMot(nbtest, this);
+			exo = new ExerciceMot(52, numeroDeListe,this);
 		}
 		else if (type == 2)
 		{
