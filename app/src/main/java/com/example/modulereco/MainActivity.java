@@ -48,7 +48,7 @@ public class MainActivity extends Activity
                 {
                     if (Integer.parseInt(nbPhrase.getText().toString()) >= 13)
                     {
-                        Toast.makeText(MainActivity.this, "Le nombre de phrase autorisé est de 12 !", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "Le nombre maximum de phrases autorisés est de 12 !", Toast.LENGTH_LONG).show();
                     }
                     else
                     {
@@ -68,15 +68,6 @@ public class MainActivity extends Activity
             {
                 verifierPermissions();
                 Intent intent = new Intent(MainActivity.this, ChoixList.class);
-                //intent.putExtra("type", 1);
-                /*try
-                {
-                    intent.putExtra("nbtest", Integer.parseInt(nbExo.getText().toString()));
-                }
-                catch (Exception e)
-                {
-                    e.getStackTrace();
-                }*/
                 startActivity(intent);
             }
         });
