@@ -1,4 +1,4 @@
-# Module Reco
+# Voicy
 
 Module permettant d'évaluer la prononciation d'une personne suite à différents exercices.
 
