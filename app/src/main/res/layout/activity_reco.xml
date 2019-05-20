@@ -39,12 +39,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mot" />
 
-    <Button
+    <ImageButton
         android:id="@+id/record"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="124dp"
+        android:layout_height="119dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginEnd="140dp"
         android:layout_marginBottom="15dp"
-        android:text="Enregistrer"
+        android:background="@drawable/ic_brightness_1_black_24dp"
+        android:src="@drawable/ic_mic_black_85dp"
         app:layout_constraintBottom_toTopOf="@+id/back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.io.File;
@@ -25,7 +26,7 @@ public class Reco extends Activity
 	DAP dap = null;
 	TextView mot = null;
 	TextView compteur = null;
-	Button enregistrer = null;
+	ImageButton enregistrer = null;
 
 	Button annuler;
 
@@ -98,7 +99,7 @@ public class Reco extends Activity
 					verifierPermissions();
 					rec.startRecording();
 					retour.setEnabled(false);
-					enregistrer.setText("STOP");
+					enregistrer.setImageResource(R.drawable.ic_mic_black_85dp2);
 				}
 				else
 				{
@@ -114,7 +115,7 @@ public class Reco extends Activity
 						e.printStackTrace();
 					}
 					actualiser();
-					enregistrer.setText("Enregistrer");
+					enregistrer.setImageResource(R.drawable.ic_mic_black_85dp);
 
 					if (exo.getIndex() > 0)
 						retour.setEnabled(true);
