@@ -1,6 +1,7 @@
 package com.example.modulereco;
 
 import android.content.Context;
+import android.os.Environment;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -45,7 +46,11 @@ public class ExerciceMot extends Exercice
 
 		max = nb;
 		mots = new ArrayList<>();
-		dico = new File(assetsDir, "list" + numeroListes + ".dict");
+		//dico = new File(assetsDir, "Listes/Liste " + numeroListes);
+		String filepath = Environment.getExternalStorageDirectory().getPath();
+		int num = numeroListes + 1;
+		dico = new File(filepath, "/ModuleReco/Listes/Liste " + num);
+		System.out.println("dico : " + dico);
 
 		initAvecListe(dico);
 	}
