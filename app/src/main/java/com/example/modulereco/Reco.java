@@ -70,6 +70,7 @@ public class Reco extends Activity
 			tabPhoneme = new ArrayList<>();
 			tabDap = new ArrayList<>();
 			dap = new DAP(this);
+			System.out.println("numeroDeListe : " + numeroDeListe);
 			exo = new ExerciceMot(52, numeroDeListe,this);
 		}
 		else if (type == 1 && random == 1)

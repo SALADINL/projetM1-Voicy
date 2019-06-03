@@ -12,17 +12,25 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class ChoixList extends Activity {
+import edu.cmu.pocketsphinx.Assets;
+
+public class ChoixList extends Activity
+{
     private Button home;
     private ListView listes = null;
     private ArrayList<String> listItems = new ArrayList<>();
     private ArrayAdapter<String> adapter;
 
-    //private Button list1, list2, list3, list4;
+    protected Assets assets = null;
+    protected File assetsDir = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -31,6 +39,30 @@ public class ChoixList extends Activity {
         setContentView(R.layout.choix_list);
 
         creerListe();
+
+        try
+        {
+            assets = new Assets(this);
+            assetsDir = assets.syncAssets();
+        }
+        catch (IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+
+        File source = new File(assetsDir, "/Listes");
+
+        File destination = new File(Environment.getExternalStorageDirectory().getPath(), "/ModuleReco/Listes/");
+
+        if (source.isDirectory())
+        {
+            File[] listFiles = source.listFiles();
+
+            for (int i = 0; i < listFiles.length; i++)
+            {
+                copyFileOrDirectory(String.valueOf(listFiles[i]), String.valueOf(destination));
+            }
+        }
 
         home = findViewById(R.id.home);
         listes = findViewById(R.id.listes);
@@ -90,5 +122,58 @@ public class ChoixList extends Activity {
             file.mkdirs();
 
         return file;
+    }
+
+
+    // https://stackoverflow.com/questions/29867121/how-to-copy-programmatically-a-file-to-another-directory
+
+    public static void copyFileOrDirectory(String srcDir, String dstDir)
+    {
+        try
+        {
+            File src = new File(srcDir);
+            File dst = new File(dstDir, src.getName());
+
+            if (src.isDirectory())
+            {
+                String files[] = src.list();
+                int filesLength = files.length;
+                for (int i = 0; i < filesLength; i++) {
+                    String src1 = (new File(src, files[i]).getPath());
+                    String dst1 = dst.getPath();
+                    copyFileOrDirectory(src1, dst1);
+
+                }
+            } else {
+                copyFile(src, dst);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void copyFile(File sourceFile, File destFile) throws IOException {
+        if (!destFile.getParentFile().exists())
+            destFile.getParentFile().mkdirs();
+
+        if (!destFile.exists()) {
+            destFile.createNewFile();
+        }
+
+        FileChannel source = null;
+        FileChannel destination = null;
+
+        try {
+            source = new FileInputStream(sourceFile).getChannel();
+            destination = new FileOutputStream(destFile).getChannel();
+            destination.transferFrom(source, 0, source.size());
+        } finally {
+            if (source != null) {
+                source.close();
+            }
+            if (destination != null) {
+                destination.close();
+            }
+        }
     }
 }

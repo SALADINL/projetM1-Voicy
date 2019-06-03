@@ -49,7 +49,7 @@ public class ExerciceMot extends Exercice
 		//dico = new File(assetsDir, "Listes/Liste " + numeroListes);
 		String filepath = Environment.getExternalStorageDirectory().getPath();
 		int num = numeroListes + 1;
-		dico = new File(filepath, "/ModuleReco/Listes/Liste " + num);
+		dico = new File(filepath, "/ModuleReco/Listes/Liste" + num);
 		System.out.println("dico : " + dico);
 
 		initAvecListe(dico);
