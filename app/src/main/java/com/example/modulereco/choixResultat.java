@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+/***
+ * Cette classe permet l'affichage des résultats d'exercices déjà effectué
+ */
 public class choixResultat extends Activity
 {
 	private ListView listExo = null;
@@ -30,6 +33,13 @@ public class choixResultat extends Activity
 
 	private Button homeButton;
 
+	/**
+	 * Affichage des résultats d'exercices déjà effectué
+	 * Un simple click pour sélectionner l'exercice
+	 * Un long click pour supprimer l'exercice
+	 *
+	 * @param savedInstanceState
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -132,6 +142,9 @@ public class choixResultat extends Activity
 		});
 	}
 
+	/**
+	 * Vérification des permissions d'accès au stockage et au microphone
+	 */
 	private void verifierPermissions()
 	{
 		if ((ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) &&
@@ -142,6 +155,10 @@ public class choixResultat extends Activity
 		}
 	}
 
+	/**
+	 * Fonction utilisée pour supprimer un dossier et sous-dossier
+	 * @param file Dossier à supprimer
+	 */
 	private void supprimerDossier(File file)
 	{
 		if (file.isDirectory())

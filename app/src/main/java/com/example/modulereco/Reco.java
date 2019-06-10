@@ -17,6 +17,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * La classe Reco utilisée pour l'enregistrement
+ */
 public class Reco extends Activity
 {
 	Exercice exo = null;
@@ -42,6 +45,13 @@ public class Reco extends Activity
 	ArrayList<String> tabPhoneme = null;
 	ArrayList<String> tabDap = null;
 
+	/**
+	 * Nous pouvons s'enregistrer avec deux types d'exercices : Logatome ou Phrase
+	 * Nous avons un bouton pour s'enregistrer et finir l'enregistrement, un autre pour faire retour si jamais nous avons mal prononcé
+	 * Nous avons un autre bouton pour annuler l'enregistrement et revenir à l'accueil, l'annulation effacera le dossier de l'enregistrement en cours
+	 *
+	 * @param savedInstanceState
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -156,6 +166,10 @@ public class Reco extends Activity
 
 	}
 
+	/***
+	 * Tant que nous sommes pas arrivé à la fin de l'exercice on continue à prononcer les mots ou phrases
+	 * Si nous avons finit, un bouton terminer apparait qui nous permet de voir les résultats
+	 */
 	private void actualiser()
 	{
 	    if(!exo.fini())
@@ -182,6 +196,9 @@ public class Reco extends Activity
         }
 	}
 
+	/**
+	 * Vérification des permissions d'accès au stockage et au microphone
+	 */
 	private void verifierPermissions()
 	{
 		if ((ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) &&
@@ -192,6 +209,10 @@ public class Reco extends Activity
 		}
 	}
 
+	/**
+	 * Pour préparer les informations utiles à l'enregistrement
+	 * Afficher le mot ou phrase à prononcer, mettre et gérer le compteur
+	 */
 	private void initialiser()
 	{
 		mot.setText(exo.getText());
@@ -202,6 +223,9 @@ public class Reco extends Activity
 			rec = new Recorder("" + exo.getIndex());
 	}
 
+	/**
+	 * Fonction pour analyser l'enregistrement, en fonction du type d'exercice (Phrase ou Phoneme) on applique différent alignement (phonème ou voisin)
+	 */
 	private void analyser()
 	{
 		clearTab();
@@ -222,6 +246,9 @@ public class Reco extends Activity
 		}
 	}
 
+	/**
+	 * Fonction pour sauvegarder les résultats
+	 */
 	private void sauverResultats() throws IOException
 	{
 		String nom = rec.getFilename();
@@ -254,6 +281,9 @@ public class Reco extends Activity
 		}
 	}
 
+	/**
+	 * Fonction pour effacer le tableau qui va contenir les résultats
+	 */
 	private void clearTab()
 	{
 		if (type == 1)
@@ -273,16 +303,11 @@ public class Reco extends Activity
 		}
 	}
 
-	/*private void creerDossier()
-	{
-		File file = new File(Environment.getExternalStorageDirectory().getPath(),"ModuleReco/Exercices/Exo" + rec.getCurrentTimeUsingCalendar("1"));
-
-		if (!file.exists())
-			file.mkdirs();
-
-		rec.setExo("Exo" + rec.getCurrentTimeUsingCalendar("1"));
-	}*/
-
+	/**
+	 * Fonction pour créer le dossier avec l'exercice en question dans le stockage du téléphone
+	 *
+	 * @return le dossier crée
+	 */
     private File creerDossierv2()
     {
         File file = new File(Environment.getExternalStorageDirectory().getPath(),"ModuleReco/Exercices/Exo" + rec.getCurrentTimeUsingCalendar("1"));
@@ -295,6 +320,10 @@ public class Reco extends Activity
         return file;
     }
 
+	/**
+	 * Fonction utilisée pour supprimer un dossier et sous-dossier
+	 * @param file Dossier à supprimer
+	 */
     private void supprimerDossier(File file)
     {
         if (file.isDirectory())

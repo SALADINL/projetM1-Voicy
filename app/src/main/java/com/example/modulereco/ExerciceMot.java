@@ -14,10 +14,18 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * La classe ExerciceMot qui hérite de la classe Exercice
+ */
 public class ExerciceMot extends Exercice
 {
 	private ArrayList<Mot> mots;
 
+	/**
+	 * Constructeur
+	 *
+	 * @param context
+	 */
 	public ExerciceMot(Context context)
 	{
 		super(context);
@@ -29,6 +37,12 @@ public class ExerciceMot extends Exercice
 		init(dico);
 	}
 
+	/**
+	 * Constructeur
+	 *
+	 * @param nb      le nombre max de mot
+	 * @param context
+	 */
 	public ExerciceMot(int nb, Context context)
 	{
 		super(context);
@@ -40,13 +54,19 @@ public class ExerciceMot extends Exercice
 		init(dico);
 	}
 
+	/**
+	 * Constructeur
+	 *
+	 * @param nb           le nombre max de mot
+	 * @param numeroListes le numéro de liste choisit
+	 * @param context
+	 */
 	public ExerciceMot(int nb, int numeroListes, Context context)
 	{
 		super(context);
 
 		max = nb;
 		mots = new ArrayList<>();
-		//dico = new File(assetsDir, "Listes/Liste " + numeroListes);
 		String filepath = Environment.getExternalStorageDirectory().getPath();
 		int num = numeroListes + 1;
 		dico = new File(filepath, "/ModuleReco/Listes/Liste" + num);
@@ -55,6 +75,12 @@ public class ExerciceMot extends Exercice
 		initAvecListe(dico);
 	}
 
+	/**
+	 * Lecture du fichier et affecte dans la variable
+	 * On ne mélange pas le fichier
+	 *
+	 * @param f Fichier qui contient la liste des non-mots
+	 */
 	public void initAvecListe(File f)
 	{
 		mots.clear();
@@ -78,7 +104,12 @@ public class ExerciceMot extends Exercice
 		updateJsgf();
 	}
 
-
+	/**
+	 * Lecture du fichier et affecte dans la variable
+	 * On mélange le fichier
+	 *
+	 * @param f Fichier qui contient les non-mots
+	 */
 	public void init(File f)
 	{
 		mots.clear();
@@ -114,6 +145,12 @@ public class ExerciceMot extends Exercice
 		}
 	}
 
+	/**
+	 * Pour ne pas prononcer deux fois le même mot
+	 *
+	 * @param f le fichier
+	 * @return mot
+	 */
 	private static String getMotRandom(File f) throws FileNotFoundException
 	{
 		String result = null;
@@ -131,17 +168,28 @@ public class ExerciceMot extends Exercice
 		return result;
 	}
 
+	/**
+	 * Fonction qui retourne le mot à prononcer
+	 *
+	 * @return le mot
+	 */
 	public String getText()
 	{
 		return mots.get(index).getMot();
 	}
 
+	/**
+	 * Fonction qui mets à jour le JSGF
+	 */
 	protected void updateJsgf()
 	{
 		updateAlignJsgf();
 		updateWordJsgf();
 	}
 
+	/**
+	 * Fonction qui mets à jour AlignJSGF
+	 */
 	private void updateAlignJsgf()
 	{
 		File f = null;
@@ -161,6 +209,9 @@ public class ExerciceMot extends Exercice
 		}
 	}
 
+	/**
+	 * Fonction qui mets à jour le WordJSGF
+	 */
 	public void updateWordJsgf()
 	{
 		File f = null;

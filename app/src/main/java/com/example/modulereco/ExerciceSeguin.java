@@ -10,10 +10,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * La classe ExerciceSeguin qui hérite de la classe Exercice
+ */
 public class ExerciceSeguin extends Exercice
 {
 	private ArrayList<String> phrases;
 
+	/**
+	 * Constructeur
+	 *
+	 * @param context
+	 */
 	public ExerciceSeguin(Context context)
 	{
 		super(context);
@@ -39,17 +47,31 @@ public class ExerciceSeguin extends Exercice
 		updateJsgf();
 	}
 
+	/**
+	 * Constructeur
+	 *
+	 * @param nb      le nombre max de phrase
+	 * @param context
+	 */
 	public ExerciceSeguin(int nb, Context context)
 	{
 		this(context);
 		max = nb;
 	}
 
+	/**
+	 * Fonction qui retourne la phrase à prononcer
+	 *
+	 * @return la phrase
+	 */
 	public String getText()
 	{
 		return phrases.get(index);
 	}
 
+	/**
+	 * Fonction qui mets à jour le JSGF
+	 */
 	protected void updateJsgf()
 	{
 		try

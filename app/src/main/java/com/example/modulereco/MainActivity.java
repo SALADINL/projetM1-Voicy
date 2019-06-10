@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * La classe MainActivity, la page d'accueil de l'application
+ */
 public class MainActivity extends Activity
 {
     private Button btResultat;
@@ -21,6 +24,10 @@ public class MainActivity extends Activity
     private EditText nbExo;
     private EditText nbPhrase;
 
+    /**
+     * Nous avons plusieurs boutons "Phrase", "Logatome Listes", "Logatome Aléatoire" et "Résultat"
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +107,11 @@ public class MainActivity extends Activity
         });
     }
 
-    private void verifierPermissions() {
+    /**
+     * Vérification des permissions d'accès au stockage et au microphone
+     */
+    private void verifierPermissions()
+    {
         if ((ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) &&
                 (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) &&
                 (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)) {

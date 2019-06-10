@@ -33,6 +33,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * La classe Resultat
+ */
 public class Resultat  extends Activity
 {
 	private Context ctx;
@@ -50,6 +53,12 @@ public class Resultat  extends Activity
 
 	private Button homeButton;
 
+	/**
+	 * Afficher tous les exercices déjà effectué
+	 * Possibilité d'afficher une phrase ou un non-mot sous forme de tableau avec les phonèmes, les durées et les scores
+	 *
+	 * @param savedInstanceState
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -182,6 +191,13 @@ public class Resultat  extends Activity
 		});
 	}
 
+	/**
+	 * Remplir l'arrayList avec les données du fichier score
+	 *
+	 * @param parent
+	 * @param position
+	 * @param type
+	 */
 	private ArrayList<String> getData(AdapterView<?> parent, int position, boolean type) // type true = phoneme false = DAP
 	{
 		String line, typePath = fileType;
@@ -209,9 +225,11 @@ public class Resultat  extends Activity
 		return data;
 	}
 
+	/**
+	 * Fonction pour savoir de quel type est le fichier ; phonème, mots, phrase, etc
+	 */
 	private void getType()
 	{
-		//Savoir de quel type est le fichier phoneme mots phrase etc
 		if (!listItems.isEmpty())
 		{
 			File f = new File(filepath+"/"+listItems.get(0));
@@ -234,6 +252,12 @@ public class Resultat  extends Activity
 		}
 	}
 
+	/**
+	 * Fonction pour charger le fichier Wav, pour pouvoir la lire
+	 *
+	 * @param parent
+	 * @param position
+	 */
 	private void chargerWav(AdapterView<?> parent, int position)
 	{
 		mediaPlayer = new MediaPlayer();
@@ -250,6 +274,12 @@ public class Resultat  extends Activity
 		}
 	}
 
+	/**
+	 * Fonction pour remplir le tableau du résultat, avec plusieurs colonnes ; Phonème ou DAP, Durée (frames) et Score
+	 *
+	 * @param output
+	 * @param phoneSearch
+	 */
 	private void initRes(ArrayList<String> output, Boolean phoneSearch)
 	{
 		TableLayout tab = popUp.getContentView().findViewById(R.id.tabResultat);

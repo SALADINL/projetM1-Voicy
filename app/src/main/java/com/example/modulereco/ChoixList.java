@@ -22,6 +22,9 @@ import java.util.Collections;
 
 import edu.cmu.pocketsphinx.Assets;
 
+/**
+ * Cette classe permet l'affichage des listes et la configuration des listes
+ */
 public class ChoixList extends Activity
 {
     private Button home;
@@ -32,6 +35,12 @@ public class ChoixList extends Activity
     protected Assets assets = null;
     protected File assetsDir = null;
 
+    /**
+     * Copier les listes qui se trouvent dans le dossier “Assets/Listes” du projet, vers le dossier “ModuleReco/Listes” du téléphone.
+     * Afficher les listes qui se trouvent sur le téléphone
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -114,6 +123,11 @@ public class ChoixList extends Activity
         });
     }
 
+    /**
+     * Créer le dossier Listes à l'intérieur du dossier ModuleReco qui se trouve sur le téléphone
+     *
+     * @return le dossier Listes
+     */
     private File creerListe()
     {
         File file = new File(Environment.getExternalStorageDirectory().getPath(),"ModuleReco/Listes/");
@@ -127,6 +141,13 @@ public class ChoixList extends Activity
 
     // https://stackoverflow.com/questions/29867121/how-to-copy-programmatically-a-file-to-another-directory
 
+    /**
+     * Fonction pour copier un dossier dans un autre dossier
+     * On s'en sert pour copier les listes (4 listes prédéfini) qui se trouvent dans le dossier Listes (assets/sync/Listes) vers le dossier ModuleReco/Listes du téléphone
+     *
+     * @param srcDir dossier source
+     * @param dstDir dossier destination
+     */
     public static void copyFileOrDirectory(String srcDir, String dstDir)
     {
         try
@@ -152,7 +173,14 @@ public class ChoixList extends Activity
         }
     }
 
-    public static void copyFile(File sourceFile, File destFile) throws IOException {
+    /**
+     * Fonction pour copier un fichier, on s'en sert dans la fonction "copyFileOrDirectory"
+     *
+     * @param sourceFile fichier source
+     * @param destFile   fichier destination
+     */
+    public static void copyFile(File sourceFile, File destFile) throws IOException
+    {
         if (!destFile.getParentFile().exists())
             destFile.getParentFile().mkdirs();
 
