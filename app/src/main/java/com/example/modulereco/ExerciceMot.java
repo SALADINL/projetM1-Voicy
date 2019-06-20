@@ -15,16 +15,18 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * La classe ExerciceMot qui hérite de la classe Exercice
+ * @author Ken Bres
+ *
+ * Classe permettant de faire des exercices de type lecture de mot.
  */
 public class ExerciceMot extends Exercice
 {
 	private ArrayList<Mot> mots;
 
 	/**
-	 * Constructeur
+	 * Constructeur vide. Crée un exercice de 50 mots.
 	 *
-	 * @param context
+	 * @param context Le contexte dans lequel sera utilisé l'exercice.
 	 */
 	public ExerciceMot(Context context)
 	{
@@ -38,10 +40,10 @@ public class ExerciceMot extends Exercice
 	}
 
 	/**
-	 * Constructeur
+	 * Constructeur avec taille variable.
 	 *
-	 * @param nb      le nombre max de mot
-	 * @param context
+	 * @param nb 		Le nombre de mots de l'exercice.
+	 * @param context 	Le contexte dans lequel sera utilisé l'exercice.
 	 */
 	public ExerciceMot(int nb, Context context)
 	{
@@ -55,11 +57,11 @@ public class ExerciceMot extends Exercice
 	}
 
 	/**
-	 * Constructeur
+	 * Constructeur permettant de charger une liste de mots prédéfinis.
 	 *
-	 * @param nb           le nombre max de mot
-	 * @param numeroListes le numéro de liste choisit
-	 * @param context
+	 * @param nb 			Le nombre d'éléments (mots).
+	 * @param numeroListes 	Le numéro de liste choisie
+	 * @param context 		Le contexte dans lequel sera utilisé l'exercice.
 	 */
 	public ExerciceMot(int nb, int numeroListes, Context context)
 	{
@@ -76,8 +78,7 @@ public class ExerciceMot extends Exercice
 	}
 
 	/**
-	 * Lecture du fichier et affecte dans la variable
-	 * On ne mélange pas le fichier
+	 * Copie des mots contenus dans le fichier liste dans l'exercice.
 	 *
 	 * @param f Fichier qui contient la liste des non-mots
 	 */
@@ -105,8 +106,7 @@ public class ExerciceMot extends Exercice
 	}
 
 	/**
-	 * Lecture du fichier et affecte dans la variable
-	 * On mélange le fichier
+	 * Lecture aléatoire du dictionnaire de non-mots. N'autorise pas les doublons.
 	 *
 	 * @param f Fichier qui contient les non-mots
 	 */
@@ -146,10 +146,10 @@ public class ExerciceMot extends Exercice
 	}
 
 	/**
-	 * Pour ne pas prononcer deux fois le même mot
+	 * Récupère un mot aléatoire dans un dictionnaire
 	 *
-	 * @param f le fichier
-	 * @return mot
+	 * @param f Le dictionnaire.
+	 * @return Le mot choisi.
 	 */
 	private static String getMotRandom(File f) throws FileNotFoundException
 	{
@@ -169,9 +169,9 @@ public class ExerciceMot extends Exercice
 	}
 
 	/**
-	 * Fonction qui retourne le mot à prononcer
+	 * Retourne le texte à prononcer du mot courant.
 	 *
-	 * @return le mot
+	 * @return le mot à prononcer.
 	 */
 	public String getText()
 	{
@@ -179,7 +179,7 @@ public class ExerciceMot extends Exercice
 	}
 
 	/**
-	 * Fonction qui mets à jour le JSGF
+	 * Met à jour le fichier JSGF.
 	 */
 	protected void updateJsgf()
 	{
@@ -188,7 +188,7 @@ public class ExerciceMot extends Exercice
 	}
 
 	/**
-	 * Fonction qui mets à jour AlignJSGF
+	 * Met à jour le JSGF pour l'alignement par phonème.
 	 */
 	private void updateAlignJsgf()
 	{
@@ -210,7 +210,7 @@ public class ExerciceMot extends Exercice
 	}
 
 	/**
-	 * Fonction qui mets à jour le WordJSGF
+	 * Met à jour le JSGF pour l'alignement par mot.
 	 */
 	public void updateWordJsgf()
 	{

@@ -16,6 +16,11 @@ import edu.cmu.pocketsphinx.Config;
 import edu.cmu.pocketsphinx.Decoder;
 import edu.cmu.pocketsphinx.Segment;
 
+/**
+ * @author Ken Bres
+ *
+ * Classe permettant d'initialiser un décodeur de façon a effectuer un Décodage Acoustico Phonétique.
+ */
 public class DAP
 {
 	static { System.loadLibrary("pocketsphinx_jni"); }
@@ -25,6 +30,11 @@ public class DAP
 	private Context contexte;
 	private Decoder decoder = null;
 
+	/**
+	 * Permet d'initialiser le décodeur.
+	 *
+	 * @param contexte le contexte dans lequel sera appliqué le DAP.
+	 */
 	public DAP(Context contexte)
 	{
 		this.contexte = contexte;
@@ -51,6 +61,12 @@ public class DAP
 		}
 	}
 
+	/**
+	 * Fonction permettant d'effectuer un DAP sur un fichier audio.
+	 *
+	 * @param fichier le fichier WAV converti en type File.
+	 * @return un tableau contenant les résultats.
+	 */
 	public ArrayList<String> convertir(final File fichier)
 	{
 		try
@@ -68,6 +84,11 @@ public class DAP
 		return resultat;
 	}
 
+	/**
+	 * Fonction appellée par la fonction convertir(). C'est ici qu'est fait le traîtement.
+	 *
+	 * @param stream le fichier WAV converti en type InputStream.
+	 */
 	private void faireDAP(final InputStream stream)
 	{
 		decoder.startUtt();

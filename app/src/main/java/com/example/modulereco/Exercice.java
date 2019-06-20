@@ -8,7 +8,10 @@ import java.io.IOException;
 import edu.cmu.pocketsphinx.Assets;
 
 /**
- * Classe abstraite Exercice
+ * @author Ken Bres
+ *
+ * Modèle abstrait d'exercice permettant de faire les actions de bases d'un exercice.
+ * Un exercice est une liste d'éléments à prononcer.
  */
 public abstract class Exercice
 {
@@ -19,9 +22,9 @@ public abstract class Exercice
 	protected int max, index;
 
 	/**
-	 * Constructeur
+	 * Initialise l'exercice (dossier asset).
 	 *
-	 * @param context
+	 * @param context Contexte dans lequel sera utilisé l'exercice.
 	 */
 	public Exercice(Context context)
 	{
@@ -39,7 +42,7 @@ public abstract class Exercice
 	}
 
 	/**
-	 * Fonction pour déterminer la fin d'un exercice
+	 * Permet de savoir si l'exercice est fini.
 	 *
 	 * @return True si c'est fini et False sinon
 	 */
@@ -49,7 +52,7 @@ public abstract class Exercice
 	}
 
 	/**
-	 * On avance dans l'exercice si on n'est pas arrivé à la fin
+	 * Permet de passer à l'élément suivant.
 	 */
 	public void next()
 	{
@@ -61,7 +64,7 @@ public abstract class Exercice
 	}
 
 	/**
-	 * On recule dans l'exercice si on n'est pas déjà au début
+	 * Permet de revenir à l'élément précédent.
 	 */
 	public void prev()
 	{
@@ -73,9 +76,9 @@ public abstract class Exercice
 	}
 
 	/**
-	 * Fonction pour savoir le max de mot ou de phrase dans un exercice
+	 * Permet de savoir le nombre d'éléments que possède l'exercice.
 	 *
-	 * @return max
+	 * @return le nombre d'éléments de l'exercice.
 	 */
 	public int getMax()
 	{
@@ -83,9 +86,9 @@ public abstract class Exercice
 	}
 
 	/**
-	 * Fonction pour s'avoir l'indice courant
+	 * Permet de savoir à quel élément est l'exercice.
 	 *
-	 * @return index
+	 * @return l'index de l'élément courant.
 	 */
 	public int getIndex()
 	{
@@ -93,14 +96,14 @@ public abstract class Exercice
 	}
 
 	/**
-	 * Fonction qui retourne le texte à prononcer
+	 * Retourne le texte à prononcer de l'élément courant.
 	 *
-	 * @return le texte
+	 * @return le texte à prononcer.
 	 */
 	protected abstract String getText();
 
 	/**
-	 * Fonction qui mets à jour le JSGF
+	 * Met à jour le fichier JSGF.
 	 */
 	protected abstract void updateJsgf();
 }

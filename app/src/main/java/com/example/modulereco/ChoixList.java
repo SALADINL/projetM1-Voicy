@@ -68,9 +68,7 @@ public class ChoixList extends Activity
             File[] listFiles = source.listFiles();
 
             for (int i = 0; i < listFiles.length; i++)
-            {
                 copyFileOrDirectory(String.valueOf(listFiles[i]), String.valueOf(destination));
-            }
         }
 
         home = findViewById(R.id.home);
@@ -91,7 +89,8 @@ public class ChoixList extends Activity
             Collections.sort(listItems);
             adapter.notifyDataSetChanged();
 
-            listes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            listes.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                 {
@@ -105,7 +104,8 @@ public class ChoixList extends Activity
                     startActivity(myIntent);
                 }
             });
-        }catch (Exception e)
+        }
+        catch (Exception e)
         {
             Toast.makeText(ChoixList.this, "Le dossier 'Listes' est vide !", Toast.LENGTH_LONG).show();
 
@@ -115,7 +115,8 @@ public class ChoixList extends Activity
         home.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent intent = new Intent(ChoixList.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -165,10 +166,12 @@ public class ChoixList extends Activity
                     copyFileOrDirectory(src1, dst1);
 
                 }
-            } else {
+            } else
                 copyFile(src, dst);
-            }
-        } catch (Exception e) {
+
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
@@ -184,24 +187,25 @@ public class ChoixList extends Activity
         if (!destFile.getParentFile().exists())
             destFile.getParentFile().mkdirs();
 
-        if (!destFile.exists()) {
+        if (!destFile.exists())
             destFile.createNewFile();
-        }
 
         FileChannel source = null;
         FileChannel destination = null;
 
-        try {
+        try
+        {
             source = new FileInputStream(sourceFile).getChannel();
             destination = new FileOutputStream(destFile).getChannel();
             destination.transferFrom(source, 0, source.size());
-        } finally {
-            if (source != null) {
+        }
+        finally
+        {
+            if (source != null)
                 source.close();
-            }
-            if (destination != null) {
+
+            if (destination != null)
                 destination.close();
-            }
         }
     }
 }

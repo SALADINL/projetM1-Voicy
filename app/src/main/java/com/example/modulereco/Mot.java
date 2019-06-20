@@ -1,7 +1,9 @@
 package com.example.modulereco;
 
 /**
- * La classe Mot
+ * @author Ken Bres
+ *
+ * Classe définissant ce qu'est un mot.
  */
 public class Mot
 {
@@ -9,10 +11,10 @@ public class Mot
 	private String prononciation;
 
 	/**
-	 * Constructeur
+	 * Constructeur permettant de créer un mot.
 	 *
-	 * @param m Mot
-	 * @param p Prononciation
+	 * @param m Le mot.
+	 * @param p Sa prononciation.
 	 */
 	public Mot(String m, String p)
 	{
@@ -21,9 +23,9 @@ public class Mot
 	}
 
 	/**
-	 * Fonction qui retourne le mot
+	 * Surcharge de la fonction toString afin de renvoyer l'écriture du mot.
 	 *
-	 * @return le mot
+	 * @return le mot.
 	 */
 	@Override
 	public String toString()
@@ -32,8 +34,7 @@ public class Mot
 	}
 
 	/**
-	 * Fonction pour remplir le fichier JSGF utilisé par l’alignement par phonème
-	 *
+	 * Permet de créer à la volée le contenu du fichier JSGF pour l'alignement par phonème.
 	 */
 	public String getAlignFormat()
 	{
@@ -41,8 +42,7 @@ public class Mot
 	}
 
 	/**
-	 * Fonction pour remplir le fichier JSGF utilisé par l’alignement par mot
-	 *
+	 * Permet de créer à la volée le contenu du fichier JSGF pour l'alignement par mot.
 	 */
 	public String getWordFormat()
 	{
@@ -50,9 +50,9 @@ public class Mot
 	}
 
 	/**
-	 * Fonction qui retourne le mot
+	 * Fonction qui retourne le mot.
 	 *
-	 * @return le mot
+	 * @return le mot.
 	 */
 	public String getMot()
 	{
@@ -60,9 +60,9 @@ public class Mot
 	}
 
 	/**
-	 * Fonction qui retourne la prononciation
+	 * Fonction qui retourne la prononciation du mot.
 	 *
-	 * @return la prononciation
+	 * @return la prononciation.
 	 */
 	public String getPrononciation()
 	{
