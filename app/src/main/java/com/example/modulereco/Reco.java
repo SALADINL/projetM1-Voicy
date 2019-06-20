@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
+ * @author Ken Bres,
  * La classe Reco utilisée pour l'enregistrement
  */
 public class Reco extends Activity

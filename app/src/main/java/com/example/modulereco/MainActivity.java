@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 /**
+ * @author Ken Bres,
  * La classe MainActivity, la page d'accueil de l'application
  */
 public class MainActivity extends Activity
