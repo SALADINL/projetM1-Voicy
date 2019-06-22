@@ -23,6 +23,8 @@ import java.util.Collections;
 import edu.cmu.pocketsphinx.Assets;
 
 /**
+ * @author Ahmet AGBEKTAS
+ *
  * Cette classe permet l'affichage des listes et la configuration des listes
  */
 public class ChoixList extends Activity
@@ -36,6 +38,8 @@ public class ChoixList extends Activity
     protected File assetsDir = null;
 
     /**
+     * @author Ahmet AGBEKTAS
+     *
      * Copier les listes qui se trouvent dans le dossier “Assets/Listes” du projet, vers le dossier “ModuleReco/Listes” du téléphone.
      * Afficher les listes qui se trouvent sur le téléphone
      *
@@ -125,6 +129,8 @@ public class ChoixList extends Activity
     }
 
     /**
+     * @author Ahmet AGBEKTAS
+     *
      * Créer le dossier Listes à l'intérieur du dossier ModuleReco qui se trouve sur le téléphone
      *
      * @return le dossier Listes

@@ -47,6 +47,8 @@ public class Reco extends Activity
 	ArrayList<String> tabDap = null;
 
 	/**
+	 * @author Ahmet AGBEKTAS
+	 *
 	 * Nous pouvons s'enregistrer avec deux types d'exercices : Logatome ou Phrase
 	 * Nous avons un bouton pour s'enregistrer et finir l'enregistrement, un autre pour faire retour si jamais nous avons mal prononcé
 	 * Nous avons un autre bouton pour annuler l'enregistrement et revenir à l'accueil, l'annulation effacera le dossier de l'enregistrement en cours
@@ -198,6 +200,8 @@ public class Reco extends Activity
 	}
 
 	/**
+	 * @author Ahmet AGBEKTAS
+	 *
 	 * Vérification des permissions d'accès au stockage et au microphone
 	 */
 	private void verifierPermissions()
@@ -305,6 +309,8 @@ public class Reco extends Activity
 	}
 
 	/**
+	 * @author Ahmet AGBEKTAS
+	 *
 	 * Fonction pour créer le dossier avec l'exercice en question dans le stockage du téléphone
 	 *
 	 * @return le dossier crée
@@ -322,6 +328,8 @@ public class Reco extends Activity
     }
 
 	/**
+	 * @author Ahmet AGBEKTAS
+	 *
 	 * Fonction utilisée pour supprimer un dossier et sous-dossier
 	 * @param file Dossier à supprimer
 	 */

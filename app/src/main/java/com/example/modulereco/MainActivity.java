@@ -26,6 +26,8 @@ public class MainActivity extends Activity
     private EditText nbPhrase;
 
     /**
+     * @author Ahmet AGBEKTAS
+     *
      * Nous avons plusieurs boutons "Phrase", "Logatome Listes", "Logatome Aléatoire" et "Résultat"
      * @param savedInstanceState
      */
@@ -109,6 +111,8 @@ public class MainActivity extends Activity
     }
 
     /**
+     * @author Ahmet AGBEKTAS
+     *
      * Vérification des permissions d'accès au stockage et au microphone
      */
     private void verifierPermissions()

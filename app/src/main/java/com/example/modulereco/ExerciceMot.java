@@ -57,6 +57,8 @@ public class ExerciceMot extends Exercice
 	}
 
 	/**
+	 * @author Ahmet AGBEKTAS
+	 *
 	 * Constructeur permettant de charger une liste de mots prédéfinis.
 	 *
 	 * @param nb 			Le nombre d'éléments (mots).
@@ -78,6 +80,8 @@ public class ExerciceMot extends Exercice
 	}
 
 	/**
+	 * @author Ahmet AGBEKTAS
+	 *
 	 * Copie des mots contenus dans le fichier liste dans l'exercice.
 	 *
 	 * @param f Fichier qui contient la liste des non-mots

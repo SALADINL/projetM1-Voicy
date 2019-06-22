@@ -23,6 +23,8 @@ import java.util.Arrays;
 import java.util.Collections;
 
 /***
+ * @author Ahmet AGBEKTAS
+ *
  * Cette classe permet l'affichage des résultats d'exercices déjà effectué
  */
 public class choixResultat extends Activity
@@ -34,6 +36,8 @@ public class choixResultat extends Activity
 	private Button homeButton;
 
 	/**
+	 * @author Ahmet AGBEKTAS
+	 *
 	 * Affichage des résultats d'exercices déjà effectué
 	 * Un simple click pour sélectionner l'exercice
 	 * Un long click pour supprimer l'exercice
@@ -143,6 +147,8 @@ public class choixResultat extends Activity
 	}
 
 	/**
+	 * @author Ahmet AGBEKTAS
+	 *
 	 * Vérification des permissions d'accès au stockage et au microphone
 	 */
 	private void verifierPermissions()
@@ -156,6 +162,8 @@ public class choixResultat extends Activity
 	}
 
 	/**
+	 * @author Ahmet AGBEKTAS
+	 *
 	 * Fonction utilisée pour supprimer un dossier et sous-dossier
 	 * @param file Dossier à supprimer
 	 */
