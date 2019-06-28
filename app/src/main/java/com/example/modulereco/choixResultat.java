@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 /***
- * @author Ahmet AGBEKTAS
+ * @author Ahmet AGBEKTAS, Noaman TATA
  *
  * Cette classe permet l'affichage des résultats d'exercices déjà effectué
  */
@@ -36,9 +36,9 @@ public class choixResultat extends Activity
 	private Button homeButton;
 
 	/**
-	 * @author Ahmet AGBEKTAS
+	 * @author Noaman TATA, Ahmet AGBEKTAS
 	 *
-	 * Affichage des résultats d'exercices déjà effectué
+	 * Affichage des résultats d'exercices déjà effectué sous forme de listes ces derniers sont stocké dans le stockage interne de l'appareil ModuleReco/Exercices
 	 * Un simple click pour sélectionner l'exercice
 	 * Un long click pour supprimer l'exercice
 	 *
@@ -70,7 +70,7 @@ public class choixResultat extends Activity
 
 			Collections.sort(listItems, Collections.reverseOrder());
 			adapter.notifyDataSetChanged();
-
+			// AFFICHAGE
 			listExo.setOnItemClickListener(new AdapterView.OnItemClickListener()
 			{
 				@Override
@@ -84,6 +84,7 @@ public class choixResultat extends Activity
 				}
 			});
 
+			// SUPPRESSION
 			listExo.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
 			{
 				@Override

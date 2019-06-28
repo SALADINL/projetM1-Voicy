@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 /**
- * @author Ken Bres,
+ * @author Noaman TATA, Ken Bres,
  * La classe MainActivity, la page d'accueil de l'application
  */
 public class MainActivity extends Activity
@@ -26,7 +26,7 @@ public class MainActivity extends Activity
     private EditText nbPhrase;
 
     /**
-     * @author Ahmet AGBEKTAS
+     * @author Ahmet AGBEKTAS, Noaman TATA
      *
      * Nous avons plusieurs boutons "Phrase", "Logatome Listes", "Logatome Aléatoire" et "Résultat"
      * @param savedInstanceState

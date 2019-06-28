@@ -34,7 +34,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * La classe Resultat
+ * @author Noaman TATA
+ * La classe Resultat permettant de faie tous les traitements d'affichage, récupération etc des resultats
  */
 public class Resultat  extends Activity
 {
@@ -54,8 +55,9 @@ public class Resultat  extends Activity
 	private Button homeButton;
 
 	/**
+	 * @author Noaman TATA
 	 * Afficher tous les exercices déjà effectué
-	 * Possibilité d'afficher une phrase ou un non-mot sous forme de tableau avec les phonèmes, les durées et les scores
+	 * Possibilité d'afficher une phrase ou un non-mot sous forme de tableau dans une pop-up avec les phonèmes, les durées et les scores
 	 *
 	 * @param savedInstanceState
 	 */
@@ -89,6 +91,7 @@ public class Resultat  extends Activity
 
 		getType();				//Savoir de quel type est le fichier phoneme mots phrase etc
 
+		// Choix d'un élément dans la liste avec récupération et affichage de ce dernier
 		listMot.setOnItemClickListener(new AdapterView.OnItemClickListener()
 		{
 			@Override
@@ -99,6 +102,7 @@ public class Resultat  extends Activity
 				LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(LAYOUT_INFLATER_SERVICE);
 				View customView = inflater.inflate(R.layout.popup_layout,null);
 
+				//pop up dans laquel est display le tableau
 				popUp = new PopupWindow(customView,
 							ViewGroup.LayoutParams.WRAP_CONTENT,
 							ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -129,7 +133,7 @@ public class Resultat  extends Activity
 						mediaPlayer.stop();
 					}
 				});
-
+				// Stop l'audio si la popUp perd l'affichage
 				popUp.setOnDismissListener(new PopupWindow.OnDismissListener()
 				{
 					@Override
@@ -152,10 +156,8 @@ public class Resultat  extends Activity
 				filepath = bund.getString("path");
 				filepath += "/" + parent.getItemAtPosition(position);
 
+				// Récupération des résultats
 				final ArrayList<String> dataPhone = getData(parent, position, true);
-
-				for (String s : dataPhone)
-					System.out.println("data -> "+dataPhone);
 
 				initRes(dataPhone, true);
 				chargerWav(parent, position);
@@ -192,10 +194,11 @@ public class Resultat  extends Activity
 	}
 
 	/**
+	 * @author Noaman TATA, Ken Bres
 	 * Remplir l'arrayList avec les données du fichier score
 	 *
-	 * @param parent
-	 * @param position
+	 * @param parent la view sur laquel il faut récupérer
+	 * @param position position de l'élément dans la liste
 	 * @param type
 	 */
 	private ArrayList<String> getData(AdapterView<?> parent, int position, boolean type) // type true = phoneme false = DAP
@@ -226,6 +229,7 @@ public class Resultat  extends Activity
 	}
 
 	/**
+	 * @author Noaman TATA
 	 * Fonction pour savoir de quel type est le fichier ; phonème, mots, phrase, etc
 	 */
 	private void getType()
@@ -275,10 +279,12 @@ public class Resultat  extends Activity
 	}
 
 	/**
+	 * @author Noaman Tata
+	 *
 	 * Fonction pour remplir le tableau du résultat, avec plusieurs colonnes ; Phonème ou DAP, Durée (frames) et Score
 	 *
-	 * @param output
-	 * @param phoneSearch
+	 * @param output Listes des résultats à afficher
+	 * @param phoneSearch Type de résultat à afficher true = phonème false = DAP
 	 */
 	private void initRes(ArrayList<String> output, Boolean phoneSearch)
 	{
@@ -323,7 +329,7 @@ public class Resultat  extends Activity
 		String [] array, array2;
 		TextView scoreNorm = popUp.getContentView().findViewById(R.id.scoreNorm);
 		String res;
-
+		// boucle pour saisir les valeurs dans le tableau. Le tableau est crée dynamiquement
 		for (int i = 0; i < output.size(); i++)
 		{
 			res = output.get(i);
@@ -332,7 +338,9 @@ public class Resultat  extends Activity
 				scoreNorm.setText(res);
 			else if (i > 1)
 			{
+				// JUste un split car les résultats sont du genre: 00-34 : SIL (-100)  array 1 contient la première partie
 				array = res.split(":");
+				// array2[0] contient le phonème et array[fin] contient le score
 				array2 = array[array.length-1].split("\\(");
 				TableRow tabLigne = new TableRow(this);
 				tabLigne.setBackgroundColor(Color.GRAY);

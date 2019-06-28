@@ -47,7 +47,7 @@ public class Reco extends Activity
 	ArrayList<String> tabDap = null;
 
 	/**
-	 * @author Ahmet AGBEKTAS
+	 * @author Ahmet AGBEKTAS, Ken Bres, Noaman TATA
 	 *
 	 * Nous pouvons s'enregistrer avec deux types d'exercices : Logatome ou Phrase
 	 * Nous avons un bouton pour s'enregistrer et finir l'enregistrement, un autre pour faire retour si jamais nous avons mal prononcé
@@ -252,6 +252,7 @@ public class Reco extends Activity
 	}
 
 	/**
+	 * @author Noaman TATA, Ken BRES
 	 * Fonction pour sauvegarder les résultats
 	 */
 	private void sauverResultats() throws IOException
@@ -309,7 +310,7 @@ public class Reco extends Activity
 	}
 
 	/**
-	 * @author Ahmet AGBEKTAS
+	 * @author Ahmet AGBEKTAS, Noaman TATA
 	 *
 	 * Fonction pour créer le dossier avec l'exercice en question dans le stockage du téléphone
 	 *
