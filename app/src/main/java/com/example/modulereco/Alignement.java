@@ -163,6 +163,13 @@ public class Alignement
 		}
 	}
 
+	/**
+	 * Permet de récupérer les temps de début et de fin convertis en byte de chaque phonèmes trouvés par l'alignement.
+	 * Utile à l'alignement semi-contraint.
+	 * @param fichier 	Le fichier audio
+	 * @param type		Le type d'alignement effectué au préalable sur ce fichier
+	 * @return			Un tableau de paires pour chaque phonème
+	 */
 	public ArrayList<Pair<Integer, Integer>> getTimings(final File fichier, int type)
 	{
 		String path = fichier.getAbsolutePath();

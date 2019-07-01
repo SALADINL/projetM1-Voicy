@@ -69,20 +69,6 @@ public class DAP
 		return resultat;
 	}
 
-	public String convertirSemiVersion1(final File fichier, int debut, int fin)
-	{
-		try
-		{
-			streamFichier = new FileInputStream(fichier);
-		}
-		catch (FileNotFoundException e)
-		{
-			System.out.println(e.getMessage());
-		}
-
-		return faireSemiVersion1(streamFichier, debut, fin);
-	}
-
 	private void faireDAP(final InputStream stream)
 	{
 		decoder.startUtt();
@@ -141,13 +127,43 @@ public class DAP
 		for (Segment seg : decoder.seg())
 		{
 			int start = seg.getStartFrame(),
-				end   = seg.getEndFrame();
+					end   = seg.getEndFrame();
 			String mot = seg.getWord();
 
 			resultat.add(start + " - " + end + " : " + mot + " (" + seg.getAscore() + ")");
 		}
 	}
 
+	/**
+	 * Initialise l'alignement semi-contraint.
+	 *
+	 * @param fichier	Le fichier audio
+	 * @param debut		Le de byte de début du phonème
+	 * @param fin		Le de byte de fin du phonème
+	 * @return			Un string contenant le phonème trouvé
+	 */
+	public String convertirSemiVersion1(final File fichier, int debut, int fin)
+	{
+		try
+		{
+			streamFichier = new FileInputStream(fichier);
+		}
+		catch (FileNotFoundException e)
+		{
+			System.out.println(e.getMessage());
+		}
+
+		return faireSemiVersion1(streamFichier, debut, fin);
+	}
+
+	/**
+	 * Effectue un DAP à un moment précis du fichier, jusqu'à la fin de celui-ci. Seul le premier phonème trouvé est gardé et associé aux timings donnés en paramètres.
+	 *
+	 * @param stream	Le flux du fichier audio
+	 * @param debut		Le de byte de début du phonème
+	 * @param fin		Le de byte de fin du phonème
+	 * @return			Un string contenant le premier phonème trouvé
+	 */
 	private String faireSemiVersion1(final InputStream stream, int debut, int fin)
 	{
 		decoder.startUtt();
