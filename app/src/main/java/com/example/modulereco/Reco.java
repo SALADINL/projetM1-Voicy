@@ -260,10 +260,17 @@ public class Reco extends Activity
 		for (Pair<Integer, Integer> p : timings)
 			tabSemi.add(dap.convertirSemiVersion1(wav, p.first, p.second));
 
-		//TODO: enregistrer dans un fichier au lieu d'afficher
+		//for (String s : tabSemi)
+		//	System.out.println("========= " + s);
 
-		for (String s : tabSemi)
-			System.out.println("========= " + s);
+		try
+		{
+			sauverResultatsSemiContraint();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -296,6 +303,35 @@ public class Reco extends Activity
 			FileWriter writer = new FileWriter(nom + "-score.txt");
 
 			for (String str : tabPhrase)
+				writer.write(str + "\n");
+
+			writer.close();
+		}
+	}
+
+	/**
+	 * @author Ahmet AGBEKTAS, Noaman TATA, Ken BRES
+	 * Fonction pour sauvegarder les résultats
+	 */
+	private void sauverResultatsSemiContraint() throws IOException
+	{
+		String nom = rec.getFilename();
+		nom = nom.substring(0, nom.length() - 4);
+
+		if (type == 1)
+		{
+			FileWriter writer = new FileWriter(nom + "-score-semiContraint.txt");
+
+			for (String str : tabSemi)
+				writer.write(str + "\n");
+
+			writer.close();
+		}
+		else if (type == 2)
+		{
+			FileWriter writer = new FileWriter(nom + "-score-semiContraint.txt");
+
+			for (String str : tabSemi)
 				writer.write(str + "\n");
 
 			writer.close();
