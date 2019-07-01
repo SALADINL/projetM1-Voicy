@@ -135,7 +135,6 @@ public class Alignement
 				decoder.processRaw(s, nbytes / 2, false, false);
 				i += nbytes;
 			}
-			System.out.println("------------- " + i);
 		}
 		catch (IOException e)
 		{

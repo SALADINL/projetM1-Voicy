@@ -260,8 +260,10 @@ public class Reco extends Activity
 		for (Pair<Integer, Integer> p : timings)
 			tabSemi.add(dap.convertirSemiVersion1(wav, p.first, p.second));
 
+		//TODO: enregistrer dans un fichier au lieu d'afficher
+
 		for (String s : tabSemi)
-			System.out.println("=========" + s);
+			System.out.println("========= " + s);
 	}
 
 	/**
