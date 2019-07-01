@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.content.ContextCompat;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -45,6 +46,7 @@ public class Reco extends Activity
 	ArrayList<String> tabPhrase = null;
 	ArrayList<String> tabPhoneme = null;
 	ArrayList<String> tabDap = null;
+	ArrayList<String> tabSemi = null;
 
 	/**
 	 * @author Ahmet AGBEKTAS, Ken Bres, Noaman TATA
@@ -120,14 +122,6 @@ public class Reco extends Activity
 					rec.stopRecording();
                     findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
 					analyser();
-					try
-					{
-						sauverResultats();
-					}
-					catch (IOException e)
-					{
-						e.printStackTrace();
-					}
 					actualiser();
 					enregistrer.setImageResource(R.drawable.ic_mic_black_85dp);
 
@@ -241,7 +235,6 @@ public class Reco extends Activity
 		{
 			alignement = new Alignement(Reco.this, Alignement.PHONEME);
 			tabPhoneme = alignement.convertir(wav);
-			dap = new DAP(Reco.this);
 			tabDap = dap.convertir(wav);
 		}
 		else if (type == 2)
@@ -249,6 +242,28 @@ public class Reco extends Activity
 			alignement = new Alignement(Reco.this, Alignement.VOISIN);
 			tabPhrase = alignement.convertir(wav);
 		}
+
+		try
+		{
+			sauverResultats();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		ArrayList<Pair<Integer, Integer>> timings = alignement.getTimings(wav, type);
+
+		dap = new DAP(this);
+		tabSemi = new ArrayList<>();
+
+		for (Pair<Integer, Integer> p : timings)
+			tabSemi.add(dap.convertirSemiVersion1(wav, p.first, p.second));
+
+		//TODO: enregistrer dans un fichier au lieu d'afficher
+
+		for (String s : tabSemi)
+			System.out.println("========= " + s);
 	}
 
 	/**

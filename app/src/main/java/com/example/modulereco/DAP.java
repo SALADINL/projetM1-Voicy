@@ -29,6 +29,7 @@ public class DAP
 	private ArrayList<String> resultat;
 	private Context contexte;
 	private Decoder decoder = null;
+	private Config c = null;
 
 	/**
 	 * Permet d'initialiser le décodeur.
@@ -45,7 +46,7 @@ public class DAP
 			Assets assets = new Assets(this.contexte);
 			File assetsDir = assets.syncAssets();
 
-			Config c = Decoder.defaultConfig();
+			c = Decoder.defaultConfig();
 			c.setString("-hmm", new File(assetsDir, "ptm").getPath());
 			c.setString("-allphone", new File(assetsDir, "fr-phone.lm.dmp").getPath());
 			c.setBoolean("-backtrace", true);
@@ -147,10 +148,76 @@ public class DAP
 		for (Segment seg : decoder.seg())
 		{
 			int start = seg.getStartFrame(),
-				end   = seg.getEndFrame();
+					end   = seg.getEndFrame();
 			String mot = seg.getWord();
 
 			resultat.add(start + " - " + end + " : " + mot + " (" + seg.getAscore() + ")");
 		}
+	}
+
+	/**
+	 * Initialise l'alignement semi-contraint.
+	 *
+	 * @param fichier	Le fichier audio
+	 * @param debut		Le de byte de début du phonème
+	 * @param fin		Le de byte de fin du phonème
+	 * @return			Un string contenant le phonème trouvé
+	 */
+	public String convertirSemiVersion1(final File fichier, int debut, int fin)
+	{
+		try
+		{
+			streamFichier = new FileInputStream(fichier);
+		}
+		catch (FileNotFoundException e)
+		{
+			System.out.println(e.getMessage());
+		}
+
+		return faireSemiVersion1(streamFichier, debut, fin);
+	}
+
+	/**
+	 * Effectue un DAP à un moment précis du fichier, jusqu'à la fin de celui-ci. Seul le premier phonème trouvé est gardé et associé aux timings donnés en paramètres.
+	 *
+	 * @param stream	Le flux du fichier audio
+	 * @param debut		Le de byte de début du phonème
+	 * @param fin		Le de byte de fin du phonème
+	 * @return			Un string contenant le premier phonème trouvé
+	 */
+	private String faireSemiVersion1(final InputStream stream, int debut, int fin)
+	{
+		decoder.startUtt();
+		int nbytes;
+		byte[] b = new byte[4096];
+		decoder.setRawdataSize(4096);
+
+		try
+		{
+			stream.skip(debut); //On passe les bits inutiles
+
+			while ((nbytes = stream.read(b)) >= 0)
+			{
+				ByteBuffer bb = ByteBuffer.wrap(b, 0, nbytes);
+
+				bb.order(ByteOrder.LITTLE_ENDIAN);
+
+				short[] s = new short[nbytes / 2];
+				bb.asShortBuffer().get(s);
+				decoder.processRaw(s, nbytes / 2, false, false);
+			}
+
+		}
+		catch (IOException e)
+		{
+			System.out.println("Error when reading inputstream" + e.getMessage());
+		}
+		decoder.endUtt();
+
+		for (Segment seg : decoder.seg())
+			if (!seg.getWord().equals("SIL"))
+				return debut / 320 + " - " + fin / 320 + " : " + seg.getWord() + " (" + seg.getAscore() + ")";
+
+		return debut / 320 + " - " + fin / 320 + " : ??? (???)";
 	}
 }

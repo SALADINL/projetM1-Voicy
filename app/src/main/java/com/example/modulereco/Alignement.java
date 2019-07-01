@@ -1,10 +1,13 @@
 package com.example.modulereco;
 
 import android.content.Context;
+import android.util.Pair;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -114,7 +117,8 @@ public class Alignement
 	private void aligner(final InputStream stream)
 	{
 		decoder.startUtt();
-		byte[] b = new byte[4096];
+		byte[] b = new byte[1024];
+		int i = 0;
 
 		try
 		{
@@ -129,6 +133,7 @@ public class Alignement
 				short[] s = new short[nbytes / 2];
 				bb.asShortBuffer().get(s);
 				decoder.processRaw(s, nbytes / 2, false, false);
+				i += nbytes;
 			}
 		}
 		catch (IOException e)
@@ -139,8 +144,8 @@ public class Alignement
 		decoder.endUtt();
 
 		int score = 0,
-			trames = 0,
-			tramesBonus = 0;
+				trames = 0,
+				tramesBonus = 0;
 
 		for (Segment seg : decoder.seg())
 		{
@@ -169,10 +174,64 @@ public class Alignement
 		for (Segment seg : decoder.seg())
 		{
 			int start = seg.getStartFrame(),
-				end   = seg.getEndFrame();
+					end   = seg.getEndFrame();
 			String mot = seg.getWord();
 
 			resultat.add(start + " - " + end + " : " + mot + " (" + seg.getAscore() + ")");
 		}
+	}
+
+	/**
+	 * Permet de récupérer les temps de début et de fin convertis en byte de chaque phonèmes trouvés par l'alignement.
+	 * Utile à l'alignement semi-contraint.
+	 * @param fichier 	Le fichier audio
+	 * @param type		Le type d'alignement effectué au préalable sur ce fichier
+	 * @return			Un tableau de paires pour chaque phonème
+	 */
+	public ArrayList<Pair<Integer, Integer>> getTimings(final File fichier, int type)
+	{
+		String path = fichier.getAbsolutePath();
+		path = path.substring(0, path.length() - 4);
+
+		if (type == 1)
+			path += "-score-phoneme.txt";
+		else if (type == 2)
+			path += "-score.txt";
+
+		File fichiertxt = new File(path);
+		ArrayList<String> fichierString = new ArrayList<>();
+		ArrayList<Pair<Integer, Integer>> res = new ArrayList<>();
+
+		try
+		{
+			BufferedReader br = new BufferedReader(new FileReader(fichiertxt));
+
+			String st;
+			int ligne = 0;
+
+			while ((st = br.readLine()) != null)
+			{
+				if (ligne >= 2 && !st.contains("sil") && !st.contains("SIL") && !st.contains("NULL"))
+					fichierString.add(st.substring(0, st.indexOf(":") - 1));
+
+				ligne++;
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		for (String s : fichierString)
+		{
+			int debut, fin;
+
+			debut = Integer.parseInt(s.substring(0, s.indexOf("-") - 1)) * 320;
+			fin = Integer.parseInt(s.substring(s.indexOf("-") + 2)) * 320;
+
+			res.add(new Pair<>(debut, fin));
+		}
+
+		return res;
 	}
 }
