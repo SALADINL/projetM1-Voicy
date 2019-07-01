@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.io.File;
@@ -17,6 +18,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * @author Ken Bres,
+ * La classe Reco utilisée pour l'enregistrement
+ */
 public class Reco extends Activity
 {
 	Exercice exo = null;
@@ -26,18 +31,32 @@ public class Reco extends Activity
 	DAP dap = null;
 	TextView mot = null;
 	TextView compteur = null;
-	Button enregistrer = null;
+	ImageButton enregistrer = null;
+
+	Button annuler;
 
 	Button btEnd = null;
 	Button retour = null;
 	int type = 0;  // 1 = exo avec mot 0 = exo avec phrase
 	int nbtest = 0;
+	int nbPhrase = 0;
+	int numeroDeListe = 0;
+	int random = 0;
 
 	ArrayList<String> tabPhrase = null;
 	ArrayList<String> tabPhoneme = null;
 	ArrayList<String> tabDap = null;
 	ArrayList<String> tabSemi = null;
 
+	/**
+	 * @author Ahmet AGBEKTAS, Ken Bres, Noaman TATA
+	 *
+	 * Nous pouvons s'enregistrer avec deux types d'exercices : Logatome ou Phrase
+	 * Nous avons un bouton pour s'enregistrer et finir l'enregistrement, un autre pour faire retour si jamais nous avons mal prononcé
+	 * Nous avons un autre bouton pour annuler l'enregistrement et revenir à l'accueil, l'annulation effacera le dossier de l'enregistrement en cours
+	 *
+	 * @param savedInstanceState
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -52,13 +71,24 @@ public class Reco extends Activity
 		btEnd = findViewById(R.id.btnEnd);
 		retour = findViewById(R.id.back);
 
+		annuler = findViewById(R.id.annuler);
+
 		Intent intent = getIntent();
 		type = intent.getIntExtra("type", 1);
 		nbtest = intent.getIntExtra("nbtest", 3);
+		nbPhrase = intent.getIntExtra("nbPhrase", 12);
+		numeroDeListe = intent.getIntExtra("numeroDeListe", 1);
+		random = intent.getIntExtra("random", 0);
 
-		tabSemi = new ArrayList<>();
-
-		if (type == 1)
+		if (type == 1 && random == 0)
+		{
+			tabPhoneme = new ArrayList<>();
+			tabDap = new ArrayList<>();
+			dap = new DAP(this);
+			System.out.println("numeroDeListe : " + numeroDeListe);
+			exo = new ExerciceMot(52, numeroDeListe,this);
+		}
+		else if (type == 1 && random == 1)
 		{
 			tabPhoneme = new ArrayList<>();
 			tabDap = new ArrayList<>();
@@ -68,11 +98,12 @@ public class Reco extends Activity
 		else if (type == 2)
 		{
 			tabPhrase = new ArrayList<>();
-			exo = new ExerciceSeguin(nbtest, this);
+			exo = new ExerciceSeguin(nbPhrase, this);
 		}
 
 		initialiser();
-		creerDossier();
+		//creerDossier();
+        final File file = creerDossierv2();
 
 		enregistrer.setOnClickListener(new View.OnClickListener()
 		{
@@ -84,7 +115,7 @@ public class Reco extends Activity
 					verifierPermissions();
 					rec.startRecording();
 					retour.setEnabled(false);
-					enregistrer.setText("STOP");
+					enregistrer.setImageResource(R.drawable.ic_mic_black_85dp2);
 				}
 				else
 				{
@@ -92,7 +123,7 @@ public class Reco extends Activity
                     findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
 					analyser();
 					actualiser();
-					enregistrer.setText("Enregistrer");
+					enregistrer.setImageResource(R.drawable.ic_mic_black_85dp);
 
 					if (exo.getIndex() > 0)
 						retour.setEnabled(true);
@@ -115,8 +146,27 @@ public class Reco extends Activity
 			}
 		});
 
+		annuler.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+               	//System.out.println("file : " + file);
+
+				supprimerDossier(file);
+
+				Intent intent = new Intent(Reco.this, MainActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			}
+		});
+
 	}
 
+	/***
+	 * Tant que nous sommes pas arrivé à la fin de l'exercice on continue à prononcer les mots ou phrases
+	 * Si nous avons finit, un bouton terminer apparait qui nous permet de voir les résultats
+	 */
 	private void actualiser()
 	{
 	    if(!exo.fini())
@@ -143,6 +193,11 @@ public class Reco extends Activity
         }
 	}
 
+	/**
+	 * @author Ahmet AGBEKTAS
+	 *
+	 * Vérification des permissions d'accès au stockage et au microphone
+	 */
 	private void verifierPermissions()
 	{
 		if ((ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) &&
@@ -153,6 +208,10 @@ public class Reco extends Activity
 		}
 	}
 
+	/**
+	 * Pour préparer les informations utiles à l'enregistrement
+	 * Afficher le mot ou phrase à prononcer, mettre et gérer le compteur
+	 */
 	private void initialiser()
 	{
 		mot.setText(exo.getText());
@@ -163,6 +222,9 @@ public class Reco extends Activity
 			rec = new Recorder("" + exo.getIndex());
 	}
 
+	/**
+	 * Fonction pour analyser l'enregistrement, en fonction du type d'exercice (Phrase ou Phoneme) on applique différent alignement (phonème ou voisin)
+	 */
 	private void analyser()
 	{
 		clearTab();
@@ -202,6 +264,10 @@ public class Reco extends Activity
 			System.out.println("=========" + s);
 	}
 
+	/**
+	 * @author Noaman TATA, Ken BRES
+	 * Fonction pour sauvegarder les résultats
+	 */
 	private void sauverResultats() throws IOException
 	{
 		String nom = rec.getFilename();
@@ -234,6 +300,9 @@ public class Reco extends Activity
 		}
 	}
 
+	/**
+	 * Fonction pour effacer le tableau qui va contenir les résultats
+	 */
 	private void clearTab()
 	{
 		if (type == 1)
@@ -253,13 +322,49 @@ public class Reco extends Activity
 		}
 	}
 
-	private void creerDossier()
-	{
-		File file = new File(Environment.getExternalStorageDirectory().getPath(),"ModuleReco/Exercices/Exo" + rec.getCurrentTimeUsingCalendar("1"));
+	/**
+	 * @author Ahmet AGBEKTAS, Noaman TATA
+	 *
+	 * Fonction pour créer le dossier avec l'exercice en question dans le stockage du téléphone
+	 *
+	 * @return le dossier crée
+	 */
+    private File creerDossierv2()
+    {
+        File file = new File(Environment.getExternalStorageDirectory().getPath(),"ModuleReco/Exercices/Exo" + rec.getCurrentTimeUsingCalendar("1"));
 
-		if (!file.exists())
-			file.mkdirs();
+        if (!file.exists())
+            file.mkdirs();
 
-		rec.setExo("Exo" + rec.getCurrentTimeUsingCalendar("1"));
-	}
+        rec.setExo("Exo" + rec.getCurrentTimeUsingCalendar("1"));
+
+        return file;
+    }
+
+	/**
+	 * @author Ahmet AGBEKTAS
+	 *
+	 * Fonction utilisée pour supprimer un dossier et sous-dossier
+	 * @param file Dossier à supprimer
+	 */
+    private void supprimerDossier(File file)
+    {
+        if (file.isDirectory())
+        {
+            File[] listFiles = file.listFiles();
+
+            for (int i = 0; i < listFiles.length; i++)
+            {
+                if (listFiles[i].isDirectory())
+                {
+                    supprimerDossier(listFiles[i]);
+                }
+                else
+                {
+                    listFiles[i].delete();
+                }
+            }
+        }
+        file.delete();
+    }
 }

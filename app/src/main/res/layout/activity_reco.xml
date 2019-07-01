@@ -39,12 +39,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mot" />
 
-    <Button
+    <ImageButton
         android:id="@+id/record"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="124dp"
+        android:layout_height="119dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginEnd="140dp"
         android:layout_marginBottom="15dp"
-        android:text="Enregistrer"
+        android:background="@drawable/ic_brightness_1_black_24dp"
+        android:src="@drawable/ic_mic_black_85dp"
         app:layout_constraintBottom_toTopOf="@+id/back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -59,18 +62,34 @@
         app:layout_constraintBottom_toTopOf="@+id/btnEnd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
     <RelativeLayout
         android:id="@+id/loadingPanel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center" >
+        android:gravity="center">
 
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/RedAccent"
-            android:indeterminate="true" />
+            android:indeterminate="true"
+            android:theme="@style/RedAccent" />
+
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/annuler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Annuler"
+        android:textColor="#FF0000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
+
     <Button
         android:id="@+id/btnEnd"
         android:layout_width="wrap_content"

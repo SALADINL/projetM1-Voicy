@@ -10,10 +10,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * @author Ken Bres
+ *
+ * Classe permettant de faire des exercices de type lecture de phrases du compte de la Chèvre de Monsieur Seguin.
+ */
 public class ExerciceSeguin extends Exercice
 {
 	private ArrayList<String> phrases;
 
+	/**
+	 * Constructeur vide. Crée un exercice de 12 phrases.
+	 *
+	 * @param context Le contexte dans lequel sera utilisé l'exercice.
+	 */
 	public ExerciceSeguin(Context context)
 	{
 		super(context);
@@ -39,17 +49,31 @@ public class ExerciceSeguin extends Exercice
 		updateJsgf();
 	}
 
+	/**
+	 * Constructeur avec taille variable.
+	 *
+	 * @param nb 		Le nombre de phrases de l'exercice.
+	 * @param context 	Le contexte dans lequel sera utilisé l'exercice.
+	 */
 	public ExerciceSeguin(int nb, Context context)
 	{
 		this(context);
 		max = nb;
 	}
 
+	/**
+	 * Retourne le texte à prononcer de la phrase courante.
+	 *
+	 * @return la phrase à prononcer.
+	 */
 	public String getText()
 	{
 		return phrases.get(index);
 	}
 
+	/**
+	 * Recherche dans le dossier Asset, le fichier JSGF de l'élément actuel afin de le mettre à jour localement.
+	 */
 	protected void updateJsgf()
 	{
 		try

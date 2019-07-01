@@ -19,7 +19,11 @@ import edu.cmu.pocketsphinx.Config;
 import edu.cmu.pocketsphinx.Decoder;
 import edu.cmu.pocketsphinx.Segment;
 
-
+/**
+ * @author Ken Bres
+ *
+ * Classe permettant d'initialiser un décodeur de façon a effectuer un Alignement.
+ */
 public class Alignement
 {
 	static { System.loadLibrary("pocketsphinx_jni"); }
@@ -28,17 +32,21 @@ public class Alignement
 	private ArrayList<String> resultat;
 	private Context contexte;
 	private Decoder decoder = null;
-	private int type = 0;
 
-	public final static int PHONEME = 1;
-	public final static int MOT = 2;
-	public final static int VOISIN = 3;
+	public final static int PHONEME = 1,
+							MOT = 2,
+							VOISIN = 3;
 
+	/**
+	 * Permet d'initialiser le décodeur d'une certaine façon.
+	 *
+	 * @param contexte 	le contexte dans lequel sera appliqué l'alignement.
+	 * @param config 	le type d'alignement qui va être effectué
+	 */
 	public Alignement(Context contexte, int config)
 	{
 		this.contexte = contexte;
 		resultat = new ArrayList<>();
-		type = config;
 
 		try
 		{
@@ -78,6 +86,12 @@ public class Alignement
 		}
 	}
 
+	/**
+	 * Fonction permettant d'effectuer un alignement sur un fichier audio.
+	 *
+	 * @param fichier le fichier WAV converti en type File.
+	 * @return un tableau contenant les résultats.
+	 */
 	public ArrayList<String> convertir(final File fichier)
 	{
 		try
@@ -95,6 +109,11 @@ public class Alignement
 		return resultat;
 	}
 
+	/**
+	 * Fonction appellée par la fonction convertir(). C'est ici qu'est fait le traîtement.
+	 *
+	 * @param stream le fichier WAV converti en type InputStream.
+	 */
 	private void aligner(final InputStream stream)
 	{
 		decoder.startUtt();

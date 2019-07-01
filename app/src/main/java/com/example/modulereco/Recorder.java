@@ -13,8 +13,16 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * @author Noaman TATA, Ken Bres
+ * La classe Recorder permet d'effectuer les enregistrement des fichiers .wav
+ *
+ */
 public class Recorder
 {
+	/**
+	 * Les fichier .wav utilisé par sphinx ont les caractéristiques suivante
+	 */
 	private static final int RECORDER_BPP = 16;
 	private static String AUDIO_RECORDER_FOLDER = "";
 	private static final String AUDIO_RECORDER_TEMP_FILE = "record_temp.raw";
@@ -31,6 +39,10 @@ public class Recorder
 
 	private String output;
 
+	/**
+	 * constructeur
+	 * @param path
+	 */
 	public Recorder(String path)
 	{
 		bufferSize = AudioRecord.getMinBufferSize(RECORDER_SAMPLERATE,
@@ -40,16 +52,30 @@ public class Recorder
 		output = path;
 	}
 
+	/**
+	 * Setter pour le path de l'exo
+	 * @param exoPath
+	 */
 	public void setExo(String exoPath)
 	{
 		AUDIO_RECORDER_FOLDER = "ModuleReco/Exercices/"+exoPath;
 	}
 
+	/**
+	 * Getter sur l'état d'enregistrement
+	 * @return
+	 */
 	public boolean getRecording()
 	{
 		return isRecording;
 	}
 
+	/**
+	 * @author Noaman TATA
+	 * Renvoie la date et l'heure à laquel un exo est fait
+	 * @param type = 0 renvoie la date normal = 1 renvoie la date sous forme de code pour nommer les exercices
+	 * @return Date et heure
+	 */
 	public String getCurrentTimeUsingCalendar(String type)
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -75,6 +101,11 @@ public class Recorder
 		return res;
 	}
 
+	/**
+	 * @author Noaman TATA
+	 * Renvoie le nom du fichier wav si le dossier de l'exercice n'existe pas il est alors crée.
+	 * @return nom du fichier wav
+	 */
 	public String getFilename()
 	{
 		String filepath = Environment.getExternalStorageDirectory().getPath();
@@ -86,6 +117,11 @@ public class Recorder
 		return (file.getAbsolutePath() + "/" + output + AUDIO_RECORDER_FILE_EXT_WAV);
 	}
 
+	/**
+	 * @author Noaman TATA
+	 * Crée le dossier et le fichier wav temporaire nécessaire au wav final
+	 * @return retourne le path du fichier temp
+	 */
 	private String getTempFilename()
 	{
 		String filepath = Environment.getExternalStorageDirectory().getPath();
@@ -102,6 +138,10 @@ public class Recorder
 		return (file.getAbsolutePath() + "/" + AUDIO_RECORDER_TEMP_FILE);
 	}
 
+	/**
+	 * @author Noaman TATA, Ken BRES
+	 * Commence l'enregistrement du fichier
+	 */
 	public void startRecording()
 	{
 		recorder = new AudioRecord(MediaRecorder.AudioSource.VOICE_RECOGNITION,
@@ -125,6 +165,10 @@ public class Recorder
 		recordingThread.start();
 	}
 
+	/**
+	 * author Noaman TATA & https://stackoverflow.com/questions/22279414/how-to-record-audio-using-audiorecorder-in-android
+	 * Convertie l'audio en byte
+	 */
 	private void writeAudioDataToFile()
 	{
 		byte data[] = new byte[bufferSize];
@@ -172,6 +216,9 @@ public class Recorder
 		}
 	}
 
+	/**
+	 * Stop l'enregistrement et delete le fichier temporaire
+	 */
 	public void stopRecording()
 	{
 		if (null != recorder)
@@ -191,12 +238,20 @@ public class Recorder
 		deleteTempFile();
 	}
 
+	/**
+	 * Supprime le wav temporaire
+	 */
 	private void deleteTempFile()
 	{
 		File file = new File(getTempFilename());
 		file.delete();
 	}
 
+	/**
+	 * Copie un fichier wav dans un autres
+	 * @param inFilename fichier source
+	 * @param outFilename fichier en sortie
+	 */
 	private void copyWaveFile(String inFilename, String outFilename)
 	{
 		FileInputStream in = null;
@@ -228,6 +283,17 @@ public class Recorder
 		}
 	}
 
+	/**
+	 * @author Noaman TATA & https://github.com/krvarma/krvarma-android-samples/blob/master/AudioRecorder.2/src/com/varma/samples/audiorecorder/RecorderActivity.java
+	 *
+	 * @param out fichier de sortie
+	 * @param totalAudioLen
+	 * @param totalDataLen
+	 * @param longSampleRate
+	 * @param channels
+	 * @param byteRate
+	 * @throws IOException
+	 */
 	private void WriteWaveFileHeader(FileOutputStream out, long totalAudioLen, long totalDataLen, long longSampleRate, int channels, long byteRate) throws IOException
 	{
 		byte[] header = new byte[44];
