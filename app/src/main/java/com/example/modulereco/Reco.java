@@ -36,6 +36,7 @@ public class Reco extends Activity
 	ArrayList<String> tabPhrase = null;
 	ArrayList<String> tabPhoneme = null;
 	ArrayList<String> tabDap = null;
+	ArrayList<String> tabSemi = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -54,6 +55,8 @@ public class Reco extends Activity
 		Intent intent = getIntent();
 		type = intent.getIntExtra("type", 1);
 		nbtest = intent.getIntExtra("nbtest", 3);
+
+		tabSemi = new ArrayList<>();
 
 		if (type == 1)
 		{
@@ -189,15 +192,14 @@ public class Reco extends Activity
 
 		ArrayList<Pair<Integer, Integer>> timings = alignement.getTimings(wav, type);
 
-		int i = 0;
 		dap = new DAP(this);
+		tabSemi = new ArrayList<>();
 
 		for (Pair<Integer, Integer> p : timings)
-		{
-			System.out.println("============== Segment n°" + ++i + " ==============");
-			System.out.println("========= " + p.first + " -> " + p.second + " (" + (p.second - p.first) + ") =========");
-			dap.convertirSemi(wav, p.first, p.second);
-		}
+			tabSemi.add(dap.convertirSemiVersion1(wav, p.first, p.second));
+
+		for (String s : tabSemi)
+			System.out.println("=========" + s);
 	}
 
 	private void sauverResultats() throws IOException
