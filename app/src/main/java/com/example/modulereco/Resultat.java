@@ -164,7 +164,7 @@ public class Resultat  extends Activity
 
 				if (!fileType.equals("-score.txt")) // si c'est le mode phrase pas de DAP
 				{
-					final ArrayList<String> dataDap = getData(parent, position, false);
+					final ArrayList<String> dataSemi = getData(parent, position, false);
 					swDap.setVisibility(View.VISIBLE);
 					swDap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
 					{
@@ -172,7 +172,7 @@ public class Resultat  extends Activity
 						public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
 						{
 							if (isChecked)
-								initRes(dataDap, false);
+								initRes(dataSemi, false);
 							else
 								initRes(dataPhone, true);
 						}
@@ -208,7 +208,7 @@ public class Resultat  extends Activity
 		ArrayList<String> data = new ArrayList<>();
 
 		if (!type)
-			typePath = "-score-dap.txt";
+			typePath = "-score-semiContraint.txt";
 
 		try
 		{
@@ -281,10 +281,10 @@ public class Resultat  extends Activity
 	/**
 	 * @author Noaman Tata
 	 *
-	 * Fonction pour remplir le tableau du résultat, avec plusieurs colonnes ; Phonème ou DAP, Durée (frames) et Score
+	 * Fonction pour remplir le tableau du résultat, avec plusieurs colonnes ; Phonème ou Semi-contraint, Durée (frames) et Score
 	 *
 	 * @param output Listes des résultats à afficher
-	 * @param phoneSearch Type de résultat à afficher true = phonème false = DAP
+	 * @param phoneSearch Type de résultat à afficher true = phonème false = Semi contraint
 	 */
 	private void initRes(ArrayList<String> output, Boolean phoneSearch)
 	{
@@ -311,7 +311,7 @@ public class Resultat  extends Activity
 					if (phoneSearch)
 						col.setText(" Phoneme ");
 					else
-						col.setText(" DAP ");
+						col.setText(" Semi-Contraint ");
 					break;
 
 				case 1 :
@@ -334,9 +334,9 @@ public class Resultat  extends Activity
 		{
 			res = output.get(i);
 
-			if (i == 0)
+			if (i == 0 && phoneSearch)
 				scoreNorm.setText(res);
-			else if (i > 1)
+			else if (i > 1 || !phoneSearch)
 			{
 				// JUste un split car les résultats sont du genre: 00-34 : SIL (-100)  array 1 contient la première partie
 				array = res.split(":");
