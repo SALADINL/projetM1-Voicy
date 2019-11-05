@@ -116,7 +116,16 @@ public class MainActivity extends Activity
             public void onClick(View v) {
                 verifierPermissions();
                 Intent intent = new Intent(MainActivity.this, MultiTest.class);
-                startActivity(intent);
+                intent.putExtra("type", 3);
+                try
+                {
+                    intent.putExtra("nbPhrase", Integer.parseInt(nbPhrase.getText().toString()));
+                    startActivity(intent);
+                }
+                catch (Exception e)
+                {
+                    e.getStackTrace();
+                }
             }
         });
     }

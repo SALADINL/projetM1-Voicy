@@ -260,9 +260,6 @@ public class Reco extends Activity
 		for (Pair<Integer, Integer> p : timings)
 			tabSemi.add(dap.convertirSemiVersion1(wav, p.first, p.second));
 
-		//for (String s : tabSemi)
-		//	System.out.println("========= " + s);
-
 		try
 		{
 			sauverResultatsSemiContraint();
