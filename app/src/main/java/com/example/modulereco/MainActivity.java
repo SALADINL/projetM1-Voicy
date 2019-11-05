@@ -20,6 +20,7 @@ public class MainActivity extends Activity
     private Button btResultat;
     private Button btLogatome;
     private Button btPhrase;
+    private Button btTest;
     private Button button;
 
     private EditText nbExo;
@@ -41,6 +42,7 @@ public class MainActivity extends Activity
         btResultat = findViewById(R.id.btResultat);
         btLogatome = findViewById(R.id.btLogatome);
         btPhrase = findViewById(R.id.btPhrase);
+        btTest = findViewById(R.id.btTest);
         button = findViewById(R.id.button);
 
         nbExo = findViewById(R.id.nbExo);
@@ -105,6 +107,15 @@ public class MainActivity extends Activity
             public void onClick(View v) {
                 verifierPermissions();
                 Intent intent = new Intent(MainActivity.this, choixResultat.class);
+                startActivity(intent);
+            }
+        });
+
+        btTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                verifierPermissions();
+                Intent intent = new Intent(MainActivity.this, MultiTest.class);
                 startActivity(intent);
             }
         });
