@@ -78,20 +78,33 @@ public class MultiTest extends Activity
 
         tabPhrase = new ArrayList<>();
 
+
+        // ----------------------------------------------- DEBUT FONCTION ----------------------------------------------------------
+
+        // On sélectionne que la première phrase de l'exercice Seguin
         exo = new ExerciceSeguin(1, this);
 
+        // On va créer qu'un seul dossier appelé n°1
         rec = new Recorder("" + exo.getIndex());
 
+        // Chemin vers la SD CARD
         File sdCardRoot = Environment.getExternalStorageDirectory();
+
+        // Chemin vers notre dossier de wav
         File yourDir = new File(sdCardRoot, "ModuleReco/multiTest");
+
+        // Pour chaque fichier wav présent dans le fichier
         for (File wav : yourDir.listFiles())
         {
             if (wav.isFile())
             {
+                // On créer son dossier et créer un fichier wav vide qui va être utiliser dans la fonction copyFileToAnotherDir(..., ...)
                 final File file = creerDossierv2();
 
+                // Permet de lancer les algorithmes de pocket sphinx et d'enregistrer le resultat dans deux fichiers .txt
                 analyser(wav);
 
+                // Copie le wav dans le dossier de l'analyse
                 try
                 {
                     copyFileToAnotherDir(wav, destinationFile);
@@ -100,8 +113,15 @@ public class MultiTest extends Activity
                 {
                     e.printStackTrace();
                 }
+
+                // Patiente xxx milisecondes avant de passer aux fichiers wav suivant
+                try { Thread.sleep(800); } catch (InterruptedException e) { e.printStackTrace(); }
             }
         }
+
+        // Dès qu'on a terminé on va dans la liste des résultats
+        intent = new Intent(this, choixResultat.class);
+        startActivity(intent);
     }
 
     public static void copyFileToAnotherDir(File sourceFile, File destinationFile) throws IOException
