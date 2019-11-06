@@ -100,6 +100,7 @@ public class MultiTest extends Activity
         String nomDuFichier = "";
         int index = 0;
         int nbFichiers;
+        boolean dossierEstVide = true;
 
         ArrayList<String> tabPhrase = null;
         ArrayList<String> tabPhoneme = null;
@@ -149,11 +150,14 @@ public class MultiTest extends Activity
 
             nbFichiers = yourDir.listFiles().length;
 
+
+
             // Pour chaque fichier wav présent dans le fichier
             for (File wav : yourDir.listFiles())
             {
                 if (wav.isFile())
                 {
+                    dossierEstVide = false;
                     index++;
 
                     int progress = (100 / nbFichiers) * index;
@@ -179,7 +183,6 @@ public class MultiTest extends Activity
                 }
             }
 
-
             return null;
         }
 
@@ -197,9 +200,17 @@ public class MultiTest extends Activity
 
             mProgressDialog.dismiss();
 
-            Intent intent = new Intent(MultiTest.this, choixResultat.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            if(!dossierEstVide)
+            {
+                Intent intent = new Intent(MultiTest.this, choixResultat.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+            else
+            {
+                Toast.makeText(MultiTest.this, "Aucun fichier wav trouvé ...", Toast.LENGTH_LONG).show();
+            }
+
 
         }
 
@@ -336,6 +347,7 @@ public class MultiTest extends Activity
         int random = 0;
         int index = 0;
         int nbFichiers;
+        boolean dossierEstVide = true;
         File destinationFile = null;
         String nomDossierExercice = "";
         String nomDuFichier = "";
@@ -364,9 +376,16 @@ public class MultiTest extends Activity
             super.onPostExecute(aVoid);
             mProgressDialog.dismiss();
 
-            Intent intent = new Intent(MultiTest.this, choixResultat.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            if(!dossierEstVide)
+            {
+                Intent intent = new Intent(MultiTest.this, choixResultat.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+            else
+            {
+                Toast.makeText(MultiTest.this, "Aucun fichier wav trouvé ...", Toast.LENGTH_LONG).show();
+            }
         }
 
         @Override
@@ -409,6 +428,7 @@ public class MultiTest extends Activity
             {
                 if (wav.isFile())
                 {
+                    dossierEstVide = false;
                     nomDuFichier = wav.getName().substring(0, wav.getName().length() - 4);
 
                     index++;
