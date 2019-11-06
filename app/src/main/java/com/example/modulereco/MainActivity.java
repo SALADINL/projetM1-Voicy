@@ -32,7 +32,7 @@ public class MainActivity extends Activity
     /**
      * @author Ahmet AGBEKTAS, Noaman TATA
      *
-     * Nous avons plusieurs boutons "Phrase", "Logatome Listes", "Logatome Aléatoire" et "Résultat"
+     * Nous avons plusieurs boutons "Phrase", "Logatome Listes", "Logatome Aléatoire" et "Résultat "
      * @param savedInstanceState
      */
     @Override
