@@ -5,11 +5,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.io.File;
 
 /**
  * @author Noaman TATA, Ken Bres,
@@ -38,6 +41,7 @@ public class MainActivity extends Activity
         setContentView(R.layout.main_activity);
 
         verifierPermissions();
+        creationDesDossiers();
 
         btResultat = findViewById(R.id.btResultat);
         btLogatome = findViewById(R.id.btLogatome);
@@ -142,5 +146,17 @@ public class MainActivity extends Activity
                 (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)) {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO}, 1);
         }
+    }
+
+    private void creationDesDossiers()
+    {
+        File dossierPhraseMultiple = new File(Environment.getExternalStorageDirectory().getPath(), "ModuleReco/multiTest");
+        File dossierPhonemeMultiple = new File(Environment.getExternalStorageDirectory().getPath(), "ModuleReco/multiPhoneme");
+
+        if (!dossierPhraseMultiple.exists())
+            dossierPhraseMultiple.mkdirs();
+
+        if (!dossierPhonemeMultiple.exists())
+            dossierPhonemeMultiple.mkdirs();
     }
 }

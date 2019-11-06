@@ -40,8 +40,6 @@ public class MultiTest extends Activity
 
         verifierPermissions();
 
-        creationDesDossiers();
-
         btnPhrase = findViewById(R.id.btnMultiPhrase);
         btnPhoneme = findViewById(R.id.btnMultiPhoneme);
 
@@ -94,19 +92,5 @@ public class MultiTest extends Activity
             requestPermissions(new String[] { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO }, 1);
         }
     }
-
-    private void creationDesDossiers()
-    {
-        File dossierPhraseMultiple = new File(Environment.getExternalStorageDirectory().getPath(), "ModuleReco/multiTest");
-        File dossierPhonemeMultiple = new File(Environment.getExternalStorageDirectory().getPath(), "ModuleReco/multiPhoneme");
-
-        if (!dossierPhraseMultiple.exists())
-            dossierPhraseMultiple.mkdirs();
-
-        if (!dossierPhonemeMultiple.exists())
-            dossierPhonemeMultiple.mkdirs();
-
-    }
-
 
 }
