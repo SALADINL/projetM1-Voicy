@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,39 +29,9 @@ import java.util.ArrayList;
  */
 public class MultiTest extends Activity
 {
-    Exercice exo = null;
-    Recorder rec = null;
-    Alignement alignement = null;
-    DAP dap = null;
-    TextView mot = null;
-    TextView compteur = null;
-    ImageButton enregistrer = null;
+    Button btnPhrase = null;
+    Button btnPhoneme = null;
 
-    Button annuler;
-
-    Button btEnd = null;
-    Button retour = null;
-    int type = 0;  // 1 = exo avec mot 0 = exo avec phrase
-    int nbtest = 0;
-    int nbPhrase = 0;
-    int numeroDeListe = 0;
-    int random = 0;
-    File destinationFile = null;
-
-    ArrayList<String> tabPhrase = null;
-    ArrayList<String> tabPhoneme = null;
-    ArrayList<String> tabDap = null;
-    ArrayList<String> tabSemi = null;
-
-    /**
-     * @author Ahmet AGBEKTAS, Ken Bres, Noaman TATA
-     *
-     * Nous pouvons s'enregistrer avec deux types d'exercices : Logatome ou Phrase
-     * Nous avons un bouton pour s'enregistrer et finir l'enregistrement, un autre pour faire retour si jamais nous avons mal prononcé
-     * Nous avons un autre bouton pour annuler l'enregistrement et revenir à l'accueil, l'annulation effacera le dossier de l'enregistrement en cours
-     *
-     * @param savedInstanceState
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -69,177 +40,51 @@ public class MultiTest extends Activity
 
         verifierPermissions();
 
-        Intent intent = getIntent();
-        type = intent.getIntExtra("type", 1);
-        nbtest = intent.getIntExtra("nbtest", 3);
-        nbPhrase = intent.getIntExtra("nbPhrase", 12);
-        numeroDeListe = intent.getIntExtra("numeroDeListe", 1);
-        random = intent.getIntExtra("random", 0);
+        creationDesDossiers();
 
-        tabPhrase = new ArrayList<>();
+        btnPhrase = findViewById(R.id.btnMultiPhrase);
+        btnPhoneme = findViewById(R.id.btnMultiPhoneme);
 
-
-        // ----------------------------------------------- DEBUT FONCTION ----------------------------------------------------------
-
-        // On sélectionne que la première phrase de l'exercice Seguin
-        exo = new ExerciceSeguin(1, this);
-
-        // On va créer qu'un seul dossier appelé n°1
-        rec = new Recorder("" + exo.getIndex());
-
-        // Chemin vers la SD CARD
-        File sdCardRoot = Environment.getExternalStorageDirectory();
-
-        // Chemin vers notre dossier de wav
-        File yourDir = new File(sdCardRoot, "ModuleReco/multiTest");
-
-        // Pour chaque fichier wav présent dans le fichier
-        for (File wav : yourDir.listFiles())
-        {
-            if (wav.isFile())
-            {
-                // On créer son dossier et créer un fichier wav vide qui va être utiliser dans la fonction copyFileToAnotherDir(..., ...)
-                final File file = creerDossierv2();
-
-                // Permet de lancer les algorithmes de pocket sphinx et d'enregistrer le resultat dans deux fichiers .txt
-                analyser(wav);
-
-                // Copie le wav dans le dossier de l'analyse
+        btnPhrase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                verifierPermissions();
+                Intent intent = new Intent(MultiTest.this, MultiPhrase.class);
+                intent.putExtra("type", 2);
                 try
                 {
-                    copyFileToAnotherDir(wav, destinationFile);
+                    intent.putExtra("nbPhrase", Integer.parseInt("1"));
+                    startActivity(intent);
                 }
-                catch (IOException e)
+                catch (Exception e)
                 {
-                    e.printStackTrace();
+                    e.getStackTrace();
                 }
-
-                // Patiente xxx milisecondes avant de passer aux fichiers wav suivant
-                try { Thread.sleep(800); } catch (InterruptedException e) { e.printStackTrace(); }
             }
-        }
+        });
 
-        // Dès qu'on a terminé on va dans la liste des résultats
-        intent = new Intent(this, choixResultat.class);
-        startActivity(intent);
-    }
-
-    public static void copyFileToAnotherDir(File sourceFile, File destinationFile) throws IOException
-    {
-        FileChannel source = null;
-        FileChannel destination = null;
-
-        try
-        {
-            source = new FileInputStream(sourceFile).getChannel();
-            destination = new FileOutputStream(destinationFile).getChannel();
-            destination.transferFrom(source, 0, source.size());
-        } finally {
-            if (source != null) {
-                source.close();
-            }
-            if (destination != null) {
-                destination.close();
-            }
-        }
-    }
-
-    private File creerDossierv2()
-    {
-        File file = new File(Environment.getExternalStorageDirectory().getPath(),"ModuleReco/Exercices/Exo" + rec.getCurrentTimeUsingCalendar("1"));
-
-        destinationFile = new File(file.getAbsolutePath()+"/1/1.wav");
-
-        Log.d("abcdef", "destination : " + destinationFile);
-
-        if (!file.exists())
-            file.mkdirs();
-
-        rec.setExo("Exo" + rec.getCurrentTimeUsingCalendar("1"));
-
-        return file;
-    }
-
-    private void analyser(File wav)
-    {
-        clearTab();
-
-        //File wav = new File(rec.getFilename());
-
-        alignement = new Alignement(MultiTest.this, Alignement.VOISIN);
-        tabPhrase = alignement.convertir(wav);
-
-            try
+        btnPhoneme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
             {
-                sauverResultats();
+                verifierPermissions();
+                Intent intent = new Intent(MultiTest.this, MultiPhoneme.class);
+                intent.putExtra("type", 1);
+                intent.putExtra("random", 1);
+                try
+                {
+                    intent.putExtra("nbtest", Integer.parseInt("1"));
+                }
+                catch (Exception e)
+                {
+                    e.getStackTrace();
+                }
+                startActivity(intent);
             }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-
-            ArrayList<Pair<Integer, Integer>> timings = alignement.getTimings(wav, type);
-
-            dap = new DAP(this);
-            tabSemi = new ArrayList<>();
-
-            for (Pair<Integer, Integer> p : timings)
-                tabSemi.add(dap.convertirSemiVersion1(wav, p.first, p.second));
-
-            try
-            {
-                sauverResultatsSemiContraint();
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-    }
-
-    private void sauverResultats() throws IOException
-    {
-        String nom = rec.getFilename();
-        nom = nom.substring(0, nom.length() - 4);
-
-
-        FileWriter writer = new FileWriter(nom + "-score.txt");
-
-        for (String str : tabPhrase)
-            writer.write(str + "\n");
-
-        writer.close();
+        });
 
     }
 
-    private void sauverResultatsSemiContraint() throws IOException
-    {
-        String nom = rec.getFilename();
-        nom = nom.substring(0, nom.length() - 4);
-
-        FileWriter writer = new FileWriter(nom + "-score-semiContraint.txt");
-
-        for (String str : tabSemi)
-            writer.write(str + "\n");
-
-        writer.close();
-    }
-
-    private void clearTab()
-    {
-        if(tabPhrase != null)
-        {
-            if (!tabPhrase.isEmpty())
-            {
-                tabPhrase.clear();
-            }
-        }
-    }
-
-    /**
-     * @author Ahmet AGBEKTAS
-     *
-     * Vérification des permissions d'accès au stockage et au microphone
-     */
     private void verifierPermissions()
     {
         if ((ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) &&
@@ -248,6 +93,19 @@ public class MultiTest extends Activity
         {
             requestPermissions(new String[] { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO }, 1);
         }
+    }
+
+    private void creationDesDossiers()
+    {
+        File dossierPhraseMultiple = new File(Environment.getExternalStorageDirectory().getPath(), "ModuleReco/multiTest");
+        File dossierPhonemeMultiple = new File(Environment.getExternalStorageDirectory().getPath(), "ModuleReco/multiPhoneme");
+
+        if (!dossierPhraseMultiple.exists())
+            dossierPhraseMultiple.mkdirs();
+
+        if (!dossierPhonemeMultiple.exists())
+            dossierPhonemeMultiple.mkdirs();
+
     }
 
 

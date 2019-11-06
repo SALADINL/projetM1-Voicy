@@ -234,4 +234,45 @@ public class Alignement
 
 		return res;
 	}
+
+	public ArrayList<Pair<Integer, Integer>> getTimings(final File fichier, String pathFile)
+	{
+		String path = pathFile;
+
+		File fichiertxt = new File(path);
+		ArrayList<String> fichierString = new ArrayList<>();
+		ArrayList<Pair<Integer, Integer>> res = new ArrayList<>();
+
+		try
+		{
+			BufferedReader br = new BufferedReader(new FileReader(fichiertxt));
+
+			String st;
+			int ligne = 0;
+
+			while ((st = br.readLine()) != null)
+			{
+				if (ligne >= 2 && !st.contains("sil") && !st.contains("SIL") && !st.contains("NULL"))
+					fichierString.add(st.substring(0, st.indexOf(":") - 1));
+
+				ligne++;
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		for (String s : fichierString)
+		{
+			int debut, fin;
+
+			debut = Integer.parseInt(s.substring(0, s.indexOf("-") - 1)) * 320;
+			fin = Integer.parseInt(s.substring(s.indexOf("-") + 2)) * 320;
+
+			res.add(new Pair<>(debut, fin));
+		}
+
+		return res;
+	}
 }

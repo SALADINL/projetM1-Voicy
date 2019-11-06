@@ -162,7 +162,7 @@ public class Resultat  extends Activity
 				initRes(dataPhone, true);
 				chargerWav(parent, position);
 
-				if (!fileType.equals("-score.txt")) // si c'est le mode phrase pas de DAP
+				/*if (!fileType.equals("-score.txt")) // si c'est le mode phrase pas de DAP
 				{
 					final ArrayList<String> dataSemi = getData(parent, position, false);
 					swDap.setVisibility(View.VISIBLE);
@@ -177,7 +177,21 @@ public class Resultat  extends Activity
 								initRes(dataPhone, true);
 						}
 					});
-				}
+				}*/
+				final ArrayList<String> dataSemi = getData(parent, position, false);
+				swDap.setVisibility(View.VISIBLE);
+				swDap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+				{
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+					{
+						if (isChecked)
+							initRes(dataSemi, false);
+						else
+							initRes(dataPhone, true);
+					}
+				});
+
 			}
 		});
 
