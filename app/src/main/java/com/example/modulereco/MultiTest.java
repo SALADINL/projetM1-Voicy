@@ -409,8 +409,6 @@ public class MultiTest extends Activity
             tabDap = new ArrayList<>();
             dap = new DAP(MultiTest.this);
 
-            exo = new ExerciceMot(52, numeroDeListe,MultiTest.this);
-
             // Chemin vers la SD CARD
             File sdCardRoot = Environment.getExternalStorageDirectory();
 
@@ -430,6 +428,8 @@ public class MultiTest extends Activity
                 {
                     dossierEstVide = false;
                     nomDuFichier = wav.getName().substring(0, wav.getName().length() - 4);
+
+                    exo = new ExerciceMot(nomDuFichier, MultiTest.this);
 
                     index++;
 

@@ -2,6 +2,7 @@ package com.example.modulereco;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,6 +11,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -79,6 +82,69 @@ public class ExerciceMot extends Exercice
 		initAvecListe(dico);
 	}
 
+
+	/*
+	ADEL
+	 */
+	public ExerciceMot(String mot, Context context)
+	{
+		super(context);
+
+        max = 1;
+		mots = new ArrayList<>();
+		String filepath = context.getAssets().toString();
+		dico = new File(assetsDir, "/mots.dict");
+		Log.d("abcdef", "Path " + dico);
+
+		initAvecListeMultiPhoneme(dico, mot);
+	}
+
+	public boolean initAvecListeMultiPhoneme(File f, String mot)
+	{
+		boolean findMot = false;
+
+		mots.clear();
+
+		String[] res = null;
+
+		try (BufferedReader br = new BufferedReader(new FileReader(f)))
+		{
+			String line;
+			while ((line = br.readLine()) != null)
+			{
+				if(line.contains(mot))
+				{
+					res = line.split("\t");
+
+
+					Mot leMot = new Mot(res[0], res[1]);
+					Log.d("abcdef", "Mot = " + leMot.getMot());
+					Log.d("abcdef", "Prononciation = " + leMot.getPrononciation());
+					mots.add(leMot);
+
+					findMot = true;
+
+					break;
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		if(!findMot)
+		{
+			return false;
+		}
+
+		updateJsgf();
+
+		return true;
+
+
+	}
+
 	/**
 	 * @author Ahmet AGBEKTAS
 	 *
@@ -98,7 +164,12 @@ public class ExerciceMot extends Exercice
 			while ((line = br.readLine()) != null)
 			{
 				res = line.split("\t");
-				mots.add(new Mot(res[0], res[1]));
+
+
+                Mot leMot = new Mot(res[0], res[1]);
+                Log.d("abcdef", "Mot = " + leMot.getMot());
+				Log.d("abcdef", "Prononciation = " + leMot.getPrononciation());
+				mots.add(leMot);
 			}
 		}
 		catch (Exception e)
@@ -138,7 +209,8 @@ public class ExerciceMot extends Exercice
 
 				} while (pasok);
 
-				mots.add(new Mot(res[0], res[1]));
+				Mot leMot = new Mot(res[0], res[1]);
+				mots.add(leMot);
 			}
 
 			updateJsgf();
