@@ -43,6 +43,7 @@ public class MultiTest extends Activity
         setContentView(R.layout.multi_test);
 
         verifierPermissions();
+        MainActivity.creationDesDossiers();
 
         btnPhrase = findViewById(R.id.btnMultiPhrase);
         btnPhoneme = findViewById(R.id.btnMultiPhoneme);
@@ -436,11 +437,6 @@ public class MultiTest extends Activity
             random = intent.getIntExtra("random", 0);
 
 
-
-            tabPhoneme = new ArrayList<>();
-            tabDap = new ArrayList<>();
-            dap = new DAP(MultiTest.this);
-
             // Chemin vers la SD CARD
             File sdCardRoot = Environment.getExternalStorageDirectory();
 
@@ -458,6 +454,11 @@ public class MultiTest extends Activity
             {
                 if (wav.isFile())
                 {
+                    tabPhoneme = new ArrayList<>();
+                    tabDap = new ArrayList<>();
+                    dap = new DAP(MultiTest.this);
+
+
                     dossierEstVide = false;
                     nomDuFichier = wav.getName().substring(0, wav.getName().length() - 4);
                     index++;
@@ -549,8 +550,10 @@ public class MultiTest extends Activity
             clearTab();
 
             alignement = new Alignement(MultiTest.this, Alignement.PHONEME);
-            tabPhoneme = alignement.convertir(wav);
             tabDap = dap.convertir(wav);
+            tabPhoneme = alignement.convertir(wav);
+
+
 
             try
             {

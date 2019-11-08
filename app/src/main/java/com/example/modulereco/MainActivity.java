@@ -148,7 +148,7 @@ public class MainActivity extends Activity
         }
     }
 
-    private void creationDesDossiers()
+    public static void creationDesDossiers()
     {
         File dossierPhraseMultiple = new File(Environment.getExternalStorageDirectory().getPath(), "ModuleReco/multiTest");
         File dossierPhonemeMultiple = new File(Environment.getExternalStorageDirectory().getPath(), "ModuleReco/multiPhoneme");

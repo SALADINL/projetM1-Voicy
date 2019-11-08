@@ -118,7 +118,6 @@ public class Alignement
 	{
 		decoder.startUtt();
 		byte[] b = new byte[1024];
-		int i = 0;
 
 		try
 		{
@@ -133,7 +132,6 @@ public class Alignement
 				short[] s = new short[nbytes / 2];
 				bb.asShortBuffer().get(s);
 				decoder.processRaw(s, nbytes / 2, false, false);
-				i += nbytes;
 			}
 		}
 		catch (IOException e)
