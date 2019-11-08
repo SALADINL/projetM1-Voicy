@@ -96,7 +96,12 @@ public class ExerciceMot extends Exercice
 		dico = new File(assetsDir, "/mots.dict");
 		Log.d("abcdef", "Path " + dico);
 
-		initAvecListeMultiPhoneme(dico, mot);
+
+	}
+
+	public boolean initMultiPhoneme(String mot)
+	{
+		return initAvecListeMultiPhoneme(dico, mot);
 	}
 
 	public boolean initAvecListeMultiPhoneme(File f, String mot)

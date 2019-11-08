@@ -2,7 +2,9 @@ package com.example.modulereco;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -356,6 +358,9 @@ public class MultiTest extends Activity
         ArrayList<String> tabDap = null;
         ArrayList<String> tabSemi = null;
 
+        String motNonDico = "Les mots suivant n'ont pas été traité : \n";
+        boolean motNonTrouver = false;
+
 
         @Override
         protected void onPreExecute()
@@ -378,9 +383,35 @@ public class MultiTest extends Activity
 
             if(!dossierEstVide)
             {
-                Intent intent = new Intent(MultiTest.this, choixResultat.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                if(motNonTrouver)
+                {
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(MultiTest.this);
+                    builder1.setTitle("Mots inexistants dans le dictionnaire");
+                    builder1.setMessage(motNonDico);
+                    builder1.setCancelable(false);
+
+                    builder1.setPositiveButton(
+                            "Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id)
+                                {
+                                    dialog.cancel();
+                                    Intent intent = new Intent(MultiTest.this, choixResultat.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                }
+                            });
+
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                }
+                else
+                {
+                    Intent intent = new Intent(MultiTest.this, choixResultat.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+
             }
             else
             {
@@ -403,6 +434,7 @@ public class MultiTest extends Activity
             nbPhrase = intent.getIntExtra("nbPhrase", 12);
             numeroDeListe = intent.getIntExtra("numeroDeListe", 1);
             random = intent.getIntExtra("random", 0);
+
 
 
             tabPhoneme = new ArrayList<>();
@@ -428,36 +460,42 @@ public class MultiTest extends Activity
                 {
                     dossierEstVide = false;
                     nomDuFichier = wav.getName().substring(0, wav.getName().length() - 4);
+                    index++;
+                    int progress = (100 / nbFichiers) * index;
+                    publishProgress(progress);
 
                     exo = new ExerciceMot(nomDuFichier, MultiTest.this);
 
-                    index++;
-
-                    int progress = (100 / nbFichiers) * index;
-
-                    publishProgress(progress);
-
-                    //Log.d("abcdef", "File : " + nomDossierExercice);
-                    //Log.d("abcdef", "Fichier : " + nomDuFichier);
-
-                    // On créer son dossier et créer un fichier wav vide qui va être utiliser dans la fonction copyFileToAnotherDir(..., ...)
-                    final File file = creerDossierv2();
-
-                    // Permet de lancer les algorithmes de pocket sphinx et d'enregistrer le resultat dans deux fichiers .txt
-                    analyser(wav);
-
-                    // Copie le wav dans le dossier de l'analyse
-                    try
+                    if(((ExerciceMot)exo).initMultiPhoneme(nomDuFichier))
                     {
-                        copyFileToAnotherDir(wav, destinationFile);
+                        //Log.d("abcdef", "File : " + nomDossierExercice);
+                        //Log.d("abcdef", "Fichier : " + nomDuFichier);
+
+                        // On créer son dossier et créer un fichier wav vide qui va être utiliser dans la fonction copyFileToAnotherDir(..., ...)
+                        final File file = creerDossierv2();
+
+                        // Permet de lancer les algorithmes de pocket sphinx et d'enregistrer le resultat dans deux fichiers .txt
+                        analyser(wav);
+
+                        // Copie le wav dans le dossier de l'analyse
+                        try
+                        {
+                            copyFileToAnotherDir(wav, destinationFile);
+                        }
+                        catch (IOException e)
+                        {
+                            e.printStackTrace();
+                        }
+
+                        // Patiente xxx milisecondes avant de passer aux fichiers wav suivant
+                        //try { Thread.sleep(800); } catch (InterruptedException e) { e.printStackTrace(); }
                     }
-                    catch (IOException e)
+                    else
                     {
-                        e.printStackTrace();
+                        motNonTrouver = true;
+                        motNonDico += "- " + nomDuFichier + "\n";
                     }
 
-                    // Patiente xxx milisecondes avant de passer aux fichiers wav suivant
-                    try { Thread.sleep(800); } catch (InterruptedException e) { e.printStackTrace(); }
                 }
             }
 
