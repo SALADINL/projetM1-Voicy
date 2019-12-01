@@ -436,7 +436,6 @@ public class MultiTest extends Activity
             numeroDeListe = intent.getIntExtra("numeroDeListe", 1);
             random = intent.getIntExtra("random", 0);
 
-
             // Chemin vers la SD CARD
             File sdCardRoot = Environment.getExternalStorageDirectory();
 
@@ -448,6 +447,8 @@ public class MultiTest extends Activity
             nomDossierExercice = "ModuleReco/Exercices/MultPhoneme" + rec.getCurrentTimeUsingCalendar("1");
 
             nbFichiers = yourDir.listFiles().length;
+
+            Log.d("leTest", "Nombre fichier total : " + nbFichiers);
 
             // Pour chaque fichier wav présent dans le fichier
             for (File wav : yourDir.listFiles())
@@ -461,9 +462,13 @@ public class MultiTest extends Activity
 
                     dossierEstVide = false;
                     nomDuFichier = wav.getName().substring(0, wav.getName().length() - 4);
+                    nomDuFichier = nomDuFichier.replace("#", "");
                     index++;
+
                     int progress = (100 / nbFichiers) * index;
                     publishProgress(progress);
+
+                    Log.d("leTest", "Progresse : " + progress);
 
                     exo = new ExerciceMot(nomDuFichier, MultiTest.this);
 
@@ -478,6 +483,9 @@ public class MultiTest extends Activity
                         // Permet de lancer les algorithmes de pocket sphinx et d'enregistrer le resultat dans deux fichiers .txt
                         analyser(wav);
 
+                        // --------- COPIE ANNULER ---------
+
+                        /*
                         // Copie le wav dans le dossier de l'analyse
                         try
                         {
@@ -487,6 +495,7 @@ public class MultiTest extends Activity
                         {
                             e.printStackTrace();
                         }
+                         */
 
                         // Patiente xxx milisecondes avant de passer aux fichiers wav suivant
                         //try { Thread.sleep(800); } catch (InterruptedException e) { e.printStackTrace(); }
@@ -534,10 +543,16 @@ public class MultiTest extends Activity
             if (!file.exists())
                 file.mkdirs();
 
+            // ------------ DECOMMENTE ---------------
+
+            /*
             File file2 = new File(Environment.getExternalStorageDirectory().getPath(), nomDossierExercice + "/" + nomDuFichier);
 
             if (!file2.exists())
                 file2.mkdirs();
+
+
+             */
 
             rec.setExo("Exo" + rec.getCurrentTimeUsingCalendar("1"));
 
@@ -550,10 +565,8 @@ public class MultiTest extends Activity
             clearTab();
 
             alignement = new Alignement(MultiTest.this, Alignement.PHONEME);
-            tabDap = dap.convertir(wav);
+            //tabDap = dap.convertir(wav);
             tabPhoneme = alignement.convertir(wav);
-
-
 
             try
             {
@@ -563,6 +576,8 @@ public class MultiTest extends Activity
             {
                 e.printStackTrace();
             }
+
+            /*
 
             ArrayList<Pair<Integer, Integer>> timings = alignement.getTimings(wav, Environment.getExternalStorageDirectory().getPath() + "/" +nomDossierExercice + "/" + nomDuFichier + "/" + nomDuFichier + "-score-phoneme.txt");
 
@@ -580,6 +595,8 @@ public class MultiTest extends Activity
             {
                 e.printStackTrace();
             }
+
+             */
         }
 
         private void clearTab()
@@ -594,12 +611,33 @@ public class MultiTest extends Activity
 
         private void sauverResultats() throws IOException
         {
-            FileWriter writer = new FileWriter(Environment.getExternalStorageDirectory().getPath() + "/" +nomDossierExercice + "/" + nomDuFichier + "/" + nomDuFichier + "-score-phoneme.txt");
+            //FileWriter writer = new FileWriter(Environment.getExternalStorageDirectory().getPath() + "/" +nomDossierExercice + "/" + nomDuFichier + "/" + nomDuFichier + "-score-phoneme.txt");
 
-            for (String str : tabPhoneme)
+            FileWriter writer = new FileWriter(Environment.getExternalStorageDirectory().getPath() + "/" +nomDossierExercice + "/" + "score.txt", true);
+
+           /* for (String str : tabPhoneme)
+            {
                 writer.write(str + "\n");
+            }*/
+
+            String leScore = tabPhoneme.get(0);
+            leScore = leScore.substring(16, leScore.length());
+
+            writer.write(nomDuFichier + ": " + leScore);
+            Log.d("testtt", nomDuFichier + ": " + leScore);
+
+            /*
+            for (String str : tabPhoneme)
+            {
+                writer.write(str + "\n");
+            }
+
+             */
+
 
             writer.close();
+
+            /*
 
             writer = new FileWriter(Environment.getExternalStorageDirectory().getPath() + "/" + nomDossierExercice + "/" + nomDuFichier + "/" + nomDuFichier + "-score-dap.txt");
 
@@ -607,6 +645,8 @@ public class MultiTest extends Activity
                 writer.write(str + "\n");
 
             writer.close();
+
+             */
         }
 
 
