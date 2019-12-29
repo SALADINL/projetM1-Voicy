@@ -16,6 +16,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Ken Bres
@@ -117,7 +119,7 @@ public class ExerciceMot extends Exercice
 			String line;
 			while ((line = br.readLine()) != null)
 			{
-				if(line.contains(mot))
+				if(line.split("\t")[0].equals(mot))
 				{
 					res = line.split("\t");
 

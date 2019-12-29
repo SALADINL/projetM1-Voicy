@@ -546,6 +546,7 @@ public class MultiTest extends Activity
             // ------------ DECOMMENTE ---------------
 
             /*
+
             File file2 = new File(Environment.getExternalStorageDirectory().getPath(), nomDossierExercice + "/" + nomDuFichier);
 
             if (!file2.exists())
@@ -553,6 +554,8 @@ public class MultiTest extends Activity
 
 
              */
+
+
 
             rec.setExo("Exo" + rec.getCurrentTimeUsingCalendar("1"));
 
@@ -615,10 +618,13 @@ public class MultiTest extends Activity
 
             FileWriter writer = new FileWriter(Environment.getExternalStorageDirectory().getPath() + "/" +nomDossierExercice + "/" + "score.txt", true);
 
-           /* for (String str : tabPhoneme)
+            /*
+            for (String str : tabPhoneme)
             {
                 writer.write(str + "\n");
-            }*/
+            }
+            */
+
 
             String leScore = tabPhoneme.get(0);
             leScore = leScore.substring(16, leScore.length());
@@ -626,27 +632,24 @@ public class MultiTest extends Activity
             writer.write(nomDuFichier + ": " + leScore);
             Log.d("testtt", nomDuFichier + ": " + leScore);
 
-            /*
-            for (String str : tabPhoneme)
-            {
-                writer.write(str + "\n");
-            }
 
-             */
 
 
             writer.close();
 
-            /*
 
-            writer = new FileWriter(Environment.getExternalStorageDirectory().getPath() + "/" + nomDossierExercice + "/" + nomDuFichier + "/" + nomDuFichier + "-score-dap.txt");
+
+           /* writer = new FileWriter(Environment.getExternalStorageDirectory().getPath() + "/" + nomDossierExercice + "/" + nomDuFichier + "/" + nomDuFichier + "-score-dap.txt");
 
             for (String str : tabDap)
                 writer.write(str + "\n");
 
             writer.close();
+            */
 
-             */
+
+
+
         }
 
 

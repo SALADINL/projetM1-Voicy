@@ -1,6 +1,7 @@
 package com.example.modulereco;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.Pair;
 
 import java.io.BufferedReader;
@@ -143,23 +144,37 @@ public class Alignement
 
 		int score = 0,
 				trames = 0,
-				tramesBonus = 0;
+				tramesBonus = 0,
+				nbSeg = 0;
 
 		for (Segment seg : decoder.seg())
 		{
 			if (!seg.getWord().equals("sil"))
 			{
+				nbSeg++;
+				trames = seg.getEndFrame() - seg.getStartFrame();
+				trames++;
+
+				score += seg.getAscore() / trames;
+
+				/* OLD
 				trames += seg.getEndFrame() - seg.getStartFrame();
 				score += seg.getAscore();
 
 				if (seg.getEndFrame() != seg.getStartFrame())
 					tramesBonus++;
+
+				 */
 			}
 			else if (tramesBonus != 0)
 			{
+				/* OLD
 				trames += tramesBonus - 1;
 				tramesBonus = 0;
+				*/
 			}
+
+			Log.d("Calcule", seg.getWord() + " " + seg.getAscore() + " " + (seg.getEndFrame() - seg.getStartFrame()) + " " + tramesBonus);
 		}
 
 		if (tramesBonus != 0)
@@ -167,7 +182,10 @@ public class Alignement
 			trames += tramesBonus - 1;
 		}
 
-		resultat.add("Score normalisé : " + ((float)score / trames) + "\n");
+		// OLD
+		// resultat.add("Score normalisé : " + ((float)score / trames) + "\n");
+
+		resultat.add("Score normalisé : " + ((float)score / nbSeg) + "\n");
 
 		for (Segment seg : decoder.seg())
 		{
